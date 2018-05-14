@@ -1,0 +1,31 @@
+{
+  "name": "iceland-ndvi",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "Commercial",
+  "private": true,
+  "dependencies": {
+    "@types/node": "^10.0.8",
+    "@types/react": "^16.3.14",
+    "autoprefixer": "^8.5.0",
+    "copy-webpack-plugin": "^4.5.1",
+    "css-loader": "^0.28.11",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.0",
+    "node-sass": "^4.9.0",
+    "postcss-loader": "^2.1.5",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-helmet": "^5.2.0",
+    "sass-loader": "^7.0.1",
+    "ts-loader": "^4.3.0",
+    "typescript": "^2.8.3",
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.1.3",
+    "webpack-serve": "^1.0.2"
+  },
+  "scripts": {
+    "start": "webpack-serve --config webpack-config.js",
+    "build": "webpack --config webpack-config.js"
+  }
+}
