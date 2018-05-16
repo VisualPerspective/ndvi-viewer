@@ -7,6 +7,7 @@ class SingleView extends React.Component {
   canvas: HTMLCanvasElement
   ctx: any
   renderer: any
+  pendingRender: boolean = false
 
   renderCanvas () {
     if (this.canvas.width != this.canvas.offsetWidth ||
@@ -14,7 +15,18 @@ class SingleView extends React.Component {
       this.canvas.width = this.canvas.offsetWidth
       this.canvas.height = this.canvas.offsetHeight
     }
-    this.ctx._refresh()
+
+    if (!this.pendingRender) {
+      this.pendingRender = true
+      window.requestAnimationFrame(() => {
+        this.renderCanvasGL()
+      })
+    }
+  }
+
+  renderCanvasGL () {
+    this.pendingRender = false
+    this.ctx.poll()
     this.renderer({
       projection: mat4.perspective(
         [],
