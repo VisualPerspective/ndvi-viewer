@@ -5,6 +5,15 @@ html {
   font-size: 100%;
 }
 
+html, body, .container {
+  height: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
 body, select, input, button {
   font-family: 'Heebo', sans-serif;
   font-weight: 300;
@@ -23,7 +32,7 @@ select {
   background: url('~/src/assets/img/select-arrow.svg') right no-repeat;
 }
 
-p:not(:first-child) { margin-top: 0.5rem; }
+p:not(:first-child) { margin-top: 0.75rem; }
 
 p.form-line span:not(:first-child) {
   padding: 0 0.25rem;
@@ -37,4 +46,14 @@ header {
 
   padding: 1.5rem;
   box-shadow: 0 0 4px #0008;
+}
+
+article {
+  flex-grow: 1;
+  display: flex;
+}
+
+canvas {
+  width: 100%;
+  display: block;
 }

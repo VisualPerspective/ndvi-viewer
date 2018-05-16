@@ -1,0 +1,89 @@
+import * as React from 'react'
+import constants from '../constants'
+import { mat4 } from 'gl-matrix'
+const regl = require('regl')
+
+class SingleView extends React.Component {
+  canvas: HTMLCanvasElement
+  ctx: any
+  renderer: any
+
+  renderCanvas () {
+    if (this.canvas.width != this.canvas.offsetWidth ||
+        this.canvas.height != this.canvas.offsetHeight) {
+      this.canvas.width = this.canvas.offsetWidth
+      this.canvas.height = this.canvas.offsetHeight
+    }
+    this.ctx._refresh()
+    this.renderer({
+      projection: mat4.perspective(
+        [],
+        0.5,
+        this.canvas.width / this.canvas.height,
+        0.01,
+        1000
+      )
+    })
+  }
+
+  setupRender () {
+    this.ctx = regl({ canvas: this.canvas })
+    this.renderer = this.ctx({
+      frag: `
+      precision mediump float;
+      uniform vec4 color;
+      void main() {
+        gl_FragColor = color;
+      }`,
+
+      vert: `
+      precision mediump float;
+      attribute vec2 position;
+      uniform mat4 model, view, projection;
+      void main() {
+        gl_Position = projection * view * model * vec4(position, 0, 1);
+      }`,
+
+      attributes: {
+        position: [
+          [0, 0],
+          [1, 0],
+          [1, 1],
+          [0, 0],
+          [1, 1],
+          [0, 1],
+        ]
+      },
+
+      uniforms: {
+        color: [0.6, 0.7, 0.9, 1],
+        model: mat4.fromTranslation([], [-0.5, -0.5, 0]),
+        view: mat4.lookAt([], [0,0,-3], [0,0,0], [0,1,0]),
+        projection: this.ctx.prop('projection')
+      },
+
+      count: 6
+    })
+  }
+
+  componentDidMount () {
+    this.setupRender()
+    this.renderCanvas()
+
+    window.addEventListener('resize', this.renderCanvas.bind(this))
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('resize', this.renderCanvas.bind(this))
+  }
+
+  render () {
+    return (
+      <article className="single-view">
+        <canvas ref={ref => this.canvas = ref}></canvas>
+      </article>
+    )
+  }
+}
+
+export default SingleView
