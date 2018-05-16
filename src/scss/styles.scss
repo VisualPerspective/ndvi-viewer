@@ -13,13 +13,13 @@ body, select, input, button {
 select, input, button {
   font-size: 1em;
   background: white;
-  border: 1px solid #333;
+  border: 1px solid #33333360;
   border-radius: 0.25rem;
   appearance: none;
 }
 
 select {
-  padding: 0 1.5rem 0 0.5rem;
+  padding: 0 1.75rem 0 0.75rem;
   background: url('~/src/assets/img/select-arrow.svg') right no-repeat;
 }
 
