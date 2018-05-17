@@ -3,9 +3,10 @@ import Helmet from 'react-helmet'
 import { inject, observer } from 'mobx-react'
 import Header from './Header'
 import SingleView from './SingleView'
+import RootStore from '../models/RootStore'
 
 interface ContainerProps {
-  rootStore?: any
+  rootStore?: RootStore
 }
 
 const Container: React.SFC<ContainerProps> = (props) => (
