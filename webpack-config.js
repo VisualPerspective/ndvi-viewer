@@ -27,6 +27,11 @@ module.exports = {
           "sass-loader",
           "postcss-loader"
         ]
+      },
+      {
+        test: /\.(tiff?)$/,
+        exclude: /node_modules/,
+        loader: 'file-loader'
       }
     ]
   },
@@ -43,5 +48,8 @@ module.exports = {
     modules: ['node_modules'],
     extensions: ['.ts', '.tsx', '.js', '.json', '.glsl']
   },
-  devtool: 'inline-source-map'
+  devtool: 'inline-source-map',
+  node: {
+    fs: 'empty'
+  }
 };
