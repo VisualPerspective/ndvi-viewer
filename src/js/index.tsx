@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import Container from './components/Container'
+import App from './components/App'
 
 require('../scss/styles.scss')
 
@@ -9,6 +9,6 @@ div.className = 'container'
 document.body.appendChild(div)
 
 ReactDOM.render(
-    <Container />,
+    <App />,
     div
 )
