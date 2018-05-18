@@ -20,7 +20,13 @@ class RasterLayer {
     rootStore?: RootStore
   }) {
     this.canvas = canvas
-    this.ctx = regl({ canvas: this.canvas })
+    this.rootStore = rootStore
+
+    this.ctx = regl({
+      canvas: this.canvas,
+      extensions: [ 'OES_texture_float' ]
+    })
+
     this.renderer = this.ctx({
       frag,
       vert,
@@ -39,8 +45,14 @@ class RasterLayer {
       uniforms: {
         color: [0.6, 0.7, 0.9, 1],
         model: mat4.fromTranslation([], [-0.5, -0.5, 0]),
-        view: mat4.lookAt([], [0,0,-3], [0,0,0], [0,1,0]),
-        projection: this.ctx.prop('projection')
+        view: mat4.lookAt([], [0, 0, -3], [0, 0, 0], [0, 1, 0]),
+        projection: this.ctx.prop('projection'),
+        ndvi: this.ctx.texture({
+          width: this.rootStore.ndviTiff.getImage().getWidth(),
+          height: this.rootStore.ndviTiff.getImage().getHeight(),
+          data: this.rootStore.ndviTiff.getImage().readRasters()[0],
+          format: 'luminance'
+        })
       },
 
       count: 6
