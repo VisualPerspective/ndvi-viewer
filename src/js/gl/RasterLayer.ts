@@ -1,5 +1,8 @@
 import { mat4 } from 'gl-matrix'
-const regl = require('regl')
+import * as regl from 'regl'
+
+const vert = require('./shaders/vert')
+const frag = require('./shaders/frag')
 
 class RasterLayer {
   canvas: HTMLCanvasElement
@@ -15,20 +18,8 @@ class RasterLayer {
     this.canvas = canvas
     this.ctx = regl({ canvas: this.canvas })
     this.renderer = this.ctx({
-      frag: `
-      precision mediump float;
-      uniform vec4 color;
-      void main() {
-        gl_FragColor = color;
-      }`,
-
-      vert: `
-      precision mediump float;
-      attribute vec2 position;
-      uniform mat4 model, view, projection;
-      void main() {
-        gl_Position = projection * view * model * vec4(position, 0, 1);
-      }`,
+      frag,
+      vert,
 
       attributes: {
         position: [
