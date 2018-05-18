@@ -1,5 +1,6 @@
 import { mat4 } from 'gl-matrix'
 import * as regl from 'regl'
+import RootStore from '../models/RootStore'
 
 const vert = require('./shaders/vert')
 const frag = require('./shaders/frag')
@@ -9,11 +10,14 @@ class RasterLayer {
   ctx: any
   renderer: any
   pendingRender: boolean = false
+  rootStore: RootStore
 
   constructor ({
-    canvas
+    canvas,
+    rootStore
   } : {
-    canvas: HTMLCanvasElement
+    canvas: HTMLCanvasElement,
+    rootStore?: RootStore
   }) {
     this.canvas = canvas
     this.ctx = regl({ canvas: this.canvas })
