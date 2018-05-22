@@ -5,6 +5,30 @@ import RootStore from '../models/RootStore'
 const vert = require('./shaders/vert')
 const frag = require('./shaders/frag')
 
+const pixelWidth = 590
+const pixelHeight = 416
+
+const width = pixelWidth / Math.max(pixelWidth, pixelHeight)
+const height = pixelHeight / Math.max(pixelWidth, pixelHeight)
+
+const bounds = [
+  [0, 0],
+  [width, 0],
+  [width, height],
+  [0, 0],
+  [width, height],
+  [0, height]
+]
+
+const uvs = [
+  [0, 0],
+  [1, 0],
+  [1, 1],
+  [0, 0],
+  [1, 1],
+  [0, 1]
+]
+
 class RasterLayer {
   canvas: HTMLCanvasElement
   ctx: any
@@ -32,39 +56,36 @@ class RasterLayer {
       vert,
 
       attributes: {
-        position: [
-          [0, 0],
-          [1, 0],
-          [1, 1],
-          [0, 0],
-          [1, 1],
-          [0, 1],
-        ]
+        position: bounds,
+        uvs: uvs
       },
 
       uniforms: {
         color: [0.6, 0.7, 0.9, 1],
-        model: mat4.fromTranslation([], [-0.5, -0.5, 0]),
+        model: mat4.fromTranslation([], [-width / 2, -height / 2, 0]),
         view: mat4.lookAt([], [0, 0, -3], [0, 0, 0], [0, 1, 0]),
         projection: this.ctx.prop('projection'),
         ndvi: this.ctx.texture({
           width: this.rootStore.ndviTiff.getImage().getWidth(),
           height: this.rootStore.ndviTiff.getImage().getHeight(),
           data: this.rootStore.ndviTiff.getImage().readRasters()[0],
-          format: 'luminance'
+          format: 'luminance',
+          min: 'nearest',
+          mag: 'nearest',
+          mipmap: false
         })
       },
 
-      count: 6
+      count: bounds.length
     })
 
   }
 
   render () {
-    if (this.canvas.width != this.canvas.offsetWidth ||
-        this.canvas.height != this.canvas.offsetHeight) {
-      this.canvas.width = this.canvas.offsetWidth
-      this.canvas.height = this.canvas.offsetHeight
+    if (this.canvas.width != this.canvas.offsetWidth * 2 ||
+        this.canvas.height != this.canvas.offsetHeight * 2) {
+      this.canvas.width = this.canvas.offsetWidth * 2
+      this.canvas.height = this.canvas.offsetHeight * 2
     }
 
     if (!this.pendingRender) {
@@ -81,7 +102,7 @@ class RasterLayer {
     this.renderer({
       projection: mat4.perspective(
         [],
-        0.5,
+        0.4,
         this.canvas.width / this.canvas.height,
         0.01,
         1000

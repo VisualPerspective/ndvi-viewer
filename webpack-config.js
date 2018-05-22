@@ -17,7 +17,12 @@ module.exports = {
       {
         test: /\.(glsl|frag|vert)$/,
         exclude: /node_modules/,
-        loader: 'webpack-glsl-loader'
+        loader: 'shader-loader',
+        options: {
+          glsl: {
+            chunkPath: path.resolve("./src/js/gl/shaders/functions")
+          }
+        }
       },
       {
         test: /\.scss$/,
