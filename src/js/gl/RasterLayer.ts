@@ -1,6 +1,7 @@
 import { mat4 } from 'gl-matrix'
 import * as regl from 'regl'
 import RootStore from '../models/RootStore'
+import constants from '../constants'
 
 const vert = require('./shaders/vert')
 const frag = require('./shaders/frag')

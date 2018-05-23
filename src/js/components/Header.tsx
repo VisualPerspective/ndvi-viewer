@@ -1,9 +1,9 @@
 import * as React from 'react'
-import constants from '../constants'
+import { strings } from '../constants'
 
 const Header = () => (
   <header>
-    <h1>{constants.HEADING}</h1>
+    <h1>{strings.HEADING}</h1>
     <p className='form-line'>
       <span>Show </span>
       <select>
