@@ -3,6 +3,8 @@ import { fromArrayBuffer } from 'geotiff'
 
 class RootStore {
   @observable initialized: boolean = false
+  @observable timePeriod: number = 0
+
   ndviTiff: any
   ndviImage: any
   ndviRasters: any
@@ -21,6 +23,10 @@ class RootStore {
     this.ndviRasters = await this.ndviImage.readRasters()
 
     this.initialized = true
+  }
+
+  @computed get timePeriods () {
+    return this.ndviRasters.length
   }
 }
 

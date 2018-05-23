@@ -57,3 +57,9 @@ canvas {
   width: 100%;
   display: block;
 }
+
+footer {
+  padding: 1.5rem;
+
+  input[type=range] { width: 100% }
+}
