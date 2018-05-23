@@ -36,6 +36,8 @@ class RasterLayer {
   renderer: any
   pendingRender: boolean = false
   rootStore: RootStore
+  ndviTexture: any
+  ndviTextureFbo: any
 
   constructor ({
     canvas,
@@ -49,7 +51,17 @@ class RasterLayer {
 
     this.ctx = regl({
       canvas: this.canvas,
-      extensions: [ 'OES_texture_float' ]
+      extensions: [ 'OES_texture_float', 'webgl_color_buffer_float' ],
+      attributes: { alpha: false }
+    })
+
+    this.ndviTexture = this.ctx.texture({
+      radius: constants.DATA_TEXTURE_SIZE,
+      type: 'float',
+      format: 'luminance',
+      min: 'nearest',
+      mag: 'nearest',
+      mipmap: false
     })
 
     this.renderer = this.ctx({
@@ -62,24 +74,28 @@ class RasterLayer {
       },
 
       uniforms: {
-        color: [0.6, 0.7, 0.9, 1],
         model: mat4.fromTranslation([], [-width / 2, -height / 2, 0]),
         view: mat4.lookAt([], [0, 0, -3], [0, 0, 0], [0, 1, 0]),
         projection: this.ctx.prop('projection'),
-        ndvi: this.ctx.texture({
-          width: this.rootStore.ndviTiff.getImage().getWidth(),
-          height: this.rootStore.ndviTiff.getImage().getHeight(),
-          data: this.rootStore.ndviTiff.getImage().readRasters()[0],
-          format: 'luminance',
-          min: 'nearest',
-          mag: 'nearest',
-          mipmap: false
-        })
+        ndvi: this.ndviTexture
       },
 
       count: bounds.length
     })
 
+    for (let i = 0; i < 6; i++) {
+      for (let j = 0; j < 2; j++) {
+        this.ndviTexture.subimage(
+          {
+            width: this.rootStore.ndviRasters.width,
+            height: this.rootStore.ndviRasters.height,
+            data: this.rootStore.ndviRasters[i + j * 6]
+          },
+          this.rootStore.ndviRasters.width * i,
+          this.rootStore.ndviRasters.height * j
+        )
+      }
+    }
   }
 
   render () {
@@ -100,6 +116,9 @@ class RasterLayer {
   renderCanvasGL () {
     this.pendingRender = false
     this.ctx.poll()
+
+    this.ctx.clear({ color: [1, 1, 1, 1] })
+
     this.renderer({
       projection: mat4.perspective(
         [],

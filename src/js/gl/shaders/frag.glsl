@@ -2,7 +2,6 @@ precision mediump float;
 
 $cool
 
-uniform vec4 color;
 uniform sampler2D ndvi;
 varying vec2 uv;
 
