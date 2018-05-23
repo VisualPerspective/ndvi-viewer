@@ -1,4 +1,5 @@
 import { mat4 } from 'gl-matrix'
+import { reaction } from 'mobx'
 import * as regl from 'regl'
 import RootStore from '../models/RootStore'
 import constants from '../constants'
@@ -58,7 +59,7 @@ class RasterLayer {
     this.ndviTexture = this.ctx.texture({
       radius: constants.DATA_TEXTURE_SIZE,
       type: 'float',
-      format: 'luminance',
+      format: 'rgba',
       min: 'nearest',
       mag: 'nearest',
       mipmap: false
@@ -83,19 +84,27 @@ class RasterLayer {
       count: bounds.length
     })
 
-    for (let i = 0; i < 6; i++) {
-      for (let j = 0; j < 2; j++) {
-        this.ndviTexture.subimage(
-          {
-            width: this.rootStore.ndviRasters.width,
-            height: this.rootStore.ndviRasters.height,
-            data: this.rootStore.ndviRasters[i + j * 6]
-          },
-          this.rootStore.ndviRasters.width * i,
-          this.rootStore.ndviRasters.height * j
-        )
-      }
+    this.ndviTextureFbo = this.ctx.framebuffer({
+      color: this.ndviTexture
+    })
+
+    for (let i = 0; i < this.rootStore.ndviRasters.length; i++) {
+      const xIndex = i % this.rootStore.imagesWide
+      const yIndex = Math.floor(i / this.rootStore.imagesWide)
+      this.ndviTexture.subimage(
+        {
+          width: this.rootStore.ndviWidth,
+          height: this.rootStore.ndviHeight,
+          data: this.rootStore.ndviRasters[i]
+        },
+        this.rootStore.ndviWidth * xIndex,
+        this.rootStore.ndviHeight * yIndex
+      )
     }
+
+    reaction(() => ({
+      timePeriod: this.rootStore.timePeriod
+    }), this.render.bind(this))
   }
 
   render () {

@@ -1,5 +1,6 @@
-import { observable } from 'mobx'
+import { observable, computed } from 'mobx'
 import { fromArrayBuffer } from 'geotiff'
+import constants from '../constants'
 
 class RootStore {
   @observable initialized: boolean = false
@@ -8,6 +9,10 @@ class RootStore {
   ndviTiff: any
   ndviImage: any
   ndviRasters: any
+  ndviWidth: any
+  ndviHeight: any
+  imagesWide: number
+
 
   constructor () {
     this.initialize()
@@ -20,7 +25,26 @@ class RootStore {
 
     this.ndviTiff = await fromArrayBuffer(await data.arrayBuffer())
     this.ndviImage = await this.ndviTiff.getImage()
-    this.ndviRasters = await this.ndviImage.readRasters()
+    this.ndviWidth = this.ndviImage.getWidth()
+    this.ndviHeight = this.ndviImage.getHeight()
+    this.imagesWide = Math.floor(
+      constants.DATA_TEXTURE_SIZE / this.ndviWidth
+    )
+
+    this.ndviRasters = [
+      await this.ndviImage.readRasters({
+        interleave: true,
+        samples: [0, 1, 2, 3]
+      }),
+      await this.ndviImage.readRasters({
+        interleave: true,
+        samples: [4, 5, 6, 7]
+      }),
+      await this.ndviImage.readRasters({
+        interleave: true,
+        samples: [8, 9, 10, 11]
+      })
+    ]
 
     this.initialized = true
   }
