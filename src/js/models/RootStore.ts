@@ -53,7 +53,7 @@ class RootStore {
   }
 
   @computed get timePeriods () {
-    return this.ndviRasters.length
+    return this.ndviRasters.length * 4
   }
 }
 
