@@ -78,7 +78,13 @@ class RasterLayer {
         model: mat4.fromTranslation([], [-width / 2, -height / 2, 0]),
         view: mat4.lookAt([], [0, 0, -3], [0, 0, 0], [0, 1, 0]),
         projection: this.ctx.prop('projection'),
-        ndvi: this.ndviTexture
+        ndvi: this.ndviTexture,
+        rasterWidth: this.rootStore.ndviWidth,
+        rasterHeight: this.rootStore.ndviHeight,
+        imagesWide: this.rootStore.imagesWide,
+        imagesHigh: this.rootStore.imagesHigh,
+        atlasSize: constants.DATA_TEXTURE_SIZE,
+        timePeriod: this.ctx.prop('timePeriod')
       },
 
       count: bounds.length
@@ -135,7 +141,8 @@ class RasterLayer {
         this.canvas.width / this.canvas.height,
         0.01,
         1000
-      )
+      ),
+      timePeriod: this.rootStore.timePeriod
     })
   }
 }

@@ -12,7 +12,7 @@ class RootStore {
   ndviWidth: any
   ndviHeight: any
   imagesWide: number
-
+  imagesHigh: number
 
   constructor () {
     this.initialize()
@@ -28,6 +28,9 @@ class RootStore {
     this.ndviWidth = this.ndviImage.getWidth()
     this.ndviHeight = this.ndviImage.getHeight()
     this.imagesWide = Math.floor(
+      constants.DATA_TEXTURE_SIZE / this.ndviWidth
+    )
+    this.imagesHigh = Math.floor(
       constants.DATA_TEXTURE_SIZE / this.ndviWidth
     )
 
