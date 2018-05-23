@@ -1,9 +1,11 @@
 import { observable } from 'mobx'
-import { parse } from 'geotiff'
+import { fromArrayBuffer } from 'geotiff'
 
 class RootStore {
   @observable initialized: boolean = false
   ndviTiff: any
+  ndviImage: any
+  ndviRasters: any
 
   constructor () {
     this.initialize()
@@ -11,11 +13,12 @@ class RootStore {
 
   async initialize () {
     const data: Response = await window.fetch(
-      require('../../assets/iceland.tif')
+      require('../../assets/iceland_year.tif')
     )
 
-    this.ndviTiff = parse(await data.arrayBuffer())
-    {(window as any).zzz = this.ndviTiff}
+    this.ndviTiff = await fromArrayBuffer(await data.arrayBuffer())
+    this.ndviImage = await this.ndviTiff.getImage()
+    this.ndviRasters = await this.ndviImage.readRasters()
 
     this.initialized = true
   }

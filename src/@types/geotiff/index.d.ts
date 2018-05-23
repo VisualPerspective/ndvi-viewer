@@ -1,3 +1,4 @@
 declare module 'geotiff' {
-  export const parse: (response: ArrayBuffer) => object
+  export const fromArrayBuffer: (response: ArrayBuffer) => object
+  export const Pool: any
 }
