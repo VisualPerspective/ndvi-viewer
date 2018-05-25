@@ -11,9 +11,9 @@ class RootStore {
     pitch: 0,
     bearing: 0,
     altitude: 1.5,
-    zoom: 0,
-    latitude: 0,
-    longitude: 0
+    zoom: 6,
+    latitude: 65,
+    longitude: -18
   }
 
   readonly dataTiffs = observable<DataTiff>([])
@@ -45,6 +45,19 @@ class RootStore {
     }
   }
 
+  @computed get triangles (): any {
+    const bbox: any = this.lngLatBoundingBox
+
+    return [
+      [bbox.min.x, bbox.min.y],
+      [bbox.max.x, bbox.min.y],
+      [bbox.max.x, bbox.max.y],
+      [bbox.min.x, bbox.min.y],
+      [bbox.max.x, bbox.max.y],
+      [bbox.min.x, bbox.max.y]
+    ]
+  }
+
   constructor () {
     this.initialize()
   }
@@ -61,7 +74,8 @@ class RootStore {
       max: { x: bbox[2], y: bbox[3] },
     })
 
-    console.log(this.boundingBox)
+    console.log(JSON.stringify(this.boundingBox))
+    console.log(JSON.stringify(this.lngLatBoundingBox))
   }
 
   @computed get timePeriods () {

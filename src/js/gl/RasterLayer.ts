@@ -11,15 +11,6 @@ const frag = require('./shaders/frag')
 const pixelWidth = 590
 const pixelHeight = 416
 
-const bounds = [
-  [-180, -80],
-  [180, -80],
-  [180, 80],
-  [-180, -80],
-  [180, 80],
-  [-180, 80]
-]
-
 const uvs = [
   [1, 1],
   [0, 1],
@@ -68,7 +59,7 @@ class RasterLayer {
       vert,
 
       attributes: {
-        position: bounds,
+        position: this.ctx.prop('triangles'),
         uvs: uvs
       },
 
@@ -86,7 +77,7 @@ class RasterLayer {
         scale: this.ctx.prop('scale'),
       },
 
-      count: bounds.length
+      count: this.ctx.prop('trianglesLength')
     })
 
     this.rasterTextureFbo = this.ctx.framebuffer({
@@ -143,7 +134,9 @@ class RasterLayer {
       scale: mercator.scale * constants.TILE_SIZE,
       view: mercator.viewMatrix,
       projection: mercator.projectionMatrix,
-      timePeriod: this.rootStore.timePeriod
+      timePeriod: this.rootStore.timePeriod,
+      triangles: this.rootStore.triangles,
+      trianglesLength: this.rootStore.triangles.length
     })
   }
 }
