@@ -39,7 +39,7 @@ class RootStore {
 
   async initialize () {
     this.dataTiffs.replace([
-      await DataTiff.fromUrl(require('../../assets/iceland_year.tif'))
+      await DataTiff.fromUrl(constants.TIFF_URLS[0])
     ])
 
     this.initialized = true
