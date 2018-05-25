@@ -1,6 +1,7 @@
-import { mat4 } from 'gl-matrix'
+import { mat4, vec3 } from 'gl-matrix'
 import { reaction } from 'mobx'
 import * as regl from 'regl'
+import * as Viewport from 'viewport-mercator-project'
 import RootStore from '../models/RootStore'
 import constants from '../constants'
 
@@ -10,16 +11,13 @@ const frag = require('./shaders/frag')
 const pixelWidth = 590
 const pixelHeight = 416
 
-const width = pixelWidth / Math.max(pixelWidth, pixelHeight)
-const height = pixelHeight / Math.max(pixelWidth, pixelHeight)
-
 const bounds = [
-  [0, 0],
-  [width, 0],
-  [width, height],
-  [0, 0],
-  [width, height],
-  [0, height]
+  [-180, -80],
+  [180, -80],
+  [180, 80],
+  [-180, -80],
+  [180, 80],
+  [-180, 80]
 ]
 
 const uvs = [
@@ -75,8 +73,8 @@ class RasterLayer {
       },
 
       uniforms: {
-        model: mat4.fromTranslation([], [-width / 2, -height / 2, 0]),
-        view: mat4.lookAt([], [0, 0, -3], [0, 0, 0], [0, 1, 0]),
+        model: mat4.fromTranslation([], [0, 0, 0]),
+        view: this.ctx.prop('view'),
         projection: this.ctx.prop('projection'),
         ndvi: this.ndviTexture,
         rasterWidth: this.rootStore.ndviWidth,
@@ -84,7 +82,8 @@ class RasterLayer {
         imagesWide: this.rootStore.imagesWide,
         imagesHigh: this.rootStore.imagesHigh,
         atlasSize: constants.DATA_TEXTURE_SIZE,
-        timePeriod: this.ctx.prop('timePeriod')
+        timePeriod: this.ctx.prop('timePeriod'),
+        scale: this.ctx.prop('scale'),
       },
 
       count: bounds.length
@@ -134,14 +133,16 @@ class RasterLayer {
 
     this.ctx.clear({ color: [1, 1, 1, 1] })
 
+    const mercator = new Viewport.WebMercatorViewport({
+      ...this.rootStore.viewport,
+      width: this.canvas.width,
+      height: this.canvas.height
+    })
+
     this.renderer({
-      projection: mat4.perspective(
-        [],
-        0.4,
-        this.canvas.width / this.canvas.height,
-        0.01,
-        1000
-      ),
+      scale: mercator.scale * constants.TILE_SIZE,
+      view: mercator.viewMatrix,
+      projection: mercator.projectionMatrix,
       timePeriod: this.rootStore.timePeriod
     })
   }

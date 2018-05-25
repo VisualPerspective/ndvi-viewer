@@ -3,5 +3,6 @@ export const strings = {
 }
 
 export default {
-  DATA_TEXTURE_SIZE: 4096
+  DATA_TEXTURE_SIZE: 4096,
+  TILE_SIZE: 512
 }

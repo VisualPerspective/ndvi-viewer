@@ -5,6 +5,14 @@ import constants from '../constants'
 class RootStore {
   @observable initialized: boolean = false
   @observable timePeriod: number = 0
+  @observable viewport: any = {
+    pitch: 0,
+    bearing: 0,
+    altitude: 1.5,
+    zoom: 0,
+    latitude: 0,
+    longitude: 0
+  }
 
   ndviTiff: any
   ndviImage: any
