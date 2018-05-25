@@ -12,7 +12,7 @@ class RootStore {
     pitch: 0,
     bearing: 0,
     altitude: 1.5,
-    zoom: 6,
+    zoom: 6.75,
     latitude: 65,
     longitude: -18
   }
