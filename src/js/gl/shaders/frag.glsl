@@ -3,12 +3,12 @@ precision highp float;
 $cool
 
 uniform highp int timePeriod;
-uniform sampler2D ndvi;
+uniform sampler2D raster;
 varying vec2 uv;
 
 void main() {
   float timeComponent = mod(float(timePeriod), 4.0);
-  vec4 sample = texture2D(ndvi, uv);
+  vec4 sample = texture2D(raster, uv);
   float unscaled =
     (1.0 - step(0.1, abs(0.0 - timeComponent))) * sample.r +
     (1.0 - step(0.1, abs(1.0 - timeComponent))) * sample.g +

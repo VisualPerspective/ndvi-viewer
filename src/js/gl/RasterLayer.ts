@@ -35,8 +35,8 @@ class RasterLayer {
   renderer: any
   pendingRender: boolean = false
   rootStore: RootStore
-  ndviTexture: any
-  ndviTextureFbo: any
+  rasterTexture: any
+  rasterTextureFbo: any
 
   constructor ({
     canvas,
@@ -54,7 +54,7 @@ class RasterLayer {
       attributes: { alpha: false }
     })
 
-    this.ndviTexture = this.ctx.texture({
+    this.rasterTexture = this.ctx.texture({
       radius: constants.DATA_TEXTURE_SIZE,
       type: 'float',
       format: 'rgba',
@@ -76,11 +76,11 @@ class RasterLayer {
         model: mat4.fromTranslation([], [0, 0, 0]),
         view: this.ctx.prop('view'),
         projection: this.ctx.prop('projection'),
-        ndvi: this.ndviTexture,
-        rasterWidth: this.rootStore.ndviWidth,
-        rasterHeight: this.rootStore.ndviHeight,
-        imagesWide: this.rootStore.imagesWide,
-        imagesHigh: this.rootStore.imagesHigh,
+        raster: this.rasterTexture,
+        rasterWidth: this.rootStore.rasterWidth,
+        rasterHeight: this.rootStore.rasterHeight,
+        textureRastersWide: this.rootStore.textureRastersWide,
+        textureRastersHigh: this.rootStore.textureRastersHigh,
         atlasSize: constants.DATA_TEXTURE_SIZE,
         timePeriod: this.ctx.prop('timePeriod'),
         scale: this.ctx.prop('scale'),
@@ -89,21 +89,21 @@ class RasterLayer {
       count: bounds.length
     })
 
-    this.ndviTextureFbo = this.ctx.framebuffer({
-      color: this.ndviTexture
+    this.rasterTextureFbo = this.ctx.framebuffer({
+      color: this.rasterTexture
     })
 
-    for (let i = 0; i < this.rootStore.ndviRasters.length; i++) {
-      const xIndex = i % this.rootStore.imagesWide
-      const yIndex = Math.floor(i / this.rootStore.imagesWide)
-      this.ndviTexture.subimage(
+    for (let i = 0; i < this.rootStore.dataTiffs[0].rasters.length; i++) {
+      const xIndex = i % this.rootStore.textureRastersWide
+      const yIndex = Math.floor(i / this.rootStore.textureRastersWide)
+      this.rasterTexture.subimage(
         {
-          width: this.rootStore.ndviWidth,
-          height: this.rootStore.ndviHeight,
-          data: this.rootStore.ndviRasters[i]
+          width: this.rootStore.rasterWidth,
+          height: this.rootStore.rasterHeight,
+          data: this.rootStore.dataTiffs[0].rasters[i]
         },
-        this.rootStore.ndviWidth * xIndex,
-        this.rootStore.ndviHeight * yIndex
+        this.rootStore.rasterWidth * xIndex,
+        this.rootStore.rasterHeight * yIndex
       )
     }
 

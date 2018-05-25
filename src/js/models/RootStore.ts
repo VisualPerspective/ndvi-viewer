@@ -1,6 +1,7 @@
 import { observable, computed } from 'mobx'
 import { fromArrayBuffer } from 'geotiff'
 import constants from '../constants'
+import DataTiff from './DataTiff'
 
 class RootStore {
   @observable initialized: boolean = false
@@ -14,54 +15,38 @@ class RootStore {
     longitude: 0
   }
 
-  ndviTiff: any
-  ndviImage: any
-  ndviRasters: any
-  ndviWidth: any
-  ndviHeight: any
-  imagesWide: number
-  imagesHigh: number
+  readonly dataTiffs = observable<DataTiff>([])
+
+  @computed get rasterWidth () {
+    return this.dataTiffs[0].image.getWidth()
+  }
+
+  @computed get rasterHeight () {
+    return this.dataTiffs[0].image.getHeight()
+  }
+
+  @computed get textureRastersWide () {
+    return Math.floor(constants.DATA_TEXTURE_SIZE / this.rasterWidth)
+  }
+
+  @computed get textureRastersHigh () {
+    return Math.floor(constants.DATA_TEXTURE_SIZE / this.rasterHeight)
+  }
 
   constructor () {
     this.initialize()
   }
 
   async initialize () {
-    const data: Response = await window.fetch(
-      require('../../assets/iceland_year.tif')
-    )
-
-    this.ndviTiff = await fromArrayBuffer(await data.arrayBuffer())
-    this.ndviImage = await this.ndviTiff.getImage()
-    this.ndviWidth = this.ndviImage.getWidth()
-    this.ndviHeight = this.ndviImage.getHeight()
-    this.imagesWide = Math.floor(
-      constants.DATA_TEXTURE_SIZE / this.ndviWidth
-    )
-    this.imagesHigh = Math.floor(
-      constants.DATA_TEXTURE_SIZE / this.ndviWidth
-    )
-
-    this.ndviRasters = [
-      await this.ndviImage.readRasters({
-        interleave: true,
-        samples: [0, 1, 2, 3]
-      }),
-      await this.ndviImage.readRasters({
-        interleave: true,
-        samples: [4, 5, 6, 7]
-      }),
-      await this.ndviImage.readRasters({
-        interleave: true,
-        samples: [8, 9, 10, 11]
-      })
-    ]
+    this.dataTiffs.replace([
+      await DataTiff.fromUrl(require('../../assets/iceland_year.tif'))
+    ])
 
     this.initialized = true
   }
 
   @computed get timePeriods () {
-    return this.ndviRasters.length * 4
+    return this.dataTiffs[0].rasters.length * 4
   }
 }
 
