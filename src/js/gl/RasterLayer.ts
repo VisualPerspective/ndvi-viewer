@@ -51,7 +51,9 @@ class RasterLayer {
       format: 'rgba',
       min: 'nearest',
       mag: 'nearest',
-      mipmap: false
+      mipmap: false,
+      wrapS: 'clamp',
+      wrapT: 'clamp',
     })
 
     this.renderer = this.ctx({
