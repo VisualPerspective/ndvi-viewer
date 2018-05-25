@@ -1,6 +1,7 @@
-import { observable, computed } from 'mobx'
+import { observable, computed, set } from 'mobx'
 import { fromArrayBuffer } from 'geotiff'
 import constants from '../constants'
+import { sinusoidalToLngLat } from '../utils'
 import DataTiff from './DataTiff'
 
 class RootStore {
@@ -16,6 +17,10 @@ class RootStore {
   }
 
   readonly dataTiffs = observable<DataTiff>([])
+  readonly boundingBox = observable<{ min: any, max: any }>({
+    min: null,
+    max: null
+  })
 
   @computed get rasterWidth () {
     return this.dataTiffs[0].image.getWidth()
@@ -33,6 +38,13 @@ class RootStore {
     return Math.floor(constants.DATA_TEXTURE_SIZE / this.rasterHeight)
   }
 
+  @computed get lngLatBoundingBox (): any {
+    return {
+      min: sinusoidalToLngLat(this.boundingBox.min),
+      max: sinusoidalToLngLat(this.boundingBox.max)
+    }
+  }
+
   constructor () {
     this.initialize()
   }
@@ -43,6 +55,13 @@ class RootStore {
     ])
 
     this.initialized = true
+    const bbox = this.dataTiffs[0].image.getBoundingBox()
+    set(this.boundingBox, {
+      min: { x: bbox[0], y: bbox[1] },
+      max: { x: bbox[2], y: bbox[3] },
+    })
+
+    console.log(this.boundingBox)
   }
 
   @computed get timePeriods () {
