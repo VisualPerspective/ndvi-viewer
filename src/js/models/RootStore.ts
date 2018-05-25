@@ -1,5 +1,6 @@
 import { observable, computed, set } from 'mobx'
 import { fromArrayBuffer } from 'geotiff'
+import * as _ from 'lodash'
 import constants from '../constants'
 import { sinusoidalToLngLat } from '../utils'
 import DataTiff from './DataTiff'
@@ -39,9 +40,28 @@ class RootStore {
   }
 
   @computed get lngLatBoundingBox (): any {
+    const points = [
+      sinusoidalToLngLat({
+        x: this.boundingBox.min.x,
+        y: this.boundingBox.min.y
+      }),
+      sinusoidalToLngLat({
+        x: this.boundingBox.max.x,
+        y: this.boundingBox.min.y
+      }),
+      sinusoidalToLngLat({
+        x: this.boundingBox.min.x,
+        y: this.boundingBox.max.y
+      }),
+      sinusoidalToLngLat({
+        x: this.boundingBox.max.x,
+        y: this.boundingBox.max.y
+      })
+    ]
+
     return {
-      min: sinusoidalToLngLat(this.boundingBox.min),
-      max: sinusoidalToLngLat(this.boundingBox.max)
+      min: { x: _.minBy(points, 'x').x, y: _.minBy(points, 'y').y },
+      max: { x: _.maxBy(points, 'x').x, y: _.maxBy(points, 'y').y },
     }
   }
 

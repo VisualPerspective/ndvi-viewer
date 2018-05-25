@@ -72,6 +72,7 @@ class RasterLayer {
         raster: this.rasterTexture,
         rasterWidth: this.rootStore.rasterWidth,
         rasterHeight: this.rootStore.rasterHeight,
+        rasterBBoxMeters: this.ctx.prop('rasterBBoxMeters'),
         textureRastersWide: this.rootStore.textureRastersWide,
         textureRastersHigh: this.rootStore.textureRastersHigh,
         atlasSize: constants.DATA_TEXTURE_SIZE,
@@ -138,7 +139,13 @@ class RasterLayer {
       projection: mercator.projectionMatrix,
       timePeriod: this.rootStore.timePeriod,
       triangles: this.rootStore.triangles,
-      trianglesLength: this.rootStore.triangles.length
+      trianglesLength: this.rootStore.triangles.length,
+      rasterBBoxMeters: [
+        this.rootStore.boundingBox.min.x,
+        this.rootStore.boundingBox.min.y,
+        this.rootStore.boundingBox.max.x,
+        this.rootStore.boundingBox.max.y,
+      ]
     })
   }
 }
