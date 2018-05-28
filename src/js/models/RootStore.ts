@@ -1,9 +1,8 @@
 import { observable, computed, set } from 'mobx'
 import { fromArrayBuffer } from 'geotiff'
-import * as _ from 'lodash'
 import constants from '../constants'
-import { sinusoidalToLngLat } from '../utils'
 import DataTiff from './DataTiff'
+import BoundingBox from './BoundingBox'
 
 class RootStore {
   @observable initialized: boolean = false
@@ -18,10 +17,7 @@ class RootStore {
   }
 
   readonly dataTiffs = observable<DataTiff>([])
-  readonly boundingBox = observable<{ min: any, max: any }>({
-    min: null,
-    max: null
-  })
+  readonly boundingBox = observable<BoundingBox>(new BoundingBox())
 
   @computed get rasterWidth () {
     return this.dataTiffs[0].image.getWidth()
@@ -39,45 +35,6 @@ class RootStore {
     return Math.floor(constants.DATA_TEXTURE_SIZE / this.rasterHeight)
   }
 
-  @computed get lngLatBoundingBox (): any {
-    const points = [
-      sinusoidalToLngLat({
-        x: this.boundingBox.min.x,
-        y: this.boundingBox.min.y
-      }),
-      sinusoidalToLngLat({
-        x: this.boundingBox.max.x,
-        y: this.boundingBox.min.y
-      }),
-      sinusoidalToLngLat({
-        x: this.boundingBox.min.x,
-        y: this.boundingBox.max.y
-      }),
-      sinusoidalToLngLat({
-        x: this.boundingBox.max.x,
-        y: this.boundingBox.max.y
-      })
-    ]
-
-    return {
-      min: { x: _.minBy(points, 'x').x, y: _.minBy(points, 'y').y },
-      max: { x: _.maxBy(points, 'x').x, y: _.maxBy(points, 'y').y },
-    }
-  }
-
-  @computed get triangles (): any {
-    const bbox: any = this.lngLatBoundingBox
-
-    return [
-      [bbox.min.x, bbox.min.y],
-      [bbox.max.x, bbox.min.y],
-      [bbox.max.x, bbox.max.y],
-      [bbox.min.x, bbox.min.y],
-      [bbox.max.x, bbox.max.y],
-      [bbox.min.x, bbox.max.y]
-    ]
-  }
-
   constructor () {
     this.initialize()
   }
@@ -88,11 +45,7 @@ class RootStore {
     ])
 
     this.initialized = true
-    const bbox = this.dataTiffs[0].image.getBoundingBox()
-    set(this.boundingBox, {
-      min: { x: bbox[0], y: bbox[1] },
-      max: { x: bbox[2], y: bbox[3] },
-    })
+    this.boundingBox.array = this.dataTiffs[0].image.getBoundingBox()
   }
 
   @computed get timePeriods () {

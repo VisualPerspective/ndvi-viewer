@@ -110,8 +110,8 @@ class RasterLayer {
       view: mercator.viewMatrix,
       projection: mercator.projectionMatrix,
       timePeriod: this.rootStore.timePeriod,
-      triangles: this.rootStore.triangles,
-      trianglesLength: this.rootStore.triangles.length,
+      triangles: this.rootStore.boundingBox.triangles,
+      trianglesLength: this.rootStore.boundingBox.triangles.length,
       rasterBBoxMeters: [
         this.rootStore.boundingBox.min.x,
         this.rootStore.boundingBox.min.y,
