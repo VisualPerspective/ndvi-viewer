@@ -112,12 +112,7 @@ class RasterLayer {
       timePeriod: this.rootStore.timePeriod,
       triangles: this.rootStore.boundingBox.triangles,
       trianglesLength: this.rootStore.boundingBox.triangles.length,
-      rasterBBoxMeters: [
-        this.rootStore.boundingBox.min.x,
-        this.rootStore.boundingBox.min.y,
-        this.rootStore.boundingBox.max.x,
-        this.rootStore.boundingBox.max.y,
-      ]
+      rasterBBoxMeters: this.rootStore.boundingBox.array,
     })
   }
 }
