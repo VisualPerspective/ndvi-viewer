@@ -2,14 +2,11 @@ import * as React from 'react'
 import Helmet from 'react-helmet'
 import { inject, observer } from 'mobx-react'
 import Header from './Header'
+import Footer from './Footer'
 import SingleView from './SingleView'
 import RootStore from '../models/RootStore'
 
-interface ContainerProps {
-  rootStore?: RootStore
-}
-
-const Container: React.SFC<ContainerProps> = (props) => (
+const Container: React.SFC<{ rootStore?: RootStore }> = (props) => (
   props.rootStore.initialized ? (
     <>
       <Helmet title="Iceland NDVI">
@@ -17,6 +14,7 @@ const Container: React.SFC<ContainerProps> = (props) => (
       </Helmet>
       <Header />
       <SingleView />
+      <Footer />
     </>
   ) : (
     <div className="loading"></div>

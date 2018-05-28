@@ -28,25 +28,12 @@ class SingleView extends React.Component<{
   }
 
   render () {
-    const { rootStore } = this.props
-
     return (
-      <>
-        <article className="single-view">
-          <canvas ref={
-            canvas => { this.canvas = canvas }
-          }></canvas>
-        </article>
-        <footer>
-          <input type="range"
-            min={0}
-            max={rootStore.timePeriods - 1}
-            value={rootStore.timePeriod}
-            onChange={e => {
-              rootStore.timePeriod = Number(e.target.value)
-            }}/>
-        </footer>
-      </>
+      <article className="single-view">
+        <canvas ref={
+          canvas => { this.canvas = canvas }
+        }></canvas>
+      </article>
     )
   }
 }
