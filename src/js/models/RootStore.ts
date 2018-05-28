@@ -93,13 +93,30 @@ class RootStore {
       min: { x: bbox[0], y: bbox[1] },
       max: { x: bbox[2], y: bbox[3] },
     })
-
-    console.log(JSON.stringify(this.boundingBox))
-    console.log(JSON.stringify(this.lngLatBoundingBox))
   }
 
   @computed get timePeriods () {
     return this.dataTiffs[0].rasters.length * 4
+  }
+
+  @computed get rasterSubimages (): {
+    width: number,
+    height: number,
+    x: number,
+    y: number,
+    data: ArrayBufferView
+  }[] {
+    return this.dataTiffs[0].rasters.map((raster, i) => {
+      const xIndex = i % this.textureRastersWide
+      const yIndex = Math.floor(i / this.textureRastersWide)
+      return {
+        width: this.rasterWidth,
+        height: this.rasterHeight,
+        data: this.dataTiffs[0].rasters[i],
+        x: this.rasterWidth * xIndex,
+        y: this.rasterHeight * yIndex,
+      }
+    })
   }
 }
 

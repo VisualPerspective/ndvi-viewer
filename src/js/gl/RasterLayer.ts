@@ -69,23 +69,9 @@ class RasterLayer {
       count: this.ctx.prop('trianglesLength')
     })
 
-    this.rasterTextureFbo = this.ctx.framebuffer({
-      color: this.rasterTexture
+    this.rootStore.rasterSubimages.forEach(({ width, height, data, x, y }) => {
+      this.rasterTexture.subimage({ width, height, data }, x, y)
     })
-
-    for (let i = 0; i < this.rootStore.dataTiffs[0].rasters.length; i++) {
-      const xIndex = i % this.rootStore.textureRastersWide
-      const yIndex = Math.floor(i / this.rootStore.textureRastersWide)
-      this.rasterTexture.subimage(
-        {
-          width: this.rootStore.rasterWidth,
-          height: this.rootStore.rasterHeight,
-          data: this.rootStore.dataTiffs[0].rasters[i]
-        },
-        this.rootStore.rasterWidth * xIndex,
-        this.rootStore.rasterHeight * yIndex
-      )
-    }
 
     reaction(() => ({
       timePeriod: this.rootStore.timePeriod

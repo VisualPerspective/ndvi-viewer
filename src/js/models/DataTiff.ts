@@ -5,7 +5,7 @@ import constants from '../constants'
 class DataTiff {
   tiff: any
   image: any
-  rasters: any
+  rasters: ArrayBufferView[]
   width: any
   height: any
 
