@@ -8,18 +8,6 @@ import constants from '../constants'
 const vert = require('./shaders/vert')
 const frag = require('./shaders/frag')
 
-const pixelWidth = 590
-const pixelHeight = 416
-
-const uvs = [
-  [1, 1],
-  [0, 1],
-  [0, 0],
-  [1, 1],
-  [0, 0],
-  [1, 0]
-]
-
 class RasterLayer {
   canvas: HTMLCanvasElement
   ctx: any
@@ -27,7 +15,6 @@ class RasterLayer {
   pendingRender: boolean = false
   rootStore: RootStore
   rasterTexture: any
-  rasterTextureFbo: any
 
   constructor ({
     canvas,
@@ -62,7 +49,6 @@ class RasterLayer {
 
       attributes: {
         position: this.ctx.prop('triangles'),
-        uvs: uvs
       },
 
       uniforms: {
