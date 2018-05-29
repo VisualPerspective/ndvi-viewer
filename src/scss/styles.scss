@@ -63,3 +63,13 @@ footer {
 
   input[type=range] { width: 100% }
 }
+
+.horizontal-chart {
+  height: 10rem;
+  display: flex;
+}
+
+.time-series {
+ flex: 0 0 100%;
+ line { stroke: #333; stroke-width: 1px; }
+}
