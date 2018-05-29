@@ -44,8 +44,8 @@ class RootStore {
       await DataTiff.fromUrl(constants.TIFF_URLS[0])
     ])
 
-    this.initialized = true
     this.boundingBox.array = this.dataTiffs[0].image.getBoundingBox()
+    this.initialized = true
   }
 
   @computed get timePeriods () {
