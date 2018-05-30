@@ -9,7 +9,10 @@ import WindowStore from '../models/WindowStore'
 class SizedElement extends React.Component<{
   windowStore?: WindowStore,
   className: string,
-  render: (width?: number, height?: number) => React.ReactElement<any>
+  render: ({}: {
+    width: number,
+    height: number,
+  }) => React.ReactElement<any>
 }, any> {
   container: HTMLDivElement
   @observable width: number
@@ -39,7 +42,12 @@ class SizedElement extends React.Component<{
       <div className={this.props.className} ref={
         ref => this.container = ref
       }>
-       { this.props.render(this.width, this.height) }
+       {
+         this.props.render({
+           width: this.width,
+           height: this.height
+         })
+       }
       </div>
     )
   }
