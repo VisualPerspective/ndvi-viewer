@@ -1,13 +1,11 @@
 import * as React from 'react'
-import { inject, observer } from 'mobx-react'
-import { action, observable, reaction, IReactionDisposer } from 'mobx'
+import { observer } from 'mobx-react'
+import { action, observable } from 'mobx'
 import { strings } from '../constants'
 import TimeSeries from './TimeSeries'
 import RootStore from '../models/RootStore'
-import WindowStore from '../models/WindowStore'
 
 class SizedElement extends React.Component<{
-  windowStore?: WindowStore,
   className: string,
   render: ({}: {
     width: number,
@@ -18,21 +16,16 @@ class SizedElement extends React.Component<{
   @observable width: number
   @observable height: number
 
-  resizeReactionDisposer: IReactionDisposer
-
   componentDidMount () {
     this.handleSizeChange()
-    this.resizeReactionDisposer = reaction(
-      () => this.props.windowStore.size,
-      () => this.handleSizeChange()
-    )
+    window.addEventListener('resize', this.handleSizeChange)
   }
 
   componentWillUnmount () {
-    this.resizeReactionDisposer()
+    window.removeEventListener('resize', this.handleSizeChange)
   }
 
-  @action handleSizeChange () {
+  @action handleSizeChange = () => {
     this.width = this.container.offsetWidth
     this.height = this.container.offsetHeight
   }
@@ -53,4 +46,4 @@ class SizedElement extends React.Component<{
   }
 }
 
-export default inject('windowStore')(observer(SizedElement))
+export default observer(SizedElement)
