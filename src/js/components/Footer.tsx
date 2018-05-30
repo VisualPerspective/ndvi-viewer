@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react'
 import { action, observable, reaction, IReactionDisposer } from 'mobx'
 import { strings } from '../constants'
 import SizedElement from './SizedElement'
+import MouseElement from './MouseElement'
 import TimeSeries from './TimeSeries'
 import RootStore from '../models/RootStore'
 import WindowStore from '../models/WindowStore'
@@ -16,8 +17,15 @@ class Footer extends React.Component<{
 
     return (
       <footer>
-        <SizedElement className="horizontal-chart" render={(width, height) => (
-          <TimeSeries width={width} height={height} />
+        <SizedElement className="horizontal-chart" render={({ width, height }) => (
+          <MouseElement render={({ mousePosition, dragging, startDragging }) => (
+            <TimeSeries
+              width={width}
+              height={height}
+              mousePosition={mousePosition}
+              dragging={dragging}
+              startDragging={startDragging} />
+          )} />
         )} />
         <input type="range"
           min={0}
