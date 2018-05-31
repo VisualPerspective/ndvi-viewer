@@ -19,7 +19,11 @@ module.exports = {
         use: [
           {
             loader: 'tslint-loader',
-            options: { emitErrors: true }
+            options: {
+              emitErrors: true,
+              tsConfigFile: 'tsconfig.json',
+              typeCheck: true
+            }
           }
         ]
       },
@@ -72,7 +76,6 @@ module.exports = {
       '@assets': path.resolve(__dirname, 'src/assets/'),
     }
   },
-  devtool: 'inline-source-map',
   node: {
     fs: 'empty'
   }

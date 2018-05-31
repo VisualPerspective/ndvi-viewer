@@ -1,4 +1,4 @@
-import { observable, computed, set } from 'mobx'
+import { observable, computed } from 'mobx'
 import * as _ from 'lodash'
 import { sinusoidalToLngLat } from '@app/utils'
 import Point from '@app/models/Point'

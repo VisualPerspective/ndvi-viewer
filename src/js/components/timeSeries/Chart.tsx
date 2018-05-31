@@ -1,14 +1,14 @@
 import * as React from 'react'
-import { observable, autorun, IReactionDisposer } from 'mobx'
+import { autorun, IReactionDisposer } from 'mobx'
 import { inject, observer } from 'mobx-react'
-import constants, { strings } from '@app/constants'
 import * as _ from 'lodash'
 import RootStore from '@app/models/RootStore'
 import Point from '@app/models/Point'
 import { translate } from '@app/utils'
 import XAxis from '@app/components/timeSeries/XAxis'
+import YAxis from '@app/components/timeSeries/YAxis'
 
-class TimeSeriesChart extends React.Component<{
+class Chart extends React.Component<{
   width: number,
   height: number,
   mousePosition: Point,
@@ -44,9 +44,6 @@ class TimeSeriesChart extends React.Component<{
       width,
       height,
       rootStore,
-      mousePosition,
-      startDragging,
-      dragging,
     } = this.props
 
     const margin = {
@@ -62,22 +59,7 @@ class TimeSeriesChart extends React.Component<{
 
     return (width && height) ? (
       <svg className='time-series' ref={ref => this.chart = ref}>
-        <g className='axis y-axis'>
-          {
-            constants.DATA_Y_TICKS.map((tick, i) => (
-              <g key={i} className='tick y-tick'
-                transform={translate(
-                  margin.left - 3,
-                  (height - margin.bottom) -
-                  (i / (constants.DATA_Y_TICKS.length - 1)) *
-                  (height - (margin.top + margin.bottom)),
-                )}>
-                <text dy='6' x='-10' y='0'>{tick}</text>
-                <line x1='-6' y1='0.5' x2={width - margin.left} y2='0.5' />
-              </g>
-            ))
-          }
-        </g>
+        <YAxis width={width} height={height} margin={margin} />
         <XAxis width={width} margin={margin} rootStore={rootStore} />
         <g transform={translate(brushPosition, margin.top)} className='brush'
           onMouseDown={() => this.props.startDragging()}>
@@ -92,4 +74,4 @@ class TimeSeriesChart extends React.Component<{
   }
 }
 
-export default inject('rootStore')(observer(TimeSeriesChart))
+export default inject('rootStore')(observer(Chart))

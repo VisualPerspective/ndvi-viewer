@@ -2,13 +2,13 @@ import * as React from 'react'
 import { observer } from 'mobx-react'
 import SizedElement from '@app/components/SizedElement'
 import MouseElement from '@app/components/MouseElement'
-import TimeSeries from '@app/components/TimeSeries/TimeSeriesChart'
+import Chart from '@app/components/timeSeries/Chart'
 
 const Footer = () => (
   <footer>
     <SizedElement className='horizontal-chart' render={({ width, height }) => (
       <MouseElement render={({ mousePosition, dragging, startDragging }) => (
-        <TimeSeries
+        <Chart
           width={width}
           height={height}
           mousePosition={mousePosition}

@@ -1,8 +1,6 @@
 import * as React from 'react'
 import { observer } from 'mobx-react'
 import { action, observable } from 'mobx'
-import { strings } from '@app/constants'
-import RootStore from '@app/models/RootStore'
 
 class SizedElement extends React.Component<{
   className: string,

@@ -1,7 +1,5 @@
 import * as React from 'react'
-import { observable, autorun, IReactionDisposer } from 'mobx'
 import { inject, observer } from 'mobx-react'
-import constants, { strings } from '@app/constants'
 import * as _ from 'lodash'
 import RootStore from '@app/models/RootStore'
 import { translate } from '@app/utils'
