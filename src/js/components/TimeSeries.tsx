@@ -54,25 +54,27 @@ class TimeSeries extends React.Component<{
     const xAxisHeight = 45
     const yAxisWidth = 45
 
-    const chartWidth = width - yAxisWidth
-    const chartHeight = height - xAxisHeight
+    const margin = {
+      top: xAxisHeight,
+      bottom: 15,
+      left: yAxisWidth,
+      right: 0
+    }
 
     const brushPosition = rootStore.timePeriod /
-      (rootStore.timePeriods - 1) * chartWidth
-      + yAxisWidth
-
-    const yTicks = [-0.2, 0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
+      (rootStore.timePeriods - 1) * (width - (margin.left + margin.right))
+      + margin.left
 
     return (width && height) ? (
       <svg className="time-series" ref={ref => this.chart = ref}>
         <g className="y-axis">
           {
-            yTicks.map((tick, i) => (
+            constants.DATA_Y_TICKS.map((tick, i) => (
               <g key={i} className="tick y-tick"
                 transform={translate(
                   yAxisWidth - 3,
-                  (height - xAxisHeight) -
-                  (i / (yTicks.length - 1)) * (height - xAxisHeight)
+                  (height - margin.top) -
+                  (i / (constants.DATA_Y_TICKS.length - 1)) * (height - xAxisHeight)
                 )}>
                 <text dy="6" x="-10" y="0">{tick}</text>
                 <line x1="-6" y1="0.5" x2={width - yAxisWidth} y2="0.5" />
@@ -82,8 +84,8 @@ class TimeSeries extends React.Component<{
         </g>
         <g transform={translate(brushPosition, 0)} className="brush"
           onMouseDown={() => this.props.startDragging()}>
-          <line x1={0.5} y1={height - xAxisHeight} x2={0.5} y2={0} />
-          <g transform={translate(0, chartHeight - 3)}>
+          <line x1={0.5} y1={height} x2={0.5} y2={0} />
+          <g transform={translate(0, height - 3)}>
             <polygon points="-3,0 -13,-10 -3,-20" />
             <polygon points="4,0 14,-10 4,-20" />
           </g>

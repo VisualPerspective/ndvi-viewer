@@ -8,5 +8,5 @@ export default {
   TIFF_URLS: [
     require('../assets/iceland_year.tif')
   ],
-  DATA_Y_SCALE: { MIN: -0.2, MAX: 1.0 }
+  DATA_Y_TICKS: [ -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1.0 ]
 }
