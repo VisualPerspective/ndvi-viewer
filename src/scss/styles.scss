@@ -73,7 +73,7 @@ footer {
   flex: 0 0 100%;
   overflow: visible;
   line { stroke: #333; stroke-width: 1px; }
-  .y-tick {
+  .tick {
     * { pointer-events: none; user-select: none }
     text { fill: #777; text-anchor: end; }
     line { stroke: #ccc; }

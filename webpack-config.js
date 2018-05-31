@@ -15,6 +15,16 @@ module.exports = {
       },
       {
         test: /\.tsx?$/,
+        enforce: 'pre',
+        use: [
+          {
+            loader: 'tslint-loader',
+            options: { emitErrors: true }
+          }
+        ]
+      },
+      {
+        test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/
       },

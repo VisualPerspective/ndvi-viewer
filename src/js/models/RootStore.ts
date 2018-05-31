@@ -13,7 +13,7 @@ class RootStore {
     altitude: 1.5,
     zoom: 6.75,
     latitude: 65,
-    longitude: -18
+    longitude: -18,
   }
 
   readonly dataTiffs = observable<DataTiff>([])
@@ -41,7 +41,7 @@ class RootStore {
 
   async initialize () {
     this.dataTiffs.replace([
-      await DataTiff.fromUrl(constants.TIFF_URLS[0])
+      await DataTiff.fromUrl(constants.TIFF_URLS[0]),
     ])
 
     this.boundingBox.array = this.dataTiffs[0].image.getBoundingBox()

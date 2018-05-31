@@ -6,7 +6,7 @@ import TimeSeries from '@app/components/TimeSeries/TimeSeriesChart'
 
 const Footer = () => (
   <footer>
-    <SizedElement className="horizontal-chart" render={({ width, height }) => (
+    <SizedElement className='horizontal-chart' render={({ width, height }) => (
       <MouseElement render={({ mousePosition, dragging, startDragging }) => (
         <TimeSeries
           width={width}

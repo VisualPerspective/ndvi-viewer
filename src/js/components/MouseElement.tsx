@@ -7,8 +7,8 @@ class MouseElement extends React.Component<{
   render: ({}: {
     dragging: boolean,
     mousePosition?: Point,
-    startDragging: () => void
-  }) => React.ReactElement<any>
+    startDragging: () => void,
+  }) => React.ReactElement<any>,
 }, any> {
   @observable mousePosition: Point = new Point(0, 0)
   @observable dragging: boolean
@@ -39,7 +39,7 @@ class MouseElement extends React.Component<{
     return this.props.render({
       dragging: this.dragging,
       mousePosition: this.mousePosition,
-      startDragging: this.startDragging.bind(this)
+      startDragging: this.startDragging.bind(this),
     })
   }
 }

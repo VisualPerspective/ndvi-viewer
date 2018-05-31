@@ -9,8 +9,6 @@ class DataTiff {
   width: any
   height: any
 
-  constructor () {}
-
   async initialize (url: string) {
     const data: Response = await window.fetch(url)
 
@@ -22,20 +20,20 @@ class DataTiff {
     this.rasters = [
       await this.image.readRasters({
         interleave: true,
-        samples: [0, 1, 2, 3]
+        samples: [0, 1, 2, 3],
       }),
       await this.image.readRasters({
         interleave: true,
-        samples: [4, 5, 6, 7]
+        samples: [4, 5, 6, 7],
       }),
       await this.image.readRasters({
         interleave: true,
-        samples: [8, 9, 10, 11]
-      })
+        samples: [8, 9, 10, 11],
+      }),
     ]
   }
 
-  static async fromUrl(url: string) {
+  static async fromUrl (url: string) {
     const dataTiff = new DataTiff()
     await dataTiff.initialize(url)
     return dataTiff

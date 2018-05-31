@@ -37,7 +37,7 @@ class SizedElement extends React.Component<{
        {
          this.props.render({
            width: this.width,
-           height: this.height
+           height: this.height,
          })
        }
       </div>

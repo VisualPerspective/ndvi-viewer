@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 import RootStore from '@app/models/RootStore'
-import RasterLayer from  '@app/gl/RasterLayer'
+import RasterLayer from '@app/gl/RasterLayer'
 
 class SingleView extends React.Component<{
   rootStore?: RootStore
@@ -16,7 +16,7 @@ class SingleView extends React.Component<{
   componentDidMount () {
     this.rasterLayer = new RasterLayer({
       canvas: this.canvas,
-      rootStore: this.props.rootStore
+      rootStore: this.props.rootStore,
     })
 
     this.renderLayer()
@@ -29,7 +29,7 @@ class SingleView extends React.Component<{
 
   render () {
     return (
-      <article className="single-view">
+      <article className='single-view'>
         <canvas ref={
           canvas => { this.canvas = canvas }
         }></canvas>

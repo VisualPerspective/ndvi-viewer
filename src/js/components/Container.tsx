@@ -9,15 +9,15 @@ import RootStore from '@app/models/RootStore'
 const Container: React.SFC<{ rootStore?: RootStore }> = (props) => (
   props.rootStore.initialized ? (
     <>
-      <Helmet title="Iceland NDVI">
-        <link href="https://fonts.googleapis.com/css?family=Heebo:300,400,500" rel="stylesheet" />
+      <Helmet title='Iceland NDVI'>
+        <link href='https://fonts.googleapis.com/css?family=Heebo:300,400,500' rel='stylesheet' />
       </Helmet>
       <Header />
       <SingleView />
       <Footer />
     </>
   ) : (
-    <div className="loading"></div>
+    <div className='loading'></div>
   )
 )
 

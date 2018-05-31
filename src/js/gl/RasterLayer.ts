@@ -18,8 +18,8 @@ class RasterLayer {
 
   constructor ({
     canvas,
-    rootStore
-  } : {
+    rootStore,
+  }: {
     canvas: HTMLCanvasElement,
     rootStore?: RootStore
   }) {
@@ -29,7 +29,7 @@ class RasterLayer {
     this.ctx = regl({
       canvas: this.canvas,
       extensions: [ 'OES_texture_float', 'webgl_color_buffer_float' ],
-      attributes: { alpha: false }
+      attributes: { alpha: false },
     })
 
     this.rasterTexture = this.ctx.texture({
@@ -66,7 +66,7 @@ class RasterLayer {
         scale: this.ctx.prop('scale'),
       },
 
-      count: this.ctx.prop('trianglesLength')
+      count: this.ctx.prop('trianglesLength'),
     })
 
     this.rootStore.rasterSubimages.forEach(({ width, height, data, x, y }) => {
@@ -74,13 +74,13 @@ class RasterLayer {
     })
 
     reaction(() => ({
-      timePeriod: this.rootStore.timePeriod
+      timePeriod: this.rootStore.timePeriod,
     }), this.render.bind(this))
   }
 
   render () {
-    if (this.canvas.width != this.canvas.offsetWidth * 2 ||
-        this.canvas.height != this.canvas.offsetHeight * 2) {
+    if (this.canvas.width !== this.canvas.offsetWidth * 2 ||
+        this.canvas.height !== this.canvas.offsetHeight * 2) {
       this.canvas.width = this.canvas.offsetWidth * 2
       this.canvas.height = this.canvas.offsetHeight * 2
     }
@@ -102,7 +102,7 @@ class RasterLayer {
     const mercator = new Viewport.WebMercatorViewport({
       ...this.rootStore.viewport,
       width: this.canvas.width,
-      height: this.canvas.height
+      height: this.canvas.height,
     })
 
     this.renderer({
