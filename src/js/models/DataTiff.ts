@@ -1,6 +1,6 @@
 import { observable, computed } from 'mobx'
 import { fromArrayBuffer } from 'geotiff'
-import constants from '../constants'
+import constants from '@app/constants'
 
 class DataTiff {
   tiff: any

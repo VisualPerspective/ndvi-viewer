@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 import { action, observable, reaction, IReactionDisposer } from 'mobx'
-import Point from '../models/Point'
+import Point from '@app/models/Point'
 
 class MouseElement extends React.Component<{
   render: ({}: {

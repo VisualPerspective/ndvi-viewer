@@ -1,7 +1,7 @@
 import { observable, computed, set } from 'mobx'
 import * as _ from 'lodash'
-import { sinusoidalToLngLat } from '../utils'
-import Point from './Point'
+import { sinusoidalToLngLat } from '@app/utils'
+import Point from '@app/models/Point'
 
 class BoundingBox {
   @observable min: Point = new Point(0, 0)

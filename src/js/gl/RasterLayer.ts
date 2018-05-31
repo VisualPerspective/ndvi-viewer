@@ -2,11 +2,11 @@ import { mat4, vec3 } from 'gl-matrix'
 import { reaction } from 'mobx'
 import * as regl from 'regl'
 import * as Viewport from 'viewport-mercator-project'
-import RootStore from '../models/RootStore'
-import constants from '../constants'
+import RootStore from '@app/models/RootStore'
+import constants from '@app/constants'
 
-const vert = require('./shaders/vert')
-const frag = require('./shaders/frag')
+const vert = require('@app/gl/shaders/vert')
+const frag = require('@app/gl/shaders/frag')
 
 class RasterLayer {
   canvas: HTMLCanvasElement

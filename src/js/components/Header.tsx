@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { strings } from '../constants'
+import { strings } from '@app/constants'
 
 const Header = () => (
   <header>

@@ -1,8 +1,8 @@
 import { observable, computed, set } from 'mobx'
 import { fromArrayBuffer } from 'geotiff'
-import constants from '../constants'
-import DataTiff from './DataTiff'
-import BoundingBox from './BoundingBox'
+import constants from '@app/constants'
+import DataTiff from '@app/models/DataTiff'
+import BoundingBox from '@app/models/BoundingBox'
 
 class RootStore {
   @observable initialized: boolean = false

@@ -56,7 +56,11 @@ module.exports = {
   resolve: {
     modules: ['node_modules'],
     extensions: ['.ts', '.tsx', '.js', '.json', '.glsl'],
-    alias: { '@app': path.resolve(__dirname, 'src/js/') }
+    alias: {
+      '@app': path.resolve(__dirname, 'src/js/'),
+      '@scss': path.resolve(__dirname, 'src/scss/'),
+      '@assets': path.resolve(__dirname, 'src/assets/'),
+    }
   },
   devtool: 'inline-source-map',
   node: {

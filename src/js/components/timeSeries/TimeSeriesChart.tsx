@@ -3,10 +3,10 @@ import { observable, autorun, IReactionDisposer } from 'mobx'
 import { inject, observer } from 'mobx-react'
 import constants, { strings } from '@app/constants'
 import * as _ from 'lodash'
-import RootStore from '../../models/RootStore'
-import Point from '../../models/Point'
-import { translate } from '../../utils'
-import XAxis from './XAxis'
+import RootStore from '@app/models/RootStore'
+import Point from '@app/models/Point'
+import { translate } from '@app/utils'
+import XAxis from '@app/components/timeSeries/XAxis'
 
 class TimeSeriesChart extends React.Component<{
   width: number,

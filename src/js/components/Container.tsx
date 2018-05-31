@@ -1,10 +1,10 @@
 import * as React from 'react'
 import Helmet from 'react-helmet'
 import { inject, observer } from 'mobx-react'
-import Header from './Header'
-import Footer from './Footer'
-import SingleView from './SingleView'
-import RootStore from '../models/RootStore'
+import Header from '@app/components/Header'
+import Footer from '@app/components/Footer'
+import SingleView from '@app/components/SingleView'
+import RootStore from '@app/models/RootStore'
 
 const Container: React.SFC<{ rootStore?: RootStore }> = (props) => (
   props.rootStore.initialized ? (

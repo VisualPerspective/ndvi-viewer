@@ -4,13 +4,11 @@ import { inject, observer } from 'mobx-react'
 import constants, { strings } from '@app/constants'
 import * as _ from 'lodash'
 import RootStore from '@app/models/RootStore'
-import Point from '@app/models/Point'
 import { translate } from '@app/utils'
 
-const XAxis = ({
+const XAxis = ({ width, margin, rootStore }: {
   width: number,
   margin: any,
-  mousePosition: Point,
   rootStore?: RootStore,
 }) => (
   <g className="axis x-axis">

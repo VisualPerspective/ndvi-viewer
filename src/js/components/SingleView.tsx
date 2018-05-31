@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
-import RootStore from '../models/RootStore'
-import RasterLayer from  '../gl/RasterLayer'
+import RootStore from '@app/models/RootStore'
+import RasterLayer from  '@app/gl/RasterLayer'
 
 class SingleView extends React.Component<{
   rootStore?: RootStore
