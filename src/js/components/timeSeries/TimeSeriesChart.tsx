@@ -1,16 +1,14 @@
 import * as React from 'react'
 import { observable, autorun, IReactionDisposer } from 'mobx'
 import { inject, observer } from 'mobx-react'
-import constants, { strings } from '../constants'
+import constants, { strings } from '@app/constants'
 import * as _ from 'lodash'
-import RootStore from '../models/RootStore'
-import Point from '../models/Point'
+import RootStore from '../../models/RootStore'
+import Point from '../../models/Point'
+import { translate } from '../../utils'
+import XAxis from './XAxis'
 
-const translate = (x:number, y:number) => (
-  `translate(${x} ${y})`
-)
-
-class TimeSeries extends React.Component<{
+class TimeSeriesChart extends React.Component<{
   width: number,
   height: number,
   mousePosition: Point,
@@ -51,13 +49,10 @@ class TimeSeries extends React.Component<{
       dragging
     } = this.props
 
-    const xAxisHeight = 45
-    const yAxisWidth = 45
-
     const margin = {
-      top: xAxisHeight,
-      bottom: 15,
-      left: yAxisWidth,
+      top: 45,
+      bottom: 33,
+      left: 45,
       right: 0
     }
 
@@ -67,25 +62,27 @@ class TimeSeries extends React.Component<{
 
     return (width && height) ? (
       <svg className="time-series" ref={ref => this.chart = ref}>
-        <g className="y-axis">
+        <g className="axis y-axis">
           {
             constants.DATA_Y_TICKS.map((tick, i) => (
               <g key={i} className="tick y-tick"
                 transform={translate(
-                  yAxisWidth - 3,
-                  (height - margin.top) -
-                  (i / (constants.DATA_Y_TICKS.length - 1)) * (height - xAxisHeight)
+                  margin.left - 3,
+                  (height - margin.bottom) -
+                  (i / (constants.DATA_Y_TICKS.length - 1)) *
+                  (height - (margin.top + margin.bottom))
                 )}>
                 <text dy="6" x="-10" y="0">{tick}</text>
-                <line x1="-6" y1="0.5" x2={width - yAxisWidth} y2="0.5" />
+                <line x1="-6" y1="0.5" x2={width - margin.left} y2="0.5" />
               </g>
             ))
           }
         </g>
-        <g transform={translate(brushPosition, 0)} className="brush"
+        <XAxis width={width} margin={margin} rootStore={rootStore} />
+        <g transform={translate(brushPosition, margin.top)} className="brush"
           onMouseDown={() => this.props.startDragging()}>
-          <line x1={0.5} y1={height} x2={0.5} y2={0} />
-          <g transform={translate(0, height - 3)}>
+          <line x1={0.5} y1={height - margin.top} x2={0.5} y2={0} />
+          <g transform={translate(0, height - margin.top - 3)}>
             <polygon points="-3,0 -13,-10 -3,-20" />
             <polygon points="4,0 14,-10 4,-20" />
           </g>
@@ -95,4 +92,4 @@ class TimeSeries extends React.Component<{
   }
 }
 
-export default inject('rootStore')(observer(TimeSeries))
+export default inject('rootStore')(observer(TimeSeriesChart))

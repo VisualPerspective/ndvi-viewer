@@ -55,7 +55,8 @@ module.exports = {
   },
   resolve: {
     modules: ['node_modules'],
-    extensions: ['.ts', '.tsx', '.js', '.json', '.glsl']
+    extensions: ['.ts', '.tsx', '.js', '.json', '.glsl'],
+    alias: { '@app': path.resolve(__dirname, 'src/js/') }
   },
   devtool: 'inline-source-map',
   node: {

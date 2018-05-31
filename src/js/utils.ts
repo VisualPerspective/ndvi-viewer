@@ -11,3 +11,7 @@ export const sinusoidalToLngLat = (
     y: (normalizedY - 0.5) * 180
   }
 }
+
+export const translate = (x:number, y:number) => (
+  `translate(${x} ${y})`
+)

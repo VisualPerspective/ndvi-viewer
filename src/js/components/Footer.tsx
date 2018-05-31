@@ -2,7 +2,7 @@ import * as React from 'react'
 import { observer } from 'mobx-react'
 import SizedElement from './SizedElement'
 import MouseElement from './MouseElement'
-import TimeSeries from './TimeSeries'
+import TimeSeries from './TimeSeries/TimeSeriesChart'
 
 const Footer = () => (
   <footer>
