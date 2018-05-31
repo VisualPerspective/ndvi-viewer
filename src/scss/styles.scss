@@ -65,11 +65,17 @@ footer {
 }
 
 .horizontal-chart {
-  height: 10rem;
+  height: 13rem;
   display: flex;
 }
 
 .time-series {
- flex: 0 0 100%;
- line { stroke: #333; stroke-width: 1px; }
+  flex: 0 0 100%;
+  overflow: visible;
+  line { stroke: #333; stroke-width: 1px; }
+  .y-tick {
+    * { pointer-events: none; user-select: none }
+    text { fill: #777; text-anchor: end; }
+    line { stroke: #ccc; }
+  }
 }
