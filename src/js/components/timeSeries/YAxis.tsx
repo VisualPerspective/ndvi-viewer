@@ -19,7 +19,7 @@ const YAxis = ({ width, height, margin }: {
             (height - (margin.top + margin.bottom)),
           )}>
           <text dy='6' x='-10' y='0'>{tick}</text>
-          <line x1='-6' y1='0.5' x2={width - margin.left} y2='0.5' />
+          <line x1='-6' y1='0.5' x2={width - (margin.left + margin.right)} y2='0.5' />
         </g>
       ))
     }

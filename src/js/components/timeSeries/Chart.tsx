@@ -50,7 +50,7 @@ class Chart extends React.Component<{
       top: 45,
       bottom: 33,
       left: 45,
-      right: 0,
+      right: 45,
     }
 
     const brushPosition = rootStore.timePeriod /
@@ -60,7 +60,7 @@ class Chart extends React.Component<{
     return (width && height) ? (
       <svg className='time-series' ref={ref => this.chart = ref}>
         <YAxis width={width} height={height} margin={margin} />
-        <XAxis width={width} margin={margin} rootStore={rootStore} />
+        <XAxis width={width} height={height} margin={margin} rootStore={rootStore} />
         <g transform={translate(brushPosition, margin.top)} className='brush'
           onMouseDown={() => this.props.startDragging()}>
           <line x1={0.5} y1={height - margin.top} x2={0.5} y2={0} />

@@ -4,8 +4,9 @@ import * as _ from 'lodash'
 import RootStore from '@app/models/RootStore'
 import { translate } from '@app/utils'
 
-const XAxis = ({ width, margin, rootStore }: {
+const XAxis = ({ width, height, margin, rootStore }: {
   width: number,
+  height: number,
   margin: any,
   rootStore?: RootStore,
 }) => (
@@ -19,8 +20,8 @@ const XAxis = ({ width, margin, rootStore }: {
             margin.left,
             margin.top
           )}>
-          <text dy='-6' x='0' y='0'>{i}</text>
-          <line x1='0.5' y1='0' x2='0' y2='-5' />
+          <text dx='6' dy='-6' x='0' y='0'>{i}</text>
+          <line x1='0.5' y1={height - (margin.bottom + margin.top)} x2='0' y2='-5' />
         </g>
       ))
     }

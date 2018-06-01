@@ -65,7 +65,7 @@ footer {
 }
 
 .horizontal-chart {
-  height: 13rem;
+  height: 15rem;
   display: flex;
 }
 
@@ -75,7 +75,16 @@ footer {
   line { stroke: #333; stroke-width: 1px; }
   .tick {
     * { pointer-events: none; user-select: none }
-    text { fill: #777; text-anchor: end; }
+    text { fill: #777; }
     line { stroke: #ccc; }
+
+    &.y-tick {
+      text { text-anchor: end; }
+    }
+
+    &.x-tick {
+      line { stroke: #eee; }
+      text { text-anchor: start; transform: rotate(-45deg); }
+    }
   }
 }
