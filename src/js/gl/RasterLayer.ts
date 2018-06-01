@@ -97,7 +97,7 @@ class RasterLayer {
     this.pendingRender = false
     this.ctx.poll()
 
-    this.ctx.clear({ color: [1, 1, 1, 1] })
+    this.ctx.clear({ color: [0.8, 0.8, 0.8, 1] })
 
     const mercator = new Viewport.WebMercatorViewport({
       ...this.rootStore.viewport,
