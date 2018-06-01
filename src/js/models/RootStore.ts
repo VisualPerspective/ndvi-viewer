@@ -10,9 +10,9 @@ class RootStore {
     pitch: 0,
     bearing: 0,
     altitude: 1.5,
-    zoom: 6.75,
+    zoom: 6,
     latitude: 65,
-    longitude: -18,
+    longitude: -18.5,
   }
 
   readonly dataTiffs = observable<DataTiff>([])
