@@ -87,4 +87,10 @@ footer {
       text { text-anchor: start; transform: rotate(-45deg); }
     }
   }
+
+  .brush polygon {
+    transition: transform 0.15s; transform: scale(0.8);
+  }
+
+  &:hover .brush polygon { transform: scale(1); }
 }
