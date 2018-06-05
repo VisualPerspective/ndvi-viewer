@@ -28,7 +28,7 @@ class RasterLayer {
 
     this.ctx = regl({
       canvas: this.canvas,
-      extensions: [ 'OES_texture_float', 'webgl_color_buffer_float' ],
+      optionalExtensions: [ 'OES_texture_float', 'webgl_color_buffer_float' ],
       attributes: { alpha: false },
     })
 
