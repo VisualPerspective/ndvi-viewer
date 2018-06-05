@@ -18,7 +18,7 @@ class MouseElement extends React.Component<{
   }
 
   mouseMoveListener = (e: MouseEvent) => {
-    this.mousePosition.set(e.screenX, e.screenY)
+    this.mousePosition.set(e.pageX, e.pageY)
   }
 
   startDragging () {
