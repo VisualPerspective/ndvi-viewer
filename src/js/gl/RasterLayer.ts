@@ -1,5 +1,6 @@
 import * as regl from 'regl'
 import RasterView from '@app/gl/RasterView'
+import RasterAverage from '@app/gl/RasterAverage'
 import RootStore from '@app/models/RootStore'
 import constants from '@app/constants'
 
@@ -7,6 +8,7 @@ class RasterLayer {
   canvas: HTMLCanvasElement
   ctx: any
   rasterView: RasterView
+  rasterAverage: RasterAverage
   rootStore: RootStore
   rasterTexture: any
 
@@ -38,10 +40,8 @@ class RasterLayer {
       this.rasterTexture.subimage({ width, height, data }, x, y)
     })
 
-    this.rasterView = new RasterView({
-      rootStore,
-      rasterLayer: this,
-    })
+    this.rasterView = new RasterView({ rootStore, rasterLayer: this })
+    this.rasterAverage = new RasterAverage({ rootStore, rasterLayer: this })
   }
 }
 

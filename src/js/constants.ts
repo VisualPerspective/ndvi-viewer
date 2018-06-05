@@ -4,6 +4,7 @@ export const strings = {
 
 export default {
   DATA_TEXTURE_SIZE: 4096,
+  NO_DATA_THRESHOLD: -0.5,
   TILE_SIZE: 512,
   TIFF_URLS: [
     require('@assets/iceland_year.tif'),
@@ -18,4 +19,20 @@ export default {
     wrapS: 'clamp',
     wrapT: 'clamp',
   },
+  DATA_SQUARE_POSITIONS: [
+    [-1, -1],
+    [1, -1],
+    [1, 1],
+    [-1, -1],
+    [1, 1],
+    [-1, 1],
+  ],
+  DATA_SQUARE_UVS: [
+    [0, 0],
+    [1, 0],
+    [1, 1],
+    [0, 0],
+    [1, 1],
+    [0, 1],
+  ],
 }
