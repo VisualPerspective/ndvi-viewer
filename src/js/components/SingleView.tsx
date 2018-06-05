@@ -10,7 +10,7 @@ class SingleView extends React.Component<{
   canvas: HTMLCanvasElement
 
   renderLayer () {
-    this.rasterLayer.render()
+    this.rasterLayer.rasterView.render()
   }
 
   componentDidMount () {

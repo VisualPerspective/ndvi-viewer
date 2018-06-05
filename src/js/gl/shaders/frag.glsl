@@ -7,7 +7,7 @@ $lngLatToSinusoidal
 uniform highp int timePeriod;
 uniform sampler2D raster;
 uniform vec4 rasterBBoxMeters;
-uniform int atlasSize, rasterWidth, rasterHeight, imagesWide, imagesHigh;
+uniform int atlasSize, rasterWidth, rasterHeight;
 
 varying vec2 lngLat;
 
