@@ -14,7 +14,7 @@ module.exports = {
         use: { loader: 'worker-loader' }
       },
       {
-        test: /\.tsx?$/,
+        test: /\.(ts|tsx|glsl)$/,
         enforce: 'pre',
         use: [
           {
@@ -31,16 +31,6 @@ module.exports = {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/
-      },
-      {
-        test: /\.(glsl|frag|vert)$/,
-        exclude: /node_modules/,
-        loader: 'shader-loader',
-        options: {
-          glsl: {
-            chunkPath: path.resolve("./src/js/gl/shaders/functions")
-          }
-        }
       },
       {
         test: /\.scss$/,
@@ -69,7 +59,7 @@ module.exports = {
   },
   resolve: {
     modules: ['node_modules'],
-    extensions: ['.ts', '.tsx', '.js', '.json', '.glsl'],
+    extensions: ['.ts', '.tsx', '.js', '.json', '.glsl.ts'],
     alias: {
       '@app': path.resolve(__dirname, 'src/js/'),
       '@scss': path.resolve(__dirname, 'src/scss/'),

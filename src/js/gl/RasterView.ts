@@ -5,8 +5,8 @@ import RasterLayer from '@app/gl/RasterLayer'
 import RootStore from '@app/models/RootStore'
 import constants from '@app/constants'
 
-const vert = require('@app/gl/shaders/vert')
-const frag = require('@app/gl/shaders/frag')
+import vert from '@app/gl/shaders/viewVert'
+import frag from '@app/gl/shaders/viewFrag'
 
 class RasterView {
   renderer: any
@@ -26,8 +26,8 @@ class RasterView {
 
     const ctx = this.rasterLayer.ctx
     this.renderer = ctx({
-      frag,
-      vert,
+      frag: frag(),
+      vert: vert(),
       attributes: { position: ctx.prop('triangles') },
       uniforms: {
         model: mat4.fromTranslation([], [0, 0, 0]),
