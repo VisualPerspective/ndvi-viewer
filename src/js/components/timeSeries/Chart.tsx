@@ -4,9 +4,9 @@ import { inject, observer } from 'mobx-react'
 import * as _ from 'lodash'
 import RootStore from '@app/models/RootStore'
 import Point from '@app/models/Point'
-import { translate } from '@app/utils'
 import XAxis from '@app/components/timeSeries/XAxis'
 import YAxis from '@app/components/timeSeries/YAxis'
+import Brush from '@app/components/timeSeries/Brush'
 
 class Chart extends React.Component<{
   width: number,
@@ -53,22 +53,12 @@ class Chart extends React.Component<{
       right: 45,
     }
 
-    const brushPosition = rootStore.timePeriod /
-      (rootStore.timePeriods - 1) * (width - (margin.left + margin.right))
-      + margin.left
-
     return (width && height) ? (
       <svg className='time-series' ref={ref => this.chart = ref}
         onMouseDown={() => this.props.startDragging()}>
         <YAxis width={width} height={height} margin={margin} />
         <XAxis width={width} height={height} margin={margin} rootStore={rootStore} />
-        <g transform={translate(brushPosition, margin.top)} className='brush'>
-          <line x1={0.5} y1={height - margin.top} x2={0.5} y2={0} />
-          <g transform={translate(0, height - margin.top - 3)}>
-            <polygon points='-3,0 -13,-10 -3,-20' />
-            <polygon points='4.5,0 14.5,-10 4.5,-20' />
-          </g>
-        </g>
+        <Brush width={width} height={height} margin={margin} />
       </svg>
     ) : null
   }
