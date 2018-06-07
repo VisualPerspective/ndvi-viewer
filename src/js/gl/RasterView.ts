@@ -22,7 +22,7 @@ interface IUniforms {
 }
 
 interface IAttributes {
-  position: number[]
+  position: number[][]
 }
 
 interface IProps {
