@@ -13,8 +13,9 @@ interface IUniforms {
   view: REGL.Mat4
   projection: REGL.Mat4
   raster: REGL.Texture2D
-  rasterWidth: number
-  rasterHeight: number
+  imagesWide: number
+  imagesHigh: number
+  imageSize: number[]
   rasterBBoxMeters: number[]
   atlasSize: number
   timePeriod: number
@@ -68,9 +69,10 @@ class RasterView extends View {
         model: mat4.fromTranslation([], [0, 0, 0]),
         view: ctx.prop<IProps, 'view'>('view'),
         projection: ctx.prop<IProps, 'projection'>('projection'),
+        imagesWide: this.rootStore.textureRastersWide,
+        imagesHigh: this.rootStore.textureRastersHigh,
+        imageSize: this.rootStore.rasterSizePercent.array,
         raster: this.rasterTexture,
-        rasterWidth: this.rootStore.rasterWidth,
-        rasterHeight: this.rootStore.rasterHeight,
         rasterBBoxMeters: ctx.prop<IProps, 'rasterBBoxMeters'>('rasterBBoxMeters'),
         atlasSize: constants.DATA_TEXTURE_SIZE,
         timePeriod: ctx.prop<IProps, 'timePeriod'>('timePeriod'),

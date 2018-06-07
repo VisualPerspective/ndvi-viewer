@@ -2,6 +2,7 @@ import { observable, computed } from 'mobx'
 import constants from '@app/constants'
 import DataTiff from '@app/models/DataTiff'
 import BoundingBox from '@app/models/BoundingBox'
+import Point from '@app/models/Point'
 import * as Viewport from 'viewport-mercator-project'
 
 class RootStore {
@@ -25,6 +26,13 @@ class RootStore {
 
   @computed get rasterHeight () {
     return this.dataTiffs[0].image.getHeight()
+  }
+
+  @computed get rasterSizePercent () {
+    return new Point(
+      this.rasterWidth / constants.DATA_TEXTURE_SIZE,
+      this.rasterHeight / constants.DATA_TEXTURE_SIZE
+    )
   }
 
   @computed get textureRastersWide () {

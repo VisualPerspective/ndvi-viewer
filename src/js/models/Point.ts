@@ -1,4 +1,4 @@
-import { observable } from 'mobx'
+import { observable, computed } from 'mobx'
 
 class Point {
   @observable x: number
@@ -11,6 +11,10 @@ class Point {
   set (x: number, y: number) {
     this.x = x
     this.y = y
+  }
+
+  @computed get array () {
+    return [this.x, this.y]
   }
 }
 
