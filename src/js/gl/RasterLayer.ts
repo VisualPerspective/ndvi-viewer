@@ -40,7 +40,13 @@ class RasterLayer {
       this.rasterTexture.subimage({ width, height, data }, x, y)
     })
 
-    this.rasterView = new RasterView({ rootStore, rasterLayer: this })
+    this.rasterView = new RasterView({
+      rootStore,
+      canvas: this.canvas,
+      ctx: this.ctx,
+      rasterTexture: this.rasterTexture,
+    })
+
     this.rasterAverage = new RasterAverage({ rootStore, rasterLayer: this })
   }
 }

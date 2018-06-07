@@ -1,47 +1,82 @@
+import * as REGL from 'regl'
 import { mat4 } from 'gl-matrix'
 import { reaction } from 'mobx'
-import * as Viewport from 'viewport-mercator-project'
-import RasterLayer from '@app/gl/RasterLayer'
+import View from '@app/gl/View'
 import RootStore from '@app/models/RootStore'
 import constants from '@app/constants'
 
 import vert from '@app/gl/shaders/viewVert'
 import frag from '@app/gl/shaders/viewFrag'
 
-class RasterView {
+interface IUniforms {
+  model: REGL.Mat4
+  view: REGL.Mat4
+  projection: REGL.Mat4
+  raster: REGL.Texture2D
+  rasterWidth: number
+  rasterHeight: number
+  rasterBBoxMeters: number[]
+  atlasSize: number
+  timePeriod: number
+  scale: number
+}
+
+interface IAttributes {
+  position: number[]
+}
+
+interface IProps {
+  view: REGL.Mat4
+  projection: REGL.Mat4
+  rasterBBoxMeters: number[]
+  scale: number
+  triangles: number[][]
+  trianglesLength: number
+  timePeriod: number
+}
+
+class RasterView extends View {
   renderer: any
-  pendingRender: boolean = false
+  canvas: HTMLCanvasElement
+  ctx: REGL.Regl
+  rasterTexture: REGL.Texture2D
   rootStore: RootStore
-  rasterLayer: RasterLayer
 
   constructor ({
-    rasterLayer,
+    canvas,
+    ctx,
+    rasterTexture,
     rootStore,
   }: {
-    rasterLayer: RasterLayer,
-    rootStore?: RootStore
+    canvas: HTMLCanvasElement,
+    ctx: REGL.Regl,
+    rasterTexture: REGL.Texture2D,
+    rootStore?: RootStore,
   }) {
-    this.rasterLayer = rasterLayer
+    super({ canvas })
+    this.ctx = ctx
+    this.rasterTexture = rasterTexture
     this.rootStore = rootStore
 
-    const ctx = this.rasterLayer.ctx
-    this.renderer = ctx({
+    this.renderer = ctx<IUniforms, IAttributes, IProps>({
       frag: frag(),
       vert: vert(),
-      attributes: { position: ctx.prop('triangles') },
+      attributes: {
+        position: ctx.prop<IProps, 'triangles'>('triangles'),
+      },
       uniforms: {
         model: mat4.fromTranslation([], [0, 0, 0]),
-        view: ctx.prop('view'),
-        projection: ctx.prop('projection'),
-        raster: this.rasterLayer.rasterTexture,
+        view: ctx.prop<IProps, 'view'>('view'),
+        projection: ctx.prop<IProps, 'projection'>('projection'),
+        raster: this.rasterTexture,
         rasterWidth: this.rootStore.rasterWidth,
         rasterHeight: this.rootStore.rasterHeight,
-        rasterBBoxMeters: ctx.prop('rasterBBoxMeters'),
+        rasterBBoxMeters: ctx.prop<IProps, 'rasterBBoxMeters'>('rasterBBoxMeters'),
         atlasSize: constants.DATA_TEXTURE_SIZE,
-        timePeriod: ctx.prop('timePeriod'),
-        scale: ctx.prop('scale'),
+        timePeriod: ctx.prop<IProps, 'timePeriod'>('timePeriod'),
+        scale: ctx.prop<IProps, 'scale'>('scale'),
       },
-      count: ctx.prop('trianglesLength'),
+      count: ctx.prop<IProps, 'trianglesLength'>('trianglesLength'),
     })
 
     reaction(() => ({
@@ -49,34 +84,11 @@ class RasterView {
     }), this.render.bind(this))
   }
 
-  render () {
-    const canvas = this.rasterLayer.canvas
-
-    if (canvas.width !== canvas.offsetWidth * 2 ||
-      canvas.height !== canvas.offsetHeight * 2) {
-      canvas.width = canvas.offsetWidth * 2
-      canvas.height = canvas.offsetHeight * 2
-    }
-
-    if (!this.pendingRender) {
-      this.pendingRender = true
-      window.requestAnimationFrame(() => {
-        this.renderCanvasGL()
-      })
-    }
-  }
-
   renderCanvasGL () {
-    this.pendingRender = false
-    this.rasterLayer.ctx.poll()
+    this.ctx.poll()
+    this.ctx.clear({ color: [0.8, 0.8, 0.8, 1] })
 
-    this.rasterLayer.ctx.clear({ color: [0.8, 0.8, 0.8, 1] })
-
-    const mercator = new Viewport.WebMercatorViewport({
-      ...this.rootStore.viewport,
-      width: this.rasterLayer.canvas.width,
-      height: this.rasterLayer.canvas.height,
-    })
+    const mercator = this.rootStore.getViewport(this.canvas)
 
     this.renderer({
       scale: mercator.scale * constants.TILE_SIZE,

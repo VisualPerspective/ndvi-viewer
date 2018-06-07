@@ -2,6 +2,7 @@ import { observable, computed } from 'mobx'
 import constants from '@app/constants'
 import DataTiff from '@app/models/DataTiff'
 import BoundingBox from '@app/models/BoundingBox'
+import * as Viewport from 'viewport-mercator-project'
 
 class RootStore {
   @observable initialized: boolean = false
@@ -68,6 +69,14 @@ class RootStore {
         x: this.rasterWidth * xIndex,
         y: this.rasterHeight * yIndex,
       }
+    })
+  }
+
+  getViewport ({ width, height }: { width: number, height: number }) {
+    return new Viewport.WebMercatorViewport({
+      ...this.viewport,
+      width,
+      height,
     })
   }
 }
