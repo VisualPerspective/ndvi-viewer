@@ -5,6 +5,7 @@
   ],
   "jsRules": {},
   "rules": {
+    "no-empty": false,
     "semicolon": [true, "never"],
     "object-literal-sort-keys": false,
     "quotemark": [true, "single"],
