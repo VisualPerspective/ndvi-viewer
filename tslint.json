@@ -6,6 +6,7 @@
   "jsRules": {},
   "rules": {
     "no-empty": false,
+    "no-empty-interface": false,
     "semicolon": [true, "never"],
     "object-literal-sort-keys": false,
     "quotemark": [true, "single"],

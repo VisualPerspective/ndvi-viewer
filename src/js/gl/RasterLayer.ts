@@ -47,7 +47,11 @@ class RasterLayer {
       rasterTexture: this.rasterTexture,
     })
 
-    this.rasterAverage = new RasterAverage({ rootStore, rasterLayer: this })
+    this.rasterAverage = new RasterAverage({
+      rootStore,
+      ctx: this.ctx,
+      rasterTexture: this.rasterTexture,
+    })
   }
 }
 

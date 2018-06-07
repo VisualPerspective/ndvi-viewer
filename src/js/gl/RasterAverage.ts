@@ -1,27 +1,44 @@
-import RasterLayer from '@app/gl/RasterLayer'
+import * as REGL from 'regl'
 import RootStore from '@app/models/RootStore'
 import constants from '@app/constants'
 
 import vert from '@app/gl/shaders/averageVert'
 import frag from '@app/gl/shaders/averageFragWidth'
 
+interface IUniforms {
+  raster: REGL.Texture2D
+  rasterWidth: number
+  rasterHeight: number
+  atlasSize: number
+}
+
+interface IAttributes {
+  position: number[][]
+  uv: number[][]
+}
+
+interface IProps {}
+
 class RasterAverage {
   renderer: any
+  ctx: REGL.Regl
+  rasterTexture: REGL.Texture2D
   rootStore: RootStore
-  rasterLayer: RasterLayer
 
   constructor ({
-    rasterLayer,
+    ctx,
+    rasterTexture,
     rootStore,
   }: {
-    rasterLayer: RasterLayer,
+    ctx: REGL.Regl
+    rasterTexture: REGL.Texture2D
     rootStore?: RootStore
   }) {
-    this.rasterLayer = rasterLayer
+    this.ctx = ctx
+    this.rasterTexture = rasterTexture
     this.rootStore = rootStore
 
-    const ctx = this.rasterLayer.ctx
-    this.renderer = ctx({
+    this.renderer = ctx<IUniforms, IAttributes, IProps>({
       frag: frag({
         dataSize: constants.DATA_TEXTURE_SIZE,
         noDataThreshold: constants.NO_DATA_THRESHOLD,
@@ -32,12 +49,10 @@ class RasterAverage {
         uv: constants.DATA_SQUARE_UVS,
       },
       uniforms: {
-        raster: this.rasterLayer.rasterTexture,
+        raster: this.rasterTexture,
         rasterWidth: this.rootStore.rasterWidth,
         rasterHeight: this.rootStore.rasterHeight,
-        rasterBBoxMeters: ctx.prop('rasterBBoxMeters'),
         atlasSize: constants.DATA_TEXTURE_SIZE,
-        scale: ctx.prop('scale'),
       },
       count: constants.DATA_SQUARE_POSITIONS.length,
     })
