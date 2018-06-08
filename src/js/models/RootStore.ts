@@ -1,5 +1,6 @@
 import { observable, computed } from 'mobx'
 import constants from '@app/constants'
+import * as _ from 'lodash'
 import DataTiff from '@app/models/DataTiff'
 import BoundingBox from '@app/models/BoundingBox'
 import Point from '@app/models/Point'
@@ -48,16 +49,20 @@ class RootStore {
   }
 
   async initialize () {
-    this.dataTiffs.replace([
-      await DataTiff.fromUrl(constants.TIFF_URLS[0]),
-    ])
+    this.dataTiffs.replace(await Promise.all(
+      constants.TIFF_URLS.map(async url => await DataTiff.fromUrl(url))
+    ))
 
     this.boundingBox.array = this.dataTiffs[0].image.getBoundingBox()
     this.initialized = true
   }
 
+  @computed get allRasters () {
+    return _.flatten(this.dataTiffs.map(tiff => tiff.rasters))
+  }
+
   @computed get timePeriods () {
-    return this.dataTiffs[0].rasters.length * 4
+    return this.allRasters.length * 4
   }
 
   @computed get rasterSubimages (): {
@@ -67,13 +72,13 @@ class RootStore {
     y: number,
     data: ArrayBufferView
   }[] {
-    return this.dataTiffs[0].rasters.map((raster, i) => {
+    return this.allRasters.map((raster, i) => {
       const xIndex = i % this.textureRastersWide
       const yIndex = Math.floor(i / this.textureRastersWide)
       return {
         width: this.rasterWidth,
         height: this.rasterHeight,
-        data: this.dataTiffs[0].rasters[i],
+        data: this.allRasters[i],
         x: this.rasterWidth * xIndex,
         y: this.rasterHeight * yIndex,
       }

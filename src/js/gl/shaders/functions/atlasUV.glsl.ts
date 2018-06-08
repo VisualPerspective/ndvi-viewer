@@ -10,10 +10,14 @@ export default () => `
     vec2 imageSize
   ) {
     const float numChannels = 4.0;
-    vec2 start = vec2(floor(float(index) / numChannels), 0.0);
+    float imagesPerRow = numChannels * float(imagesWide);
+    vec2 start = vec2(
+      floor(mod(float(index) / numChannels, float(imagesWide))),
+      floor(float(index) / imagesPerRow)
+    );
     return vec2(
       (clamp(uv.x, 0.0, 0.999) + start.x) * imageSize.x,
-      (1.0 - (clamp(uv.y, 0.0, 0.999) + start.y)) * imageSize.y
+      (clamp(uv.y, 0.0, 0.999) + start.y) * imageSize.y
     );
   }
 `

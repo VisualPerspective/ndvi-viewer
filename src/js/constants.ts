@@ -5,9 +5,13 @@ export const strings = {
 export default {
   DATA_TEXTURE_SIZE: 4096,
   NO_DATA_THRESHOLD: -0.5,
+  NO_DATA_VALUE: -1,
   TILE_SIZE: 512,
   TIFF_URLS: [
-    require('@assets/iceland_year.tif'),
+    require('@assets/rasters/modis_2011_NDVI.tif'),
+    require('@assets/rasters/modis_2012_NDVI.tif'),
+    require('@assets/rasters/modis_2013_NDVI.tif'),
+    require('@assets/rasters/modis_2014_NDVI.tif'),
   ],
   DATA_Y_TICKS: [ -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1.0 ],
   DATA_TEXTURE_OPTIONS: {
@@ -18,6 +22,7 @@ export default {
     mipmap: false,
     wrapS: 'clamp',
     wrapT: 'clamp',
+    flipY: true,
   },
   DATA_SQUARE_POSITIONS: [
     [-1, -1],
