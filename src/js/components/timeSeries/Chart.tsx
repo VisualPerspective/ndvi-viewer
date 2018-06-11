@@ -19,17 +19,25 @@ class Chart extends React.Component<{
   dragReactionDisposer: IReactionDisposer
   chart: SVGElement
 
+  margin = {
+    top: 45,
+    bottom: 33,
+    left: 45,
+    right: 45,
+  }
+
   componentDidMount () {
     this.dragReactionDisposer = autorun(() => {
       if (this.props.dragging === true) {
         const rect = this.chart.getBoundingClientRect()
-        const x = this.props.mousePosition.x - rect.left
-        const timePeriods = this.props.rootStore.timePeriods
+        const x = this.props.mousePosition.x - (rect.left + this.margin.left)
+        const innerWidth = rect.width - (this.margin.left + this.margin.right)
+        const maxTimePeriod = this.props.rootStore.timePeriods - 1
 
         this.props.rootStore.timePeriod = _.clamp(
-          Math.floor(timePeriods * x / rect.width),
+          Math.round(maxTimePeriod * x / innerWidth),
           0,
-          timePeriods - 1,
+          maxTimePeriod,
         )
       }
     })
@@ -46,19 +54,12 @@ class Chart extends React.Component<{
       rootStore,
     } = this.props
 
-    const margin = {
-      top: 45,
-      bottom: 33,
-      left: 45,
-      right: 45,
-    }
-
     return (width && height) ? (
       <svg className='time-series' ref={ref => this.chart = ref}
         onMouseDown={() => this.props.startDragging()}>
-        <YAxis width={width} height={height} margin={margin} />
-        <XAxis width={width} height={height} margin={margin} rootStore={rootStore} />
-        <Brush width={width} height={height} margin={margin} />
+        <YAxis width={width} height={height} margin={this.margin} />
+        <XAxis width={width} height={height} margin={this.margin} rootStore={rootStore} />
+        <Brush width={width} height={height} margin={this.margin} />
       </svg>
     ) : null
   }

@@ -48,7 +48,7 @@ const YAxis = ({ width, height, margin }: {
             )}>
             <text dy='6' x='-10' y='0'>{tick}</text>
             <line x1={-leftScaleWidth} y1='0.5'
-              x2={width - (margin.left + margin.right)} y2='0.5' />
+              x2={width - (margin.left + margin.right) + 3} y2='0.5' />
           </g>
         ))
       }
