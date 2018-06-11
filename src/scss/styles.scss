@@ -94,3 +94,27 @@ footer {
 
   &:hover .brush polygon { transform: scale(1); }
 }
+
+.loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .progress-bar {
+    width: 300px;
+    height: 20px;
+    overflow: visible;
+
+    .progress-bar-background {
+      fill: #eee;
+      stroke: #eee;
+      stroke-width: 5px;
+    }
+
+    .progress-bar-bar { fill: #56c; }
+
+    text { text-anchor: middle; }
+  }
+}

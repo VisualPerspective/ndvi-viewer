@@ -8,6 +8,7 @@ import * as Viewport from 'viewport-mercator-project'
 
 class RootStore {
   @observable initialized: boolean = false
+  @observable dataTiffsLoaded: number = 0
   @observable timePeriod: number = 0
   @observable viewport: any = {
     pitch: 0,
@@ -20,6 +21,10 @@ class RootStore {
 
   readonly dataTiffs = observable<DataTiff>([])
   readonly boundingBox = observable<BoundingBox>(new BoundingBox())
+
+  @computed get percentLoaded () {
+    return this.dataTiffsLoaded / constants.TIFF_URLS.length * 100
+  }
 
   @computed get rasterWidth () {
     return this.dataTiffs[0].image.getWidth()
@@ -50,7 +55,11 @@ class RootStore {
 
   async initialize () {
     this.dataTiffs.replace(await Promise.all(
-      constants.TIFF_URLS.map(async url => await DataTiff.fromUrl(url))
+      constants.TIFF_URLS.map(async url => {
+        const tiff = await DataTiff.fromUrl(url)
+        this.dataTiffsLoaded += 1
+        return tiff
+      })
     ))
 
     this.boundingBox.array = this.dataTiffs[0].image.getBoundingBox()
