@@ -39,7 +39,7 @@ export default () => `
 
     float scaled = (unscaled + 0.2) / 1.2;
     if (unscaled < -0.2) {
-      gl_FragColor = vec4(vec3(0.8), 1.0);
+      gl_FragColor = vec4(vec3(0.0), 1.0);
     } else {
       gl_FragColor = viridis(scaled);
     }

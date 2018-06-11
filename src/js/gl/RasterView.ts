@@ -88,7 +88,7 @@ class RasterView extends View {
 
   renderCanvasGL () {
     this.ctx.poll()
-    this.ctx.clear({ color: [0.8, 0.8, 0.8, 1] })
+    this.ctx.clear({ color: [0, 0, 0, 1] })
 
     const mercator = this.rootStore.getViewport(this.canvas)
 
