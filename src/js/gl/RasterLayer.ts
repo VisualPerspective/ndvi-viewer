@@ -84,7 +84,9 @@ class RasterLayer {
     })
 
     this.rasterWidthGather.compute()
-    this.rasterHeightGather.compute()
+    rootStore.timePeriodAverages.replace(
+      this.rasterHeightGather.compute()
+    )
   }
 }
 

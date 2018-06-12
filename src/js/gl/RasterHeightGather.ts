@@ -83,7 +83,8 @@ class RasterHeightGather {
     })
   }
 
-  compute () {
+  compute (): number[] {
+    let pixels: Float32Array
     this.ctx({ framebuffer: this.heightGatherFBO })(() => {
       this.ctx.poll()
       this.renderer({
@@ -91,7 +92,7 @@ class RasterHeightGather {
         framebufferHeight: this.rootStore.textureRastersHigh,
       })
 
-      const pixels: Float32Array = this.ctx.read({
+      pixels = this.ctx.read({
         x: 0,
         y: 0,
         width: this.rootStore.samplesWide,
@@ -103,9 +104,9 @@ class RasterHeightGather {
         width: this.rootStore.samplesWide,
         height: this.rootStore.textureRastersHigh,
       })
-
-      this.valuesFromGatheredPixels(pixels)
     })
+
+    return this.valuesFromGatheredPixels(pixels)
   }
 
   valuesFromGatheredPixels (pixels: Float32Array) {
@@ -113,13 +114,14 @@ class RasterHeightGather {
     const pixelCounts: number[] = []
     const values: number[] = []
     for (let i = 0; i < this.rootStore.timePeriods; i++) {
-      totals.push(pixels[i * 4])
-      pixelCounts.push(pixels[i * 4 + 1])
-      values.push(pixels[i * 4] / pixels[i * 4 + 1])
+      const total = pixels[i * 4]
+      const pixelCount = pixels[i * 4 + 1]
+      totals.push(total)
+      pixelCounts.push(pixelCount)
+      values.push(total / pixelCount)
     }
 
-    // tslint:disable-next-line
-    console.log(values)
+    return values
   }
 }
 

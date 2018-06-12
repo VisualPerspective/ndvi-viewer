@@ -19,6 +19,7 @@ class RootStore {
     longitude: -18.5,
   }
 
+  readonly timePeriodAverages = observable<number>([])
   readonly dataTiffs = observable<DataTiff>([])
   readonly boundingBox = observable<BoundingBox>(new BoundingBox())
 
