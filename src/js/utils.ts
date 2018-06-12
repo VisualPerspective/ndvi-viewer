@@ -15,3 +15,17 @@ export const sinusoidalToLngLat = (
 export const translate = (x: number, y: number) => (
   `translate(${x} ${y})`
 )
+
+export const compensatedSquareUVs = ({ width, height }: {
+  width: number,
+  height: number
+}) => {
+  return [
+    [-0.5, -0.5],
+    [width - 0.5, -0.5],
+    [width - 0.5, height - 0.5],
+    [-0.5, -0.5],
+    [width - 0.5, height - 0.5],
+    [-0.5, height - 0.5],
+  ]
+}
