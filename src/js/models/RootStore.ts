@@ -49,6 +49,10 @@ class RootStore {
     return Math.floor(constants.DATA_TEXTURE_SIZE / this.rasterHeight)
   }
 
+  @computed get samplesWide () {
+    return this.textureRastersWide * 4
+  }
+
   constructor () {
     this.initialize()
   }

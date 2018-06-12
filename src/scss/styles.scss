@@ -53,7 +53,7 @@ article {
   display: flex;
 }
 
-canvas {
+.container canvas {
   width: 100%;
   display: block;
 }
@@ -117,4 +117,10 @@ footer {
 
     text { text-anchor: middle; }
   }
+}
+
+.debug-image {
+  width: 1024px;
+  height: 4096px;
+  image-rendering: pixelated;
 }

@@ -57,6 +57,8 @@ class RasterLayer {
       ctx: this.ctx,
       rasterTexture: this.rasterTexture,
     })
+
+    this.rasterAverage.compute()
   }
 }
 

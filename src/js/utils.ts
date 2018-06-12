@@ -16,6 +16,32 @@ export const translate = (x: number, y: number) => (
   `translate(${x} ${y})`
 )
 
+export const debugImageFromArray = (
+  { data, width, height }: { data: any, width: number, height: number }
+) => {
+  const rgbaArray = data.map((x: number, i: number) => (
+    [
+      x * 255,
+      x * 255,
+      x * 255,
+      255,
+    ][i % 4]
+  ))
+
+  const canvas = document.createElement('canvas')
+  canvas.className = 'debug-image'
+  document.body.appendChild(canvas)
+
+  const ctx = canvas.getContext('2d')
+
+  canvas.width = width
+  canvas.height = height
+
+  const imageData = ctx.createImageData(width, height)
+  imageData.data.set(rgbaArray)
+  ctx.putImageData(imageData, 0, 0)
+}
+
 export const compensatedSquareUVs = ({ width, height }: {
   width: number,
   height: number
