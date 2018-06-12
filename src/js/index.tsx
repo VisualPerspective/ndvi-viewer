@@ -11,6 +11,6 @@ div.className = 'container'
 document.body.appendChild(div)
 
 ReactDOM.render(
-    <App />,
-    div
+  <App />,
+  div
 )
