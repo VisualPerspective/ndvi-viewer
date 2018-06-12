@@ -37,21 +37,19 @@ class RasterWidthGather {
   constructor ({
     ctx,
     rasterTexture,
+    widthGatherTexture,
     rootStore,
   }: {
     ctx: REGL.Regl
     rasterTexture: REGL.Texture2D
+    widthGatherTexture: REGL.Texture2D
     rootStore?: RootStore
   }) {
     this.ctx = ctx
     this.rasterTexture = rasterTexture
     this.rootStore = rootStore
 
-    this.widthGatherTexture = this.ctx.texture({
-      ...(constants.DATA_TEXTURE_OPTIONS),
-      width: rootStore.samplesWide,
-      height: constants.DATA_TEXTURE_SIZE,
-    })
+    this.widthGatherTexture = widthGatherTexture
 
     this.widthGatherFBO = ctx.framebuffer({
       color: this.widthGatherTexture,

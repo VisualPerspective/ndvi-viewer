@@ -1,4 +1,4 @@
-import * as regl from 'regl'
+import * as REGL from 'regl'
 import RasterView from '@app/gl/RasterView'
 import RasterWidthGather from '@app/gl/RasterWidthGather'
 import RootStore from '@app/models/RootStore'
@@ -10,7 +10,8 @@ class RasterLayer {
   rasterView: RasterView
   rasterWidthGather: RasterWidthGather
   rootStore: RootStore
-  rasterTexture: any
+  rasterTexture: REGL.Texture2D
+  widthGatherTexture: REGL.Texture2D
 
   constructor ({
     canvas,
@@ -22,7 +23,7 @@ class RasterLayer {
     this.canvas = canvas
     this.rootStore = rootStore
 
-    this.ctx = regl({
+    this.ctx = REGL({
       canvas: this.canvas,
       optionalExtensions: [
         'OES_texture_float',
@@ -42,7 +43,8 @@ class RasterLayer {
     })
 
     this.rootStore.rasterSubimages.forEach(({ width, height, data, x, y }) => {
-      this.rasterTexture.subimage({ width, height, data }, x, y)
+      // TODO: figure out why cast to 'any' is needed here
+      (this.rasterTexture as any).subimage({ width, height, data }, x, y)
     })
 
     this.rasterView = new RasterView({
@@ -52,10 +54,17 @@ class RasterLayer {
       rasterTexture: this.rasterTexture,
     })
 
+    this.widthGatherTexture = this.ctx.texture({
+      ...(constants.DATA_TEXTURE_OPTIONS),
+      width: rootStore.samplesWide,
+      height: constants.DATA_TEXTURE_SIZE,
+    })
+
     this.rasterWidthGather = new RasterWidthGather({
       rootStore,
       ctx: this.ctx,
       rasterTexture: this.rasterTexture,
+      widthGatherTexture: this.widthGatherTexture,
     })
 
     this.rasterWidthGather.compute()
