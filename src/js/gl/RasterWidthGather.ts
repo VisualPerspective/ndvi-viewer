@@ -6,8 +6,8 @@ import {
   compensatedSquareUVs
 } from '@app/utils'
 
-import vert from '@app/gl/shaders/averageVert'
-import frag from '@app/gl/shaders/averageFragWidth'
+import vert from '@app/gl/shaders/gatherVert'
+import frag from '@app/gl/shaders/gatherFragWidth'
 
 interface IUniforms {
   raster: REGL.Texture2D
@@ -26,12 +26,12 @@ interface IProps {
   framebufferHeight: number
 }
 
-class RasterAverage {
+class RasterWidthGather {
   renderer: any
   ctx: REGL.Regl
   rasterTexture: REGL.Texture2D
-  widthAveragedTexture: REGL.Texture2D
-  widthAveragedFBO: REGL.Framebuffer
+  widthGatherTexture: REGL.Texture2D
+  widthGatherFBO: REGL.Framebuffer
   rootStore: RootStore
 
   constructor ({
@@ -47,18 +47,18 @@ class RasterAverage {
     this.rasterTexture = rasterTexture
     this.rootStore = rootStore
 
-    this.widthAveragedTexture = this.ctx.texture({
+    this.widthGatherTexture = this.ctx.texture({
       ...(constants.DATA_TEXTURE_OPTIONS),
       width: rootStore.samplesWide,
       height: constants.DATA_TEXTURE_SIZE,
     })
 
-    this.widthAveragedFBO = ctx.framebuffer({
-      color: this.widthAveragedTexture,
+    this.widthGatherFBO = ctx.framebuffer({
+      color: this.widthGatherTexture,
     })
 
     this.renderer = ctx<IUniforms, IAttributes, IProps>({
-      framebuffer: this.widthAveragedFBO,
+      framebuffer: this.widthGatherFBO,
       context: {
         framebufferWidth: ctx.prop<IProps, 'framebufferWidth'>('framebufferWidth'),
         framebufferHeight: ctx.prop<IProps, 'framebufferHeight'>('framebufferHeight'),
@@ -86,7 +86,7 @@ class RasterAverage {
   }
 
   compute () {
-    this.ctx({ framebuffer: this.widthAveragedFBO })(() => {
+    this.ctx({ framebuffer: this.widthGatherFBO })(() => {
       this.ctx.poll()
       this.renderer({
         framebufferWidth: this.rootStore.samplesWide,
@@ -109,4 +109,4 @@ class RasterAverage {
   }
 }
 
-export default RasterAverage
+export default RasterWidthGather
