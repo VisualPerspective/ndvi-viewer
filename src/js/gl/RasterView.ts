@@ -14,7 +14,6 @@ interface IUniforms {
   projection: REGL.Mat4
   raster: REGL.Texture2D
   imagesWide: number
-  imagesHigh: number
   imageSize: number[]
   rasterBBoxMeters: number[]
   atlasSize: number
@@ -70,7 +69,6 @@ class RasterView extends View {
         view: ctx.prop<IProps, 'view'>('view'),
         projection: ctx.prop<IProps, 'projection'>('projection'),
         imagesWide: this.rootStore.textureRastersWide,
-        imagesHigh: this.rootStore.textureRastersHigh,
         imageSize: this.rootStore.rasterSizePercent.array,
         raster: this.rasterTexture,
         rasterBBoxMeters: ctx.prop<IProps, 'rasterBBoxMeters'>('rasterBBoxMeters'),

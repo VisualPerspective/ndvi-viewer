@@ -17,7 +17,7 @@ export default () => `
   uniform sampler2D raster;
   uniform vec4 rasterBBoxMeters;
   uniform vec2 imageSize;
-  uniform int imagesWide, imagesHigh;
+  uniform int imagesWide;
 
   varying vec2 lngLat;
 
@@ -31,7 +31,6 @@ export default () => `
       projectedUV,
       timePeriod,
       imagesWide,
-      imagesHigh,
       imageSize
     ));
 

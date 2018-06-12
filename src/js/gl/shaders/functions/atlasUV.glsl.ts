@@ -6,7 +6,6 @@ export default () => `
     vec2 uv,
     int index,
     int imagesWide,
-    int imagesHigh,
     vec2 imageSize
   ) {
     const float numChannels = 4.0;
