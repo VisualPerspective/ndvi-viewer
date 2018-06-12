@@ -1,3 +1,5 @@
+import * as REGL from 'regl'
+
 export const strings = {
   HEADING: 'Iceland NDVI',
 }
@@ -14,7 +16,7 @@ export default {
     require('@assets/rasters/modis_2014_NDVI.tif'),
   ],
   DATA_Y_TICKS: [ -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1.0 ],
-  DATA_TEXTURE_OPTIONS: {
+  DATA_TEXTURE_OPTIONS: ({
     type: 'float',
     format: 'rgba',
     min: 'nearest',
@@ -23,7 +25,7 @@ export default {
     wrapS: 'clamp',
     wrapT: 'clamp',
     flipY: true,
-  },
+  } as REGL.Texture2DOptions),
   DATA_SQUARE_POSITIONS: [
     [-1, -1],
     [1, -1],
