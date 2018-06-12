@@ -1,6 +1,7 @@
 import * as REGL from 'regl'
 import RasterView from '@app/gl/RasterView'
 import RasterWidthGather from '@app/gl/RasterWidthGather'
+import RasterHeightGather from '@app/gl/RasterHeightGather'
 import RootStore from '@app/models/RootStore'
 import constants from '@app/constants'
 
@@ -9,9 +10,11 @@ class RasterLayer {
   ctx: any
   rasterView: RasterView
   rasterWidthGather: RasterWidthGather
+  rasterHeightGather: RasterHeightGather
   rootStore: RootStore
   rasterTexture: REGL.Texture2D
   widthGatherTexture: REGL.Texture2D
+  heightGatherTexture: REGL.Texture2D
 
   constructor ({
     canvas,
@@ -60,6 +63,12 @@ class RasterLayer {
       height: constants.DATA_TEXTURE_SIZE,
     })
 
+    this.heightGatherTexture = this.ctx.texture({
+      ...(constants.DATA_TEXTURE_OPTIONS),
+      width: rootStore.samplesWide,
+      height: rootStore.textureRastersHigh,
+    })
+
     this.rasterWidthGather = new RasterWidthGather({
       rootStore,
       ctx: this.ctx,
@@ -67,7 +76,15 @@ class RasterLayer {
       widthGatherTexture: this.widthGatherTexture,
     })
 
+    this.rasterHeightGather = new RasterHeightGather({
+      rootStore,
+      ctx: this.ctx,
+      widthGatherTexture: this.widthGatherTexture,
+      heightGatherTexture: this.heightGatherTexture,
+    })
+
     this.rasterWidthGather.compute()
+    this.rasterHeightGather.compute()
   }
 }
 
