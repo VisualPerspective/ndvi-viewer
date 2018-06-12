@@ -2,7 +2,8 @@ import * as React from 'react'
 import { autorun, IReactionDisposer } from 'mobx'
 import { inject, observer } from 'mobx-react'
 import * as _ from 'lodash'
-import { scaleLinear } from 'd3'
+import { scaleLinear, scaleSequential } from 'd3'
+import { interpolateViridis } from 'd3-scale-chromatic'
 import RootStore from '@app/models/RootStore'
 import Point from '@app/models/Point'
 import XAxis from '@app/components/timeSeries/XAxis'
@@ -63,13 +64,19 @@ class Chart extends React.Component<{
         this.margin.top,
       ])
 
+    const colorScale = scaleSequential(interpolateViridis)
+      .domain([-0.2, 1.0])
+
     return (width && height) ? (
       <svg className='time-series' ref={ref => this.chart = ref}
         onMouseDown={() => this.props.startDragging()}>
-        <YAxis width={width} height={height} margin={this.margin} />
-        <XAxis width={width} height={height} margin={this.margin} rootStore={rootStore} />
+        <YAxis width={width} height={height} margin={this.margin}
+          colorScale={colorScale} />
+        <XAxis width={width} height={height} margin={this.margin}
+          rootStore={rootStore} />
         <Brush width={width} height={height} margin={this.margin} />
-        <Series width={width} height={height} margin={this.margin} yScale={yScale} />
+        <Series width={width} height={height} margin={this.margin}
+          yScale={yScale} colorScale={colorScale} />
       </svg>
     ) : null
   }

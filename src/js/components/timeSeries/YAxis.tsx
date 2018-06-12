@@ -1,20 +1,20 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 import constants from '@app/constants'
-import { interpolateViridis } from 'd3-scale-chromatic'
 import * as _ from 'lodash'
 import { translate } from '@app/utils'
 
-const YAxis = ({ width, height, margin }: {
+const YAxis = ({ width, height, margin, colorScale }: {
   width: number,
   height: number,
   margin: any,
+  colorScale: any,
 }) => {
   const leftScaleWidth = 8
 
   const numStops = 10
   const stops = _.times(numStops, i => ({
-    color: interpolateViridis(i / (numStops - 1)),
+    color: colorScale((i / (numStops - 1)) * 1.2 - 0.2),
     percent: i / (numStops - 1) * 100,
   }))
 

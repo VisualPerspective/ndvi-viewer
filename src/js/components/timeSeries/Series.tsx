@@ -4,11 +4,12 @@ import RootStore from '@app/models/RootStore'
 import { translate } from '@app/utils'
 import * as _ from 'lodash'
 
-const Series = ({ width, height, margin, yScale, rootStore }: {
+const Series = ({ width, height, margin, yScale, colorScale, rootStore }: {
   width: number,
   height: number,
   margin: any,
   yScale: any,
+  colorScale: any,
   rootStore?: RootStore,
 }) => (
   <g className='series'>
@@ -21,7 +22,8 @@ const Series = ({ width, height, margin, yScale, rootStore }: {
             margin.left,
             yScale(rootStore.timePeriodAverages[i])
           )}>
-          <circle r={5}cx={0} cy={0} />
+          <circle r={5}cx={0} cy={0}
+            fill={colorScale(rootStore.timePeriodAverages[i])} />
         </g>
       ))
     }
