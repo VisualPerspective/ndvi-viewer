@@ -2,7 +2,6 @@ import * as REGL from 'regl'
 import RootStore from '@app/models/RootStore'
 import constants from '@app/constants'
 import {
-  debugImageFromArray,
   compensatedSquareUVs
 } from '@app/utils'
 
@@ -95,12 +94,6 @@ class RasterHeightGather {
       pixels = this.ctx.read({
         x: 0,
         y: 0,
-        width: this.rootStore.samplesWide,
-        height: this.rootStore.textureRastersHigh,
-      })
-
-      debugImageFromArray({
-        data: pixels,
         width: this.rootStore.samplesWide,
         height: this.rootStore.textureRastersHigh,
       })

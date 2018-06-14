@@ -2,7 +2,6 @@ import * as REGL from 'regl'
 import RootStore from '@app/models/RootStore'
 import constants from '@app/constants'
 import {
-  debugImageFromArray,
   compensatedSquareUVs
 } from '@app/utils'
 
@@ -89,19 +88,6 @@ class RasterWidthGather {
       this.renderer({
         framebufferWidth: this.rootStore.samplesWide,
         framebufferHeight: constants.DATA_TEXTURE_SIZE,
-      })
-
-      const pixels = this.ctx.read({
-        x: 0,
-        y: 0,
-        width: this.rootStore.samplesWide,
-        height: constants.DATA_TEXTURE_SIZE,
-      })
-
-      debugImageFromArray({
-        data: pixels,
-        width: this.rootStore.samplesWide,
-        height: constants.DATA_TEXTURE_SIZE,
       })
     })
   }
