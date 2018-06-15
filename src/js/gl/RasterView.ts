@@ -1,7 +1,6 @@
 import * as REGL from 'regl'
 import { mat4 } from 'gl-matrix'
 import { reaction } from 'mobx'
-import View from '@app/gl/View'
 import RootStore from '@app/models/RootStore'
 import constants from '@app/constants'
 
@@ -35,25 +34,21 @@ interface IProps {
   timePeriod: number
 }
 
-class RasterView extends View {
+class RasterView {
   renderer: any
-  canvas: HTMLCanvasElement
   ctx: REGL.Regl
   rasterTexture: REGL.Texture2D
   rootStore: RootStore
 
   constructor ({
-    canvas,
     ctx,
     rasterTexture,
     rootStore,
   }: {
-    canvas: HTMLCanvasElement,
     ctx: REGL.Regl,
     rasterTexture: REGL.Texture2D,
     rootStore?: RootStore,
   }) {
-    super({ canvas })
     this.ctx = ctx
     this.rasterTexture = rasterTexture
     this.rootStore = rootStore
@@ -81,14 +76,14 @@ class RasterView extends View {
 
     reaction(() => ({
       timePeriod: this.rootStore.timePeriod,
-    }), this.render.bind(this))
+    }), this.renderCanvasGL.bind(this))
   }
 
   renderCanvasGL () {
     this.ctx.poll()
     this.ctx.clear({ color: [0, 0, 0, 1] })
 
-    const mercator = this.rootStore.getViewport(this.canvas)
+    const mercator = this.rootStore.getViewport()
 
     this.renderer({
       scale: mercator.scale * constants.TILE_SIZE,

@@ -3,7 +3,7 @@ import { observer } from 'mobx-react'
 import { action, observable } from 'mobx'
 
 class SizedElement extends React.Component<{
-  className: string,
+  className?: string,
   render: ({}: {
     width: number,
     height: number,

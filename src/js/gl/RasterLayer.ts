@@ -6,7 +6,7 @@ import RootStore from '@app/models/RootStore'
 import constants from '@app/constants'
 
 class RasterLayer {
-  canvas: HTMLCanvasElement
+  gl: WebGLRenderingContext
   ctx: any
   rasterView: RasterView
   rasterWidthGather: RasterWidthGather
@@ -17,17 +17,17 @@ class RasterLayer {
   heightGatherTexture: REGL.Texture2D
 
   constructor ({
-    canvas,
+    gl,
     rootStore,
   }: {
-    canvas: HTMLCanvasElement,
+    gl: WebGLRenderingContext,
     rootStore?: RootStore
   }) {
-    this.canvas = canvas
+    this.gl = gl
     this.rootStore = rootStore
 
     this.ctx = REGL({
-      canvas: this.canvas,
+      gl: this.gl,
       optionalExtensions: [
         'OES_texture_float',
         'webgl_color_buffer_float',
@@ -52,7 +52,6 @@ class RasterLayer {
 
     this.rasterView = new RasterView({
       rootStore,
-      canvas: this.canvas,
       ctx: this.ctx,
       rasterTexture: this.rasterTexture,
     })

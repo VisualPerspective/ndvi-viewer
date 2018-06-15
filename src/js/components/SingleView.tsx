@@ -1,38 +1,18 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 import RootStore from '@app/models/RootStore'
-import RasterLayer from '@app/gl/RasterLayer'
+import SizedElement from '@app/components/SizedElement'
+import MapComponent from '@app/components/MapComponent'
 
 class SingleView extends React.Component<{
   rootStore?: RootStore
 }, any> {
-  rasterLayer: RasterLayer
-  canvas: HTMLCanvasElement
-
-  renderLayer () {
-    this.rasterLayer.rasterView.render()
-  }
-
-  componentDidMount () {
-    this.rasterLayer = new RasterLayer({
-      canvas: this.canvas,
-      rootStore: this.props.rootStore,
-    })
-
-    this.renderLayer()
-    window.addEventListener('resize', this.renderLayer.bind(this))
-  }
-
-  componentWillUnmount () {
-    window.removeEventListener('resize', this.renderLayer.bind(this))
-  }
-
   render () {
     return (
       <article className='single-view'>
-        <canvas ref={
-          canvas => { this.canvas = canvas }
-        }></canvas>
+        <SizedElement className='container' render={({ width, height }) => (
+          <MapComponent width={width} height={height} />
+        )} />
       </article>
     )
   }

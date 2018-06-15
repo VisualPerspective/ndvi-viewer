@@ -11,7 +11,7 @@ class RootStore {
   @observable dataTiffsLoaded: number = 0
   @observable timePeriod: number = 0
   @observable viewport: any = {
-    pitch: 0,
+    pitch: 50,
     bearing: 0,
     altitude: 1.5,
     zoom: 6,
@@ -99,11 +99,9 @@ class RootStore {
     })
   }
 
-  getViewport ({ width, height }: { width: number, height: number }) {
+  getViewport () {
     return new Viewport.WebMercatorViewport({
       ...this.viewport,
-      width,
-      height,
     })
   }
 }

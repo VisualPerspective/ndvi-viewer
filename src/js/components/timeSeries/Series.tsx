@@ -14,7 +14,7 @@ const Series = ({ width, height, margin, yScale, colorScale, rootStore }: {
 }) => (
   <g className='series'>
     {
-      _.times(rootStore.timePeriods, i => (
+      _.times(rootStore.timePeriodAverages.length, i => (
         <g key={i} className='average'
           transform={translate(
             i / (rootStore.timePeriods - 1) *

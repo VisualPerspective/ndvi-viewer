@@ -1,3 +1,5 @@
+@import '../../node_modules/mapbox-gl/dist/mapbox-gl.css';
+
 * { margin: 0; padding: 0; list-style: none; }
 
 html {
@@ -51,6 +53,8 @@ header {
 article {
   flex-grow: 1;
   display: flex;
+  flex-direction: column;
+  .container { flex-grow: 1; }
 }
 
 .container canvas {
