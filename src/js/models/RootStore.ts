@@ -14,9 +14,6 @@ class RootStore {
     pitch: 0,
     bearing: 0,
     altitude: 1.5,
-    zoom: 6,
-    latitude: 65,
-    longitude: -18.5,
   }
 
   readonly timePeriodAverages = observable<number>([])
@@ -100,8 +97,19 @@ class RootStore {
   }
 
   getViewport ({ width, height }: { width: number, height: number }) {
+    const lngLatBoundingBox = this.boundingBox.lngLatFromSinusoidal
+    const lngLatZoom = Viewport.fitBounds({
+      width,
+      height,
+      bounds: [
+        lngLatBoundingBox.min.array,
+        lngLatBoundingBox.max.array,
+      ],
+    })
+
     return new Viewport.WebMercatorViewport({
       ...this.viewport,
+      ...lngLatZoom,
       width,
       height,
     })

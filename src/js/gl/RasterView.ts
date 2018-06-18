@@ -89,14 +89,15 @@ class RasterView extends View {
     this.ctx.clear({ color: [0, 0, 0, 1] })
 
     const mercator = this.rootStore.getViewport(this.canvas)
+    const triangles = this.rootStore.boundingBox.lngLatFromSinusoidal.triangles
 
     this.renderer({
       scale: mercator.scale * constants.TILE_SIZE,
       view: mercator.viewMatrix,
       projection: mercator.projectionMatrix,
       timePeriod: this.rootStore.timePeriod,
-      triangles: this.rootStore.boundingBox.triangles,
-      trianglesLength: this.rootStore.boundingBox.triangles.length,
+      triangles,
+      trianglesLength: triangles.length,
       rasterBBoxMeters: this.rootStore.boundingBox.array,
     })
   }
