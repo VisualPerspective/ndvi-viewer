@@ -1,20 +1,20 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 import RootStore from '@app/models/RootStore'
-import RasterLayer from '@app/gl/RasterLayer'
+import GLManager from '@app/gl/GLManager'
 
 class SingleView extends React.Component<{
   rootStore?: RootStore
 }, any> {
-  rasterLayer: RasterLayer
+  glManager: GLManager
   canvas: HTMLCanvasElement
 
   renderLayer () {
-    this.rasterLayer.rasterView.render()
+    this.glManager.render()
   }
 
   componentDidMount () {
-    this.rasterLayer = new RasterLayer({
+    this.glManager = new GLManager({
       canvas: this.canvas,
       rootStore: this.props.rootStore,
     })

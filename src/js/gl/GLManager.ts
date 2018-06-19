@@ -1,11 +1,12 @@
 import * as REGL from 'regl'
+import { reaction } from 'mobx'
 import RasterView from '@app/gl/RasterView'
 import RasterWidthGather from '@app/gl/RasterWidthGather'
 import RasterHeightGather from '@app/gl/RasterHeightGather'
 import RootStore from '@app/models/RootStore'
 import constants from '@app/constants'
 
-class RasterLayer {
+class GLManager {
   canvas: HTMLCanvasElement
   ctx: any
   rasterView: RasterView
@@ -15,6 +16,7 @@ class RasterLayer {
   rasterTexture: REGL.Texture2D
   widthGatherTexture: REGL.Texture2D
   heightGatherTexture: REGL.Texture2D
+  pendingRender: boolean = false
 
   constructor ({
     canvas,
@@ -52,7 +54,6 @@ class RasterLayer {
 
     this.rasterView = new RasterView({
       rootStore,
-      canvas: this.canvas,
       ctx: this.ctx,
       rasterTexture: this.rasterTexture,
     })
@@ -87,7 +88,34 @@ class RasterLayer {
     rootStore.timePeriodAverages.replace(
       this.rasterHeightGather.compute()
     )
+
+    reaction(() => ({
+      timePeriod: this.rootStore.timePeriod,
+    }), this.render.bind(this))
+  }
+
+  render () {
+    const devicePixelRatio = window.devicePixelRatio || 1
+    const newWidth = this.canvas.offsetWidth * devicePixelRatio
+    const newHeight = this.canvas.offsetHeight * devicePixelRatio
+
+    if (this.canvas.width !== newWidth ||
+        this.canvas.height !== newHeight) {
+      this.canvas.width = newWidth
+      this.canvas.height = newHeight
+    }
+
+    if (!this.pendingRender) {
+      this.pendingRender = true
+      window.requestAnimationFrame(() => {
+        this.pendingRender = false
+        this.rasterView.render({
+          width: this.canvas.width,
+          height: this.canvas.height,
+        })
+      })
+    }
   }
 }
 
-export default RasterLayer
+export default GLManager
