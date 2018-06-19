@@ -4,6 +4,7 @@ import RasterView from '@app/gl/RasterView'
 import RasterWidthGather from '@app/gl/RasterWidthGather'
 import RasterHeightGather from '@app/gl/RasterHeightGather'
 import RootStore from '@app/models/RootStore'
+import Point from '@app/models/Point'
 import constants from '@app/constants'
 
 class GLManager {
@@ -103,16 +104,14 @@ class GLManager {
         this.canvas.height !== newHeight) {
       this.canvas.width = newWidth
       this.canvas.height = newHeight
+      this.rootStore.camera.size = new Point(newWidth, newHeight)
     }
 
     if (!this.pendingRender) {
       this.pendingRender = true
       window.requestAnimationFrame(() => {
         this.pendingRender = false
-        this.rasterView.render({
-          width: this.canvas.width,
-          height: this.canvas.height,
-        })
+        this.rasterView.render()
       })
     }
   }

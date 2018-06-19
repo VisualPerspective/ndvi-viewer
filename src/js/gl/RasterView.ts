@@ -74,17 +74,14 @@ class RasterView {
     })
   }
 
-  render ({ width, height }: { width: number, height: number }) {
+  render () {
     this.ctx.poll()
     this.ctx.clear({ color: [0, 0, 0, 1] })
 
-    const mercator = this.rootStore.getViewport({ width, height })
     const triangles = this.rootStore.boundingBox.lngLatFromSinusoidal.triangles
 
     this.renderer({
-      scale: mercator.scale * constants.TILE_SIZE,
-      view: mercator.viewMatrix,
-      projection: mercator.projectionMatrix,
+      ...(this.rootStore.camera.renderInfo),
       timePeriod: this.rootStore.timePeriod,
       triangles,
       trianglesLength: triangles.length,

@@ -2,19 +2,16 @@ import { observable, computed } from 'mobx'
 import constants from '@app/constants'
 import * as _ from 'lodash'
 import DataTiff from '@app/models/DataTiff'
-import BoundingBox from '@app/models/BoundingBox'
 import Point from '@app/models/Point'
-import * as Viewport from 'viewport-mercator-project'
+import BoundingBox from '@app/models/BoundingBox'
+import Camera from '@app/models/Camera'
 
 class RootStore {
   @observable initialized: boolean = false
   @observable dataTiffsLoaded: number = 0
   @observable timePeriod: number = 0
-  @observable viewport: any = {
-    pitch: 0,
-    bearing: 0,
-    altitude: 1.5,
-  }
+
+  @observable camera: Camera
 
   readonly timePeriodAverages = observable<number>([])
   readonly dataTiffs = observable<DataTiff>([])
@@ -65,6 +62,12 @@ class RootStore {
     ))
 
     this.boundingBox.array = this.dataTiffs[0].image.getBoundingBox()
+
+    this.camera = new Camera({
+      size: new Point(100, 100),
+      fitToBoundingBox: this.boundingBox.lngLatFromSinusoidal,
+    })
+
     this.initialized = true
   }
 
@@ -93,25 +96,6 @@ class RootStore {
         x: this.rasterWidth * xIndex,
         y: this.rasterHeight * yIndex,
       }
-    })
-  }
-
-  getViewport ({ width, height }: { width: number, height: number }) {
-    const lngLatBoundingBox = this.boundingBox.lngLatFromSinusoidal
-    const lngLatZoom = Viewport.fitBounds({
-      width,
-      height,
-      bounds: [
-        lngLatBoundingBox.min.array,
-        lngLatBoundingBox.max.array,
-      ],
-    })
-
-    return new Viewport.WebMercatorViewport({
-      ...this.viewport,
-      ...lngLatZoom,
-      width,
-      height,
     })
   }
 }
