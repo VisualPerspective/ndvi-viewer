@@ -25,7 +25,10 @@ export default () => `
     float timeComponent = mod(float(timePeriod), 4.0);
 
     vec2 meters = lngLatToSinusoidal(lngLat);
-    vec2 projectedUV = pointInBBox(meters, rasterBBoxMeters);
+    vec2 projectedUV = pointInBBox(vec2(
+      meters.x + 1000.0,
+      meters.y + 3500.0
+    ), rasterBBoxMeters);
 
     vec4 sample = texture2D(raster, atlasUV(
       projectedUV,
@@ -38,7 +41,7 @@ export default () => `
 
     float scaled = (unscaled + 0.2) / 1.2;
     if (unscaled < -0.2) {
-      gl_FragColor = vec4(vec3(0.0), 1.0);
+      gl_FragColor = vec4(0.0);
     } else {
       gl_FragColor = viridis(scaled);
     }

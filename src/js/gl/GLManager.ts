@@ -3,6 +3,7 @@ import { reaction } from 'mobx'
 import RasterView from '@app/gl/RasterView'
 import RasterWidthGather from '@app/gl/RasterWidthGather'
 import RasterHeightGather from '@app/gl/RasterHeightGather'
+import VectorView from '@app/gl/VectorView'
 import RootStore from '@app/models/RootStore'
 import Point from '@app/models/Point'
 import constants from '@app/constants'
@@ -13,6 +14,7 @@ class GLManager {
   rasterView: RasterView
   rasterWidthGather: RasterWidthGather
   rasterHeightGather: RasterHeightGather
+  vectorView: VectorView
   rootStore: RootStore
   rasterTexture: REGL.Texture2D
   widthGatherTexture: REGL.Texture2D
@@ -34,6 +36,7 @@ class GLManager {
       optionalExtensions: [
         'OES_texture_float',
         'webgl_color_buffer_float',
+        'OES_element_index_uint',
       ],
       attributes: { alpha: false },
     })
@@ -57,6 +60,11 @@ class GLManager {
       rootStore,
       ctx: this.ctx,
       rasterTexture: this.rasterTexture,
+    })
+
+    this.vectorView = new VectorView({
+      rootStore,
+      ctx: this.ctx,
     })
 
     this.widthGatherTexture = this.ctx.texture({
@@ -111,6 +119,9 @@ class GLManager {
       this.pendingRender = true
       window.requestAnimationFrame(() => {
         this.pendingRender = false
+        this.ctx.poll()
+        this.ctx.clear({ color: [0.33, 0.33, 0.33, 1] })
+        this.vectorView.render()
         this.rasterView.render()
       })
     }

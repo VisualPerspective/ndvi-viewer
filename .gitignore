@@ -30,5 +30,5 @@ public/
 tmpdata/
 
 # Generated files
-app/assets/data/
+src/assets/geojson/
 dist/

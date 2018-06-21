@@ -5,6 +5,7 @@ import DataTiff from '@app/models/DataTiff'
 import Point from '@app/models/Point'
 import BoundingBox from '@app/models/BoundingBox'
 import Camera from '@app/models/Camera'
+import VectorLayer from '@app/models/VectorLayer'
 
 class RootStore {
   @observable initialized: boolean = false
@@ -12,6 +13,7 @@ class RootStore {
   @observable timePeriod: number = 0
 
   @observable camera: Camera
+  @observable vectorLayer: VectorLayer
 
   readonly timePeriodAverages = observable<number>([])
   readonly dataTiffs = observable<DataTiff>([])
@@ -53,6 +55,9 @@ class RootStore {
   }
 
   async initialize () {
+    this.vectorLayer = new VectorLayer()
+    await this.vectorLayer.initialize(constants.VECTOR_URL)
+
     this.dataTiffs.replace(await Promise.all(
       constants.TIFF_URLS.map(async url => {
         const tiff = await DataTiff.fromUrl(url)

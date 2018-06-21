@@ -5,6 +5,7 @@ export const strings = {
 }
 
 export default {
+  VECTOR_URL: '/geojson/vectors.json',
   DATA_TEXTURE_SIZE: 4096,
   NO_DATA_THRESHOLD: -0.5,
   NO_DATA_VALUE: -1,

@@ -71,13 +71,17 @@ class RasterView {
         scale: ctx.prop<IProps, 'scale'>('scale'),
       },
       count: ctx.prop<IProps, 'trianglesLength'>('trianglesLength'),
+      blend: {
+        enable: true,
+        func: {
+          src: 'src alpha',
+          dst: 'one minus src alpha',
+        },
+      },
     })
   }
 
   render () {
-    this.ctx.poll()
-    this.ctx.clear({ color: [0, 0, 0, 1] })
-
     const triangles = this.rootStore.boundingBox.lngLatFromSinusoidal.triangles
 
     this.renderer({
