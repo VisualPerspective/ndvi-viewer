@@ -1,6 +1,5 @@
 import { observable } from 'mobx'
 import earcut from 'earcut'
-import * as _ from 'lodash'
 
 class VectorLayer {
   readonly outline = observable<number>([])
@@ -11,14 +10,9 @@ class VectorLayer {
 
   async initialize (url: string) {
     const response: Response = await window.fetch(url)
+    const vectors = await response.json()
 
-    // TODO: filter countries during build
-    const countries = await response.json()
-    const iceland = _.find(countries.features, (feature: any) => (
-      feature.properties.ADM0_A3 === 'ISL'
-    ))
-
-    iceland.geometry.coordinates.forEach((polygon: any) => {
+    vectors.geometry.coordinates.forEach((polygon: any) => {
       const data = earcut.flatten(polygon)
       const polygonOutline: number[] = []
       for (let i = 0; i < (data.vertices.length - 3); i += 2) {
