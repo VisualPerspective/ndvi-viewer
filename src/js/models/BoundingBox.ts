@@ -26,6 +26,19 @@ class BoundingBox {
     ]
   }
 
+  @computed get outline (): any {
+    return [
+      [this.min.x, this.min.y],
+      [this.max.x, this.min.y],
+      [this.max.x, this.min.y],
+      [this.max.x, this.max.y],
+      [this.max.x, this.max.y],
+      [this.min.x, this.max.y],
+      [this.min.x, this.max.y],
+      [this.min.x, this.min.y],
+    ]
+  }
+
   @computed get array (): number[] {
     return [
       this.min.x,
@@ -40,6 +53,12 @@ class BoundingBox {
     this.max = new Point(bbox[2], bbox[3])
   }
 
+  static fromArray (bbox: number[]): BoundingBox {
+    const result = new BoundingBox()
+    result.array = bbox
+    return result
+  }
+
   get lngLatFromSinusoidal (): BoundingBox {
     const points = [
       sinusoidalToLngLat({ x: this.min.x, y: this.min.y }),
@@ -51,6 +70,21 @@ class BoundingBox {
     return new BoundingBox({
       min: new Point(_.minBy(points, 'x').x, _.minBy(points, 'y').y),
       max: new Point(_.maxBy(points, 'x').x, _.maxBy(points, 'y').y),
+    })
+  }
+
+  scaled (scale: number): BoundingBox {
+    const centerX = (this.max.x + this.min.x) / 2
+    const centerY = (this.max.y + this.min.y) / 2
+    return new BoundingBox({
+      min: new Point(
+        (this.min.x - centerX) * scale + centerX,
+        (this.min.y - centerY) * scale + centerY,
+      ),
+      max: new Point(
+        (this.max.x - centerX) * scale + centerX,
+        (this.max.y - centerY) * scale + centerY,
+      ),
     })
   }
 }

@@ -14,10 +14,11 @@ class RootStore {
 
   @observable camera: Camera
   @observable vectorLayer: VectorLayer
+  @observable selectedBox = observable<BoundingBox>(new BoundingBox())
+  @observable boundingBox = observable<BoundingBox>(new BoundingBox())
 
   readonly timePeriodAverages = observable<number>([])
   readonly dataTiffs = observable<DataTiff>([])
-  readonly boundingBox = observable<BoundingBox>(new BoundingBox())
 
   @computed get percentLoaded () {
     return this.dataTiffsLoaded / constants.TIFF_URLS.length * 100
@@ -66,11 +67,17 @@ class RootStore {
       })
     ))
 
-    this.boundingBox.array = this.dataTiffs[0].image.getBoundingBox()
+    this.boundingBox = observable(BoundingBox.fromArray(
+      this.dataTiffs[0].image.getBoundingBox()
+    ))
+
+    this.selectedBox = observable(
+      this.boundingBox.lngLatFromSinusoidal.scaled(1.1)
+    )
 
     this.camera = new Camera({
       size: new Point(100, 100),
-      fitToBoundingBox: this.boundingBox.lngLatFromSinusoidal,
+      fitToBoundingBox: this.selectedBox,
     })
 
     this.initialized = true

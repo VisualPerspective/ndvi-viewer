@@ -28,6 +28,7 @@ class Camera {
     const lngLatZoom = Viewport.fitBounds({
       width: this.size.x,
       height: this.size.y,
+      padding: 100,
       bounds: [
         this.fitToBoundingBox.min.array,
         this.fitToBoundingBox.max.array,

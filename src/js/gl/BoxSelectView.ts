@@ -25,7 +25,7 @@ interface IProps {
   linesLength: number
 }
 
-class OutlineView {
+class BoxSelectView {
   renderer: any
   ctx: REGL.Regl
   rootStore: RootStore
@@ -47,7 +47,7 @@ class OutlineView {
         position: ctx.prop<IProps, 'vertices'>('vertices'),
       },
       uniforms: {
-        color: [1, 1, 1, 1],
+        color: [1, 0.5, 0, 1],
         model: mat4.fromTranslation([], [0, 0, 0]),
         view: ctx.prop<IProps, 'view'>('view'),
         projection: ctx.prop<IProps, 'projection'>('projection'),
@@ -64,10 +64,10 @@ class OutlineView {
   render () {
     this.renderer({
       ...(this.rootStore.camera.renderInfo),
-      vertices: this.rootStore.vectorLayer.outline.peek(),
-      linesLength: this.rootStore.vectorLayer.outline.length / 2,
+      vertices: this.rootStore.selectedBox.outline,
+      linesLength: this.rootStore.selectedBox.outline.length,
     })
   }
 }
 
-export default OutlineView
+export default BoxSelectView

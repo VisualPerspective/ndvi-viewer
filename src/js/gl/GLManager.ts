@@ -5,6 +5,7 @@ import RasterWidthGather from '@app/gl/RasterWidthGather'
 import RasterHeightGather from '@app/gl/RasterHeightGather'
 import VectorView from '@app/gl/VectorView'
 import OutlineView from '@app/gl/OutlineView'
+import BoxSelectView from '@app/gl/BoxSelectView'
 import RootStore from '@app/models/RootStore'
 import Point from '@app/models/Point'
 import constants from '@app/constants'
@@ -17,6 +18,7 @@ class GLManager {
   rasterHeightGather: RasterHeightGather
   vectorView: VectorView
   outlineView: OutlineView
+  boxSelectView: BoxSelectView
   rootStore: RootStore
   rasterTexture: REGL.Texture2D
   widthGatherTexture: REGL.Texture2D
@@ -70,6 +72,11 @@ class GLManager {
     })
 
     this.outlineView = new OutlineView({
+      rootStore,
+      ctx: this.ctx,
+    })
+
+    this.boxSelectView = new BoxSelectView({
       rootStore,
       ctx: this.ctx,
     })
@@ -131,6 +138,7 @@ class GLManager {
         this.vectorView.render()
         this.rasterView.render()
         this.outlineView.render()
+        this.boxSelectView.render()
       })
     }
   }
