@@ -11,6 +11,7 @@ const YAxis = ({ width, height, margin, colorScale }: {
   colorScale: any,
 }) => {
   const leftScaleWidth = 8
+  const leftScalePadding = 12
 
   const numStops = 10
   const stops = _.times(numStops, i => ({
@@ -34,21 +35,24 @@ const YAxis = ({ width, height, margin, colorScale }: {
           }
         </linearGradient>
       </defs>
-      <rect x={margin.left - leftScaleWidth} y={margin.top} width={leftScaleWidth}
+      <rect x={margin.left - (leftScaleWidth + leftScalePadding)}
+        y={margin.top}
+        width={leftScaleWidth}
         height={height - (margin.top + margin.bottom)}
         fill='url(#grad1)' />
       {
         constants.DATA_Y_TICKS.map((tick, i) => (
           <g key={i} className='tick y-tick'
             transform={translate(
-              margin.left - 3,
+              margin.left - (leftScalePadding + 5),
               (height - margin.bottom) -
               (i / (constants.DATA_Y_TICKS.length - 1)) *
               (height - (margin.top + margin.bottom)),
             )}>
             <text dy='6' x='-10' y='0'>{tick}</text>
             <line x1={-leftScaleWidth} y1='0.5'
-              x2={width - (margin.left + margin.right) + 3} y2='0.5' />
+              x2={width - (margin.left + margin.right) + leftScalePadding + 5}
+              y2='0.5' />
           </g>
         ))
       }

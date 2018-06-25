@@ -25,8 +25,8 @@ class Chart extends React.Component<{
   margin = {
     top: 45,
     bottom: 33,
-    left: 45,
-    right: 45,
+    left: 50,
+    right: 10,
   }
 
   componentDidMount () {

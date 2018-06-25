@@ -76,14 +76,14 @@ footer {
   .tick {
     * { pointer-events: none; user-select: none }
     text { fill: #777; }
-    line { stroke: #ccc; }
+    line { stroke: #aaa; }
 
     &.y-tick {
       text { text-anchor: end; }
     }
 
     &.x-tick {
-      line { stroke: #eee; }
+      line { stroke: #ddd; }
       text { text-anchor: start; transform: rotate(-45deg); }
     }
   }

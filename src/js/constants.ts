@@ -10,6 +10,7 @@ export default {
   NO_DATA_THRESHOLD: -0.5,
   NO_DATA_VALUE: -1,
   TILE_SIZE: 512,
+  START_YEAR: 2001,
   TIFF_URLS: [
     require('@assets/rasters/modis_2011_NDVI.tif'),
     require('@assets/rasters/modis_2012_NDVI.tif'),
