@@ -114,6 +114,7 @@ class GLManager {
 
     reaction(() => ({
       timePeriod: this.rootStore.timePeriod,
+      zoom: this.rootStore.camera.zoom,
     }), this.render.bind(this))
   }
 

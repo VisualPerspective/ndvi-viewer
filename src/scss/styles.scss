@@ -51,6 +51,31 @@ header {
 article {
   flex-grow: 1;
   display: flex;
+  position: relative;
+  .zoom {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    >label {
+      width: 60px;
+      height: 155px;
+      display: block;
+      background: #222c;
+
+      span, input { display: block; }
+      span {
+        color: white;
+        text-align: center;
+        padding: 8px;
+      }
+
+      input {
+        transform: rotate(-90deg) translate(-40px, -20px);
+        width: 100px;
+      }
+    }
+  }
 }
 
 .container canvas {

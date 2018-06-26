@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
+import Zoom from '@app/components/Zoom'
 import RootStore from '@app/models/RootStore'
 import GLManager from '@app/gl/GLManager'
 
@@ -33,6 +34,7 @@ class SingleView extends React.Component<{
         <canvas ref={
           canvas => { this.canvas = canvas }
         }></canvas>
+        <Zoom />
       </article>
     )
   }

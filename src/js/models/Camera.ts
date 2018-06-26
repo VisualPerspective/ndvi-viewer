@@ -5,12 +5,15 @@ import Point from '@app/models/Point'
 import BoundingBox from '@app/models/BoundingBox'
 import * as Viewport from 'viewport-mercator-project'
 
+const ZOOM_FACTOR = 0.5
+
 class Camera {
   @observable size: Point
   @observable fitToBoundingBox: BoundingBox
   @observable pitch = 0
   @observable bearing = 0
   @observable altitude = 1.5
+  @observable zoom = 0
 
   constructor ({ size, fitToBoundingBox }: {
     size: Point,
@@ -40,6 +43,7 @@ class Camera {
       bearing: this.bearing,
       altitude: this.altitude,
       ...lngLatZoom,
+      zoom: lngLatZoom.zoom * (1 + (this.zoom * ZOOM_FACTOR)),
       width: this.size.x,
       height: this.size.y,
     })
