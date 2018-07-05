@@ -128,7 +128,10 @@ class GLManager {
         this.canvas.height !== newHeight) {
       this.canvas.width = newWidth
       this.canvas.height = newHeight
-      this.rootStore.camera.size = new Point(newWidth, newHeight)
+      this.rootStore.camera.size.set(
+        this.canvas.offsetWidth,
+        this.canvas.offsetHeight
+      )
     }
 
     if (!this.pendingRender) {
