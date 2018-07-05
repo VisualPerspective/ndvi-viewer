@@ -1,4 +1,4 @@
-import { observable, computed } from 'mobx'
+import { observable, computed, action } from 'mobx'
 
 class Point {
   @observable x: number
@@ -8,7 +8,7 @@ class Point {
     this.set(x, y)
   }
 
-  set (x: number, y: number) {
+  @action set (x: number, y: number) {
     this.x = x
     this.y = y
   }

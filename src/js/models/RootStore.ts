@@ -77,7 +77,7 @@ class RootStore {
 
     this.camera = new Camera({
       size: new Point(100, 100),
-      fitToBoundingBox: this.selectedBox,
+      boundingBox: this.selectedBox,
     })
 
     this.initialized = true

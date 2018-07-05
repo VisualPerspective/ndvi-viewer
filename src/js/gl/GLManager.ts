@@ -7,7 +7,6 @@ import VectorView from '@app/gl/VectorView'
 import OutlineView from '@app/gl/OutlineView'
 import BoxSelectView from '@app/gl/BoxSelectView'
 import RootStore from '@app/models/RootStore'
-import Point from '@app/models/Point'
 import constants from '@app/constants'
 
 class GLManager {
@@ -115,6 +114,8 @@ class GLManager {
     reaction(() => ({
       timePeriod: this.rootStore.timePeriod,
       zoom: this.rootStore.camera.zoom,
+      cameraPositionX: this.rootStore.camera.position.x,
+      cameraPositionY: this.rootStore.camera.position.y,
     }), this.render.bind(this))
   }
 

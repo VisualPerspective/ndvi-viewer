@@ -73,17 +73,22 @@ class BoundingBox {
     })
   }
 
+  @computed get center (): Point {
+    return new Point(
+      (this.max.x + this.min.x) / 2,
+      (this.max.y + this.min.y) / 2
+    )
+  }
+
   scaled (scale: number): BoundingBox {
-    const centerX = (this.max.x + this.min.x) / 2
-    const centerY = (this.max.y + this.min.y) / 2
     return new BoundingBox({
       min: new Point(
-        (this.min.x - centerX) * scale + centerX,
-        (this.min.y - centerY) * scale + centerY,
+        (this.min.x - this.center.x) * scale + this.center.x,
+        (this.min.y - this.center.y) * scale + this.center.y,
       ),
       max: new Point(
-        (this.max.x - centerX) * scale + centerX,
-        (this.max.y - centerY) * scale + centerY,
+        (this.max.x - this.center.x) * scale + this.center.x,
+        (this.max.y - this.center.y) * scale + this.center.y,
       ),
     })
   }

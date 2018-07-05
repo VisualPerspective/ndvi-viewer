@@ -1,24 +1,35 @@
 import * as React from 'react'
 import { observer } from 'mobx-react'
-import { observable } from 'mobx'
+import { action, observable } from 'mobx'
 import Point from '@app/models/Point'
 
 class MouseElement extends React.Component<{
   render: ({}: {
     dragging: boolean,
+    previousMousePosition?: Point,
     mousePosition?: Point,
     startDragging: () => void,
   }) => React.ReactElement<any>,
 }, any> {
-  @observable mousePosition: Point = new Point(0, 0)
+  @observable mousePosition: Point
+  @observable previousMousePosition: Point
   @observable dragging: boolean
 
   mouseUpListener = () => {
     this.dragging = false
   }
 
-  mouseMoveListener = (e: MouseEvent) => {
-    this.mousePosition.set(e.pageX, e.pageY)
+  @action mouseMoveListener = (e: MouseEvent) => {
+    if (this.mousePosition !== undefined) {
+      this.previousMousePosition.set(
+        this.mousePosition.x,
+        this.mousePosition.y
+      )
+      this.mousePosition.set(e.pageX, e.pageY)
+    } else {
+      this.previousMousePosition = new Point(e.pageX, e.pageY)
+      this.mousePosition = new Point(e.pageX, e.pageY)
+    }
   }
 
   startDragging () {
@@ -38,6 +49,7 @@ class MouseElement extends React.Component<{
   render () {
     return this.props.render({
       dragging: this.dragging,
+      previousMousePosition: this.previousMousePosition,
       mousePosition: this.mousePosition,
       startDragging: this.startDragging.bind(this),
     })

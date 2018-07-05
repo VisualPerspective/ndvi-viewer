@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react'
 import DevTools from 'mobx-react-devtools'
 import Header from '@app/components/Header'
 import Footer from '@app/components/Footer'
-import SingleView from '@app/components/SingleView'
+import SingleViewContainer from '@app/components/SingleViewContainer'
 import Loading from '@app/components/Loading'
 import RootStore from '@app/models/RootStore'
 
@@ -18,7 +18,7 @@ const Container: React.SFC<{ rootStore?: RootStore }> = (props) => (
       props.rootStore.initialized ? (
         <>
           <Header />
-          <SingleView />
+          <SingleViewContainer />
           <Footer />
         </>
       ) : (
