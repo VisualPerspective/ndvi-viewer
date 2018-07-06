@@ -1,6 +1,6 @@
 import * as REGL from 'regl'
 import * as _ from 'lodash'
-import { observable, computed, action } from 'mobx'
+import { observable, computed } from 'mobx'
 import constants from '@app/constants'
 import Point from '@app/models/Point'
 import BoundingBox from '@app/models/BoundingBox'
@@ -16,8 +16,6 @@ class Camera {
   @observable bearing = 0
   @observable altitude = 1.5
   @observable _zoom: number
-  pixelsPerDegree: number[]
-  viewport: Viewport.WebMercatorViewport
 
   constructor ({ size, boundingBox }: {
     size: Point,
@@ -38,16 +36,18 @@ class Camera {
     this.position = this.boundingBox.center
   }
 
-  lngLatDelta (fromPixel: Point, toPixel: Point) {
-    if (this.viewport !== undefined) {
-      const fromLngLat = this.viewport.unproject(fromPixel.array)
-      const toLngLat = this.viewport.unproject(toPixel.array)
-
-      return new Point(toLngLat[0] - fromLngLat[0], toLngLat[1] - fromLngLat[1])
-    }
+  pixelToLngLat (pixel: Point) {
+    return Point.fromArray(this.viewport.unproject(pixel.array))
   }
 
-  @action calculateViewport () {
+  lngLatDelta (fromPixel: Point, toPixel: Point) {
+    const fromLngLat = this.pixelToLngLat(fromPixel)
+    const toLngLat = this.pixelToLngLat(toPixel)
+
+    return new Point(toLngLat.x - fromLngLat.x, toLngLat.y - fromLngLat.y)
+  }
+
+  @computed get viewport (): Viewport.WebMercatorViewport {
     const lngLatZoom = Viewport.fitBounds({
       width: this.size.x,
       height: this.size.y,
@@ -58,7 +58,7 @@ class Camera {
       ],
     })
 
-    this.viewport = new Viewport.WebMercatorViewport({
+    return new Viewport.WebMercatorViewport({
       pitch: this.pitch,
       bearing: this.bearing,
       altitude: this.altitude,
@@ -75,8 +75,6 @@ class Camera {
     view: REGL.Mat4
     projection: REGL.Mat4
   } {
-    this.calculateViewport()
-
     return {
       scale: this.viewport.scale * constants.TILE_SIZE,
       view: this.viewport.viewMatrix,

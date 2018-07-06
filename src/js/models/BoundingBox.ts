@@ -102,6 +102,20 @@ class BoundingBox {
     })
   }
 
+  @computed get square (): BoundingBox {
+    const size = Math.max(this.max.x - this.min.x, this.max.y - this.min.y) / 2
+    return new BoundingBox({
+      min: new Point(
+        this.center.x - size,
+        this.center.y - size
+      ),
+      max: new Point(
+        this.center.x + size,
+        this.center.y + size
+      ),
+    })
+  }
+
   contains (point: Point): boolean {
     return (
       _.inRange(point.x, this.min.x, this.max.x) &&

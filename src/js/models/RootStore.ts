@@ -19,7 +19,6 @@ class RootStore {
 
   @observable camera: Camera
   @observable vectorLayer: VectorLayer
-  @observable selectedBox = observable<BoundingBox>(new BoundingBox())
   @observable boundingBox = observable<BoundingBox>(new BoundingBox())
 
   readonly timePeriodAverages = observable<number>([])
@@ -76,13 +75,11 @@ class RootStore {
       this.dataTiffs[0].image.getBoundingBox()
     ))
 
-    this.selectedBox = observable(
-      this.boundingBox.lngLatFromSinusoidal.scaled(1.1)
-    )
+    const startingBox = this.boundingBox.square.lngLatFromSinusoidal.scaled(1.1)
 
     this.camera = new Camera({
       size: new Point(100, 100),
-      boundingBox: BoundingBox.fromArray(this.selectedBox.array),
+      boundingBox: BoundingBox.fromArray(startingBox.array),
     })
 
     this.initialized = true
@@ -116,14 +113,19 @@ class RootStore {
     })
   }
 
-  pick (coordinate: Point) {
-    const lngLat = this.camera.viewport.unproject(coordinate.array)
+  @computed get selectedBox (): BoundingBox {
+    const size = this.camera.size
+    const center = new Point(size.x / 2, size.y / 2)
+    const extent = Math.min(size.x, size.y) / 2 -
+      constants.SELECTED_BOX_PADDING
 
-    if (this.selectedBox.contains(new Point(lngLat[0], lngLat[1]))) {
-      return PickTypes.MOVE
-    } else {
-      return PickTypes.PAN
-    }
+    const minPixel = new Point(center.x - extent, center.y - extent)
+    const maxPixel = new Point(center.x + extent, center.y + extent)
+
+    return new BoundingBox({
+      min: this.camera.pixelToLngLat(minPixel),
+      max: this.camera.pixelToLngLat(maxPixel),
+    })
   }
 }
 

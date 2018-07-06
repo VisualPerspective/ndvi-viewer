@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react'
 import * as _ from 'lodash'
 import Zoom from '@app/components/Zoom'
 import Point from '@app/models/Point'
-import RootStore, { PickTypes } from '@app/models/RootStore'
+import RootStore from '@app/models/RootStore'
 import GLManager from '@app/gl/GLManager'
 
 class SingleView extends React.Component<{
@@ -19,7 +19,6 @@ class SingleView extends React.Component<{
   dragReactionDisposer: IReactionDisposer
   glManager: GLManager
   canvas: HTMLCanvasElement
-  dragType: PickTypes
 
   componentDidMount () {
     this.glManager = new GLManager({
@@ -46,17 +45,10 @@ class SingleView extends React.Component<{
       const toPixel = this.relativePosition(this.props.mousePosition)
       const delta = this.props.rootStore.camera.lngLatDelta(fromPixel, toPixel)
 
-      if (this.dragType === PickTypes.PAN) {
-        this.props.rootStore.camera.position.set(
-          this.props.rootStore.camera.position.x - delta.x,
-          this.props.rootStore.camera.position.y - delta.y
-        )
-      } else if (this.dragType === PickTypes.MOVE) {
-        this.props.rootStore.selectedBox.center = new Point(
-          this.props.rootStore.selectedBox.center.x + delta.x,
-          this.props.rootStore.selectedBox.center.y + delta.y
-        )
-      }
+      this.props.rootStore.camera.position.set(
+        this.props.rootStore.camera.position.x - delta.x,
+        this.props.rootStore.camera.position.y - delta.y
+      )
     }
   }
 
@@ -84,8 +76,6 @@ class SingleView extends React.Component<{
         <canvas
           ref={canvas => { this.canvas = canvas }}
           onMouseDown={() => {
-            const position = this.relativePosition(this.props.mousePosition)
-            this.dragType = this.props.rootStore.pick(position)
             this.props.startDragging()
           }} />
         <Zoom />

@@ -16,6 +16,10 @@ class Point {
   @computed get array () {
     return [this.x, this.y]
   }
+
+  static fromArray (array: number[]): Point {
+    return new Point(array[0], array[1])
+  }
 }
 
 export default Point
