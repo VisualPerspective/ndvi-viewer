@@ -15,7 +15,7 @@ export enum PickTypes {
 class RootStore {
   @observable initialized: boolean = false
   @observable dataTiffsLoaded: number = 0
-  @observable timePeriod: number = 0
+  @observable timePeriod: number = constants.START_TIME_PERIOD
 
   @observable camera: Camera
   @observable vectorLayer: VectorLayer

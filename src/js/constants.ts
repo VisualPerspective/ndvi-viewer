@@ -11,6 +11,7 @@ export default {
   NO_DATA_VALUE: -1,
   TILE_SIZE: 512,
   START_YEAR: 2001,
+  START_TIME_PERIOD: 6,
   TIFF_URLS: [
     require('@assets/rasters/modis_2001_NDVI.tif'),
     require('@assets/rasters/modis_2002_NDVI.tif'),
