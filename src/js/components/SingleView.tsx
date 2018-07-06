@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react'
 import * as _ from 'lodash'
 import Zoom from '@app/components/Zoom'
 import Point from '@app/models/Point'
-import RootStore from '@app/models/RootStore'
+import RootStore, { PickTypes } from '@app/models/RootStore'
 import GLManager from '@app/gl/GLManager'
 
 class SingleView extends React.Component<{
@@ -19,6 +19,7 @@ class SingleView extends React.Component<{
   dragReactionDisposer: IReactionDisposer
   glManager: GLManager
   canvas: HTMLCanvasElement
+  dragType: PickTypes
 
   componentDidMount () {
     this.glManager = new GLManager({
@@ -29,26 +30,47 @@ class SingleView extends React.Component<{
     this.dragReactionDisposer = reaction(() => ({
       mousePositionX: _.get(this.props.mousePosition, 'x'),
       mousePositionY: _.get(this.props.mousePosition, 'y'),
-    }), () => {
-      if (this.props.dragging) {
-        const canvasRect = this.canvas.getBoundingClientRect()
+    }), this.handleMouseMove)
 
-        const fromPixel = new Point(
-          this.props.previousMousePosition.x - canvasRect.left,
-          this.props.previousMousePosition.y - canvasRect.top
+    window.addEventListener('wheel', this.handleWheel)
+  }
+
+  relativePosition (point: Point) {
+    const canvasRect = this.canvas.getBoundingClientRect()
+    return new Point(point.x - canvasRect.left, point.y - canvasRect.top)
+  }
+
+  handleMouseMove = () => {
+    if (this.props.dragging) {
+      const fromPixel = this.relativePosition(this.props.previousMousePosition)
+      const toPixel = this.relativePosition(this.props.mousePosition)
+      const delta = this.props.rootStore.camera.lngLatDelta(fromPixel, toPixel)
+
+      if (this.dragType === PickTypes.PAN) {
+        this.props.rootStore.camera.position.set(
+          this.props.rootStore.camera.position.x - delta.x,
+          this.props.rootStore.camera.position.y - delta.y
         )
-
-        const toPixel = new Point(
-          this.props.mousePosition.x - canvasRect.left,
-          this.props.mousePosition.y - canvasRect.top
+      } else if (this.dragType === PickTypes.MOVE) {
+        this.props.rootStore.selectedBox.center = new Point(
+          this.props.rootStore.selectedBox.center.x + delta.x,
+          this.props.rootStore.selectedBox.center.y + delta.y
         )
-
-        this.props.rootStore.camera.moveByPixels(fromPixel, toPixel)
       }
-    })
+    }
+  }
+
+  handleWheel = (e: WheelEvent) => {
+    const amount = -e.deltaY * 0.001
+
+    if (e.target === this.canvas) {
+      this.props.rootStore.camera.zoom += amount
+      e.preventDefault()
+    }
   }
 
   componentWillUnmount () {
+    window.removeEventListener('wheel', this.handleWheel)
     this.dragReactionDisposer()
   }
 
@@ -61,7 +83,11 @@ class SingleView extends React.Component<{
       <>
         <canvas
           ref={canvas => { this.canvas = canvas }}
-          onMouseDown={() => { this.props.startDragging() }} />
+          onMouseDown={() => {
+            const position = this.relativePosition(this.props.mousePosition)
+            this.dragType = this.props.rootStore.pick(position)
+            this.props.startDragging()
+          }} />
         <Zoom />
       </>
     )

@@ -1,4 +1,5 @@
 import * as REGL from 'regl'
+import * as _ from 'lodash'
 import { observable, computed, action } from 'mobx'
 import constants from '@app/constants'
 import Point from '@app/models/Point'
@@ -14,7 +15,7 @@ class Camera {
   @observable pitch = 0
   @observable bearing = 0
   @observable altitude = 1.5
-  @observable zoom: number
+  @observable _zoom: number
   pixelsPerDegree: number[]
   viewport: Viewport.WebMercatorViewport
 
@@ -24,11 +25,12 @@ class Camera {
   }) {
     this.size = size
     this.boundingBox = boundingBox
-
-    // tslint:disable-next-line
-    console.log(boundingBox.center)
-
     this.reset()
+  }
+
+  @computed get zoom () { return this._zoom }
+  set zoom (value: number) {
+    this._zoom = _.clamp(value, 0, 1)
   }
 
   reset () {
@@ -36,18 +38,12 @@ class Camera {
     this.position = this.boundingBox.center
   }
 
-  moveByPixels (fromPixel: Point, toPixel: Point) {
+  lngLatDelta (fromPixel: Point, toPixel: Point) {
     if (this.viewport !== undefined) {
       const fromLngLat = this.viewport.unproject(fromPixel.array)
       const toLngLat = this.viewport.unproject(toPixel.array)
 
-      // tslint:disable-next-line
-      console.log(toLngLat)
-
-      this.position.set(
-        this.position.x - (toLngLat[0] - fromLngLat[0]),
-        this.position.y - (toLngLat[1] - fromLngLat[1]),
-      )
+      return new Point(toLngLat[0] - fromLngLat[0], toLngLat[1] - fromLngLat[1])
     }
   }
 
@@ -55,7 +51,7 @@ class Camera {
     const lngLatZoom = Viewport.fitBounds({
       width: this.size.x,
       height: this.size.y,
-      padding: 100,
+      padding: 25,
       bounds: [
         this.boundingBox.min.array,
         this.boundingBox.max.array,

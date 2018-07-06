@@ -7,6 +7,11 @@ import BoundingBox from '@app/models/BoundingBox'
 import Camera from '@app/models/Camera'
 import VectorLayer from '@app/models/VectorLayer'
 
+export enum PickTypes {
+  PAN,
+  MOVE,
+}
+
 class RootStore {
   @observable initialized: boolean = false
   @observable dataTiffsLoaded: number = 0
@@ -77,7 +82,7 @@ class RootStore {
 
     this.camera = new Camera({
       size: new Point(100, 100),
-      boundingBox: this.selectedBox,
+      boundingBox: BoundingBox.fromArray(this.selectedBox.array),
     })
 
     this.initialized = true
@@ -109,6 +114,16 @@ class RootStore {
         y: this.rasterHeight * yIndex,
       }
     })
+  }
+
+  pick (coordinate: Point) {
+    const lngLat = this.camera.viewport.unproject(coordinate.array)
+
+    if (this.selectedBox.contains(new Point(lngLat[0], lngLat[1]))) {
+      return PickTypes.MOVE
+    } else {
+      return PickTypes.PAN
+    }
   }
 }
 

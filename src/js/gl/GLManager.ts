@@ -114,8 +114,8 @@ class GLManager {
     reaction(() => ({
       timePeriod: this.rootStore.timePeriod,
       zoom: this.rootStore.camera.zoom,
-      cameraPositionX: this.rootStore.camera.position.x,
-      cameraPositionY: this.rootStore.camera.position.y,
+      cameraPosition: this.rootStore.camera.position.array,
+      selectedBox: this.rootStore.selectedBox.array,
     }), this.render.bind(this))
   }
 

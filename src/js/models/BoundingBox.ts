@@ -80,6 +80,15 @@ class BoundingBox {
     )
   }
 
+  set center (newCenter: Point) {
+    const xChange = newCenter.x - this.center.x
+    const yChange = newCenter.y - this.center.y
+    this.min.x += xChange
+    this.max.x += xChange
+    this.min.y += yChange
+    this.max.y += yChange
+  }
+
   scaled (scale: number): BoundingBox {
     return new BoundingBox({
       min: new Point(
@@ -91,6 +100,13 @@ class BoundingBox {
         (this.max.y - this.center.y) * scale + this.center.y,
       ),
     })
+  }
+
+  contains (point: Point): boolean {
+    return (
+      _.inRange(point.x, this.min.x, this.max.x) &&
+      _.inRange(point.y, this.min.y, this.max.y)
+    )
   }
 }
 
