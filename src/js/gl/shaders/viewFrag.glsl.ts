@@ -45,9 +45,11 @@ export default () => `
 
     float unscaled = atlasSample(timeComponent, sample);
     float scaled = (unscaled + 0.2) / 1.2;
-    vec4 color = step(-0.2, unscaled) * viridis(scaled);
+    float hasdata = step(-0.2, unscaled);
+    vec4 color = mix(vec4(0.0), viridis(scaled), hasdata);
+    vec4 grayscale = mix(vec4(0.0), vec4(vec3(luma(color)) * 0.7, 1.0), hasdata);
 
     float inside = isPointInBBox(lngLat, selectedBBoxLngLat);
-    gl_FragColor = inside * color + (1.0 - inside) * luma(color) * 0.8;
+    gl_FragColor = mix(grayscale, color, inside);
   }
 `
