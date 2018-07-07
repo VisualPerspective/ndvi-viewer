@@ -14,6 +14,7 @@ interface IUniforms {
   imagesWide: number
   imageSize: number[]
   rasterBBoxMeters: number[]
+  selectedBBoxLngLat: number[]
   atlasSize: number
   timePeriod: number
   scale: number
@@ -27,6 +28,7 @@ interface IProps {
   view: REGL.Mat4
   projection: REGL.Mat4
   rasterBBoxMeters: number[]
+  selectedBBoxLngLat: number[]
   scale: number
   triangles: number[][]
   trianglesLength: number
@@ -66,6 +68,7 @@ class RasterView {
         imageSize: this.rootStore.rasterSizePercent.array,
         raster: this.rasterTexture,
         rasterBBoxMeters: ctx.prop<IProps, 'rasterBBoxMeters'>('rasterBBoxMeters'),
+        selectedBBoxLngLat: ctx.prop<IProps, 'selectedBBoxLngLat'>('selectedBBoxLngLat'),
         atlasSize: constants.DATA_TEXTURE_SIZE,
         timePeriod: ctx.prop<IProps, 'timePeriod'>('timePeriod'),
         scale: ctx.prop<IProps, 'scale'>('scale'),
@@ -90,6 +93,7 @@ class RasterView {
       triangles,
       trianglesLength: triangles.length,
       rasterBBoxMeters: this.rootStore.boundingBox.array,
+      selectedBBoxLngLat: this.rootStore.selectedBox.array,
     })
   }
 }

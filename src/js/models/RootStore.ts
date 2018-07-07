@@ -119,8 +119,8 @@ class RootStore {
     const extent = Math.min(size.x, size.y) / 2 -
       constants.SELECTED_BOX_PADDING
 
-    const minPixel = new Point(center.x - extent, center.y - extent)
-    const maxPixel = new Point(center.x + extent, center.y + extent)
+    const minPixel = new Point(center.x - extent, center.y + extent)
+    const maxPixel = new Point(center.x + extent, center.y - extent)
 
     return new BoundingBox({
       min: this.camera.pixelToLngLat(minPixel),

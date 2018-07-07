@@ -1,17 +1,21 @@
+import luma from '@app/gl/shaders/functions/luma'
 import viridis from '@app/gl/shaders/functions/viridis'
 import lngLatToSinusoidal from '@app/gl/shaders/functions/lngLatToSinusoidal'
 import mercatorToLngLat from '@app/gl/shaders/functions/mercatorToLngLat'
 import pointInBBox from '@app/gl/shaders/functions/pointInBBox'
+import isPointInBBox from '@app/gl/shaders/functions/isPointInBBox'
 import atlasUV from '@app/gl/shaders/functions/atlasUV'
 import atlasSample from '@app/gl/shaders/functions/atlasSample'
 
 export default () => `
   precision highp float;
 
+  ${luma()}
   ${viridis()}
   ${lngLatToSinusoidal()}
   ${mercatorToLngLat()}
   ${pointInBBox()}
+  ${isPointInBBox()}
   ${atlasUV()}
   ${atlasSample()}
 
@@ -19,6 +23,7 @@ export default () => `
   uniform float scale;
   uniform sampler2D raster;
   uniform vec4 rasterBBoxMeters;
+  uniform vec4 selectedBBoxLngLat;
   uniform vec2 imageSize;
   uniform int imagesWide;
 
@@ -39,12 +44,10 @@ export default () => `
     ));
 
     float unscaled = atlasSample(timeComponent, sample);
-
     float scaled = (unscaled + 0.2) / 1.2;
-    if (unscaled < -0.2) {
-      gl_FragColor = vec4(0.0);
-    } else {
-      gl_FragColor = viridis(scaled);
-    }
+    vec4 color = step(-0.2, unscaled) * viridis(scaled);
+
+    float inside = isPointInBBox(lngLat, selectedBBoxLngLat);
+    gl_FragColor = inside * color + (1.0 - inside) * luma(color) * 0.8;
   }
 `
