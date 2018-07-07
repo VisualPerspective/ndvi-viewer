@@ -1,5 +1,6 @@
 import viridis from '@app/gl/shaders/functions/viridis'
 import lngLatToSinusoidal from '@app/gl/shaders/functions/lngLatToSinusoidal'
+import mercatorToLngLat from '@app/gl/shaders/functions/mercatorToLngLat'
 import pointInBBox from '@app/gl/shaders/functions/pointInBBox'
 import atlasUV from '@app/gl/shaders/functions/atlasUV'
 import atlasSample from '@app/gl/shaders/functions/atlasSample'
@@ -9,26 +10,26 @@ export default () => `
 
   ${viridis()}
   ${lngLatToSinusoidal()}
+  ${mercatorToLngLat()}
   ${pointInBBox()}
   ${atlasUV()}
   ${atlasSample()}
 
   uniform highp int timePeriod;
+  uniform float scale;
   uniform sampler2D raster;
   uniform vec4 rasterBBoxMeters;
   uniform vec2 imageSize;
   uniform int imagesWide;
 
-  varying vec2 lngLat;
+  varying vec2 mercator;
 
   void main() {
     float timeComponent = mod(float(timePeriod), 4.0);
 
+    vec2 lngLat = mercatorToLngLat(mercator, scale);
     vec2 meters = lngLatToSinusoidal(lngLat);
-    vec2 projectedUV = pointInBBox(vec2(
-      meters.x + 1000.0,
-      meters.y + 3500.0
-    ), rasterBBoxMeters);
+    vec2 projectedUV = pointInBBox(meters, rasterBBoxMeters);
 
     vec4 sample = texture2D(raster, atlasUV(
       projectedUV,

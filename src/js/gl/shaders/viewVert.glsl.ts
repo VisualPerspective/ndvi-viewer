@@ -7,14 +7,12 @@ export default () => `
   uniform mat4 model, view, projection;
   uniform highp int timePeriod;
   uniform float scale;
-  varying vec2 lngLat;
+  varying vec2 mercator;
 
   ${lngLatToMercator()}
 
   void main() {
-    vec4 mercator = vec4(lngLatToMercator(position, scale), 0.0, 1.0);
-
-    lngLat = position;
-    gl_Position = projection * view * mercator;
+    mercator = lngLatToMercator(position, scale);
+    gl_Position = projection * view * vec4(mercator, 0.0, 1.0);
   }
 `
