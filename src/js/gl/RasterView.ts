@@ -11,6 +11,7 @@ interface IUniforms {
   view: REGL.Mat4
   projection: REGL.Mat4
   raster: REGL.Texture2D
+  mask: REGL.Texture2D
   imagesWide: number
   imageSize: number[]
   rasterBBoxMeters: number[]
@@ -39,19 +40,23 @@ class RasterView {
   renderer: any
   ctx: REGL.Regl
   rasterTexture: REGL.Texture2D
+  rasterMaskTexture: REGL.Texture2D
   rootStore: RootStore
 
   constructor ({
     ctx,
     rasterTexture,
+    rasterMaskTexture,
     rootStore,
   }: {
     ctx: REGL.Regl,
     rasterTexture: REGL.Texture2D,
+    rasterMaskTexture: REGL.Texture2D,
     rootStore?: RootStore,
   }) {
     this.ctx = ctx
     this.rasterTexture = rasterTexture
+    this.rasterMaskTexture = rasterMaskTexture
     this.rootStore = rootStore
 
     this.renderer = ctx<IUniforms, IAttributes, IProps>({
@@ -67,6 +72,7 @@ class RasterView {
         imagesWide: this.rootStore.textureRastersWide,
         imageSize: this.rootStore.rasterSizePercent.array,
         raster: this.rasterTexture,
+        mask: this.rasterMaskTexture,
         rasterBBoxMeters: ctx.prop<IProps, 'rasterBBoxMeters'>('rasterBBoxMeters'),
         selectedBBoxLngLat: ctx.prop<IProps, 'selectedBBoxLngLat'>('selectedBBoxLngLat'),
         atlasSize: constants.DATA_TEXTURE_SIZE,

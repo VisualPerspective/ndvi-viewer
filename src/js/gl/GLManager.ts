@@ -1,6 +1,7 @@
 import * as REGL from 'regl'
 import { reaction } from 'mobx'
 import RasterView from '@app/gl/RasterView'
+import RasterMask from '@app/gl/RasterMask'
 import RasterWidthGather from '@app/gl/RasterWidthGather'
 import RasterHeightGather from '@app/gl/RasterHeightGather'
 import VectorView from '@app/gl/VectorView'
@@ -13,6 +14,7 @@ class GLManager {
   canvas: HTMLCanvasElement
   ctx: any
   rasterView: RasterView
+  rasterMask: RasterMask
   rasterWidthGather: RasterWidthGather
   rasterHeightGather: RasterHeightGather
   vectorView: VectorView
@@ -20,6 +22,7 @@ class GLManager {
   boxSelectView: BoxSelectView
   rootStore: RootStore
   rasterTexture: REGL.Texture2D
+  rasterMaskTexture: REGL.Texture2D
   widthGatherTexture: REGL.Texture2D
   heightGatherTexture: REGL.Texture2D
   pendingRender: boolean = false
@@ -59,12 +62,6 @@ class GLManager {
       (this.rasterTexture as any).subimage({ width, height, data }, x, y)
     })
 
-    this.rasterView = new RasterView({
-      rootStore,
-      ctx: this.ctx,
-      rasterTexture: this.rasterTexture,
-    })
-
     this.vectorView = new VectorView({
       rootStore,
       ctx: this.ctx,
@@ -80,23 +77,44 @@ class GLManager {
       ctx: this.ctx,
     })
 
+    this.rasterMaskTexture = this.ctx.texture({
+      ...(constants.DATA_TEXTURE_OPTIONS),
+      type: 'uint8',
+      width: rootStore.rasterWidth,
+      height: rootStore.rasterHeight,
+    })
+
+    this.rasterMask = new RasterMask({
+      rootStore,
+      ctx: this.ctx,
+      rasterMaskTexture: this.rasterMaskTexture,
+    })
+
+    this.rasterView = new RasterView({
+      rootStore,
+      ctx: this.ctx,
+      rasterTexture: this.rasterTexture,
+      rasterMaskTexture: this.rasterMaskTexture,
+    })
+
     this.widthGatherTexture = this.ctx.texture({
       ...(constants.DATA_TEXTURE_OPTIONS),
       width: rootStore.samplesWide,
       height: constants.DATA_TEXTURE_SIZE,
     })
 
-    this.heightGatherTexture = this.ctx.texture({
-      ...(constants.DATA_TEXTURE_OPTIONS),
-      width: rootStore.samplesWide,
-      height: rootStore.textureRastersHigh,
-    })
-
     this.rasterWidthGather = new RasterWidthGather({
       rootStore,
       ctx: this.ctx,
       rasterTexture: this.rasterTexture,
+      rasterMaskTexture: this.rasterMaskTexture,
       widthGatherTexture: this.widthGatherTexture,
+    })
+
+    this.heightGatherTexture = this.ctx.texture({
+      ...(constants.DATA_TEXTURE_OPTIONS),
+      width: rootStore.samplesWide,
+      height: rootStore.textureRastersHigh,
     })
 
     this.rasterHeightGather = new RasterHeightGather({
@@ -140,10 +158,16 @@ class GLManager {
         this.pendingRender = false
         this.ctx.poll()
         this.ctx.clear({ color: [0.2, 0.2, 0.2, 1] })
+        this.rasterMask.render()
         this.vectorView.render()
         this.rasterView.render()
         this.outlineView.render()
         this.boxSelectView.render()
+
+        this.rasterWidthGather.compute()
+        this.rootStore.timePeriodAverages.replace(
+          this.rasterHeightGather.compute()
+        )
       })
     }
   }

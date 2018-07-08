@@ -65,6 +65,9 @@ class RasterHeightGather {
         noDataThreshold: constants.NO_DATA_THRESHOLD,
       }),
       vert: vert(),
+      depth: {
+        enable: false,
+      },
       attributes: {
         position: constants.DATA_SQUARE_POSITIONS,
         uv: compensatedSquareUVs({

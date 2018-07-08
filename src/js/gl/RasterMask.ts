@@ -5,15 +5,15 @@ import {
   compensatedSquareUVs
 } from '@app/utils'
 
-import vert from '@app/gl/shaders/gatherVert'
-import frag from '@app/gl/shaders/gatherFragWidth'
+import vert from '@app/gl/shaders/maskVert'
+import frag from '@app/gl/shaders/maskFrag'
 
 interface IUniforms {
-  raster: REGL.Texture2D
   mask: REGL.Texture2D
-  imageSize: number[]
-  imagesWide: number
-  targetHeight: number
+  rasterBBoxMeters: number[]
+  selectedBBoxLngLat: number[]
+  rasterWidth: number
+  rasterHeight: number
 }
 
 interface IAttributes {
@@ -24,51 +24,41 @@ interface IAttributes {
 interface IProps {
   framebufferWidth: number
   framebufferHeight: number
+  rasterBBoxMeters: number[]
+  selectedBBoxLngLat: number[]
 }
 
-class RasterWidthGather {
+class RasterMask {
   renderer: any
   ctx: REGL.Regl
-  rasterTexture: REGL.Texture2D
   rasterMaskTexture: REGL.Texture2D
-  widthGatherTexture: REGL.Texture2D
-  widthGatherFBO: REGL.Framebuffer
   rootStore: RootStore
+  maskFBO: REGL.Framebuffer
 
   constructor ({
     ctx,
-    rasterTexture,
     rasterMaskTexture,
-    widthGatherTexture,
     rootStore,
   }: {
     ctx: REGL.Regl
-    rasterTexture: REGL.Texture2D
     rasterMaskTexture: REGL.Texture2D
-    widthGatherTexture: REGL.Texture2D
     rootStore?: RootStore
   }) {
     this.ctx = ctx
-    this.rasterTexture = rasterTexture
     this.rasterMaskTexture = rasterMaskTexture
     this.rootStore = rootStore
 
-    this.widthGatherTexture = widthGatherTexture
-
-    this.widthGatherFBO = ctx.framebuffer({
-      color: this.widthGatherTexture,
+    this.maskFBO = ctx.framebuffer({
+      color: this.rasterMaskTexture,
     })
 
     this.renderer = ctx<IUniforms, IAttributes, IProps>({
-      framebuffer: this.widthGatherFBO,
+      framebuffer: this.maskFBO,
       context: {
         framebufferWidth: ctx.prop<IProps, 'framebufferWidth'>('framebufferWidth'),
         framebufferHeight: ctx.prop<IProps, 'framebufferHeight'>('framebufferHeight'),
       },
-      frag: frag({
-        rasterWidth: rootStore.rasterWidth,
-        noDataThreshold: constants.NO_DATA_THRESHOLD,
-      }),
+      frag: frag(),
       vert: vert(),
       depth: {
         enable: false,
@@ -76,30 +66,32 @@ class RasterWidthGather {
       attributes: {
         position: constants.DATA_SQUARE_POSITIONS,
         uv: compensatedSquareUVs({
-          width: rootStore.samplesWide,
-          height: constants.DATA_TEXTURE_SIZE,
+          width: rootStore.rasterWidth,
+          height: rootStore.rasterHeight,
         }),
       },
       uniforms: {
-        raster: this.rasterTexture,
         mask: this.rasterMaskTexture,
-        imageSize: this.rootStore.rasterSizePercent.array,
-        imagesWide: this.rootStore.textureRastersWide,
-        targetHeight: constants.DATA_TEXTURE_SIZE,
+        rasterWidth: rootStore.rasterWidth,
+        rasterHeight: rootStore.rasterHeight,
+        rasterBBoxMeters: ctx.prop<IProps, 'rasterBBoxMeters'>('rasterBBoxMeters'),
+        selectedBBoxLngLat: ctx.prop<IProps, 'selectedBBoxLngLat'>('selectedBBoxLngLat'),
       },
       count: constants.DATA_SQUARE_POSITIONS.length,
     })
   }
 
-  compute () {
-    this.ctx({ framebuffer: this.widthGatherFBO })(() => {
+  render () {
+    this.ctx({ framebuffer: this.maskFBO })(() => {
       this.ctx.poll()
       this.renderer({
-        framebufferWidth: this.rootStore.samplesWide,
-        framebufferHeight: constants.DATA_TEXTURE_SIZE,
+        framebufferWidth: this.rootStore.rasterWidth,
+        framebufferHeight: this.rootStore.rasterHeight,
+        rasterBBoxMeters: this.rootStore.boundingBox.array,
+        selectedBBoxLngLat: this.rootStore.selectedBox.array,
       })
     })
   }
 }
 
-export default RasterWidthGather
+export default RasterMask

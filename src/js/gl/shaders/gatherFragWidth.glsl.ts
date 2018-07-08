@@ -10,6 +10,7 @@ export default ({
 }) => `
   precision highp float;
   uniform sampler2D raster;
+  uniform sampler2D mask;
   uniform vec2 imageSize;
   uniform int imagesWide;
   uniform float targetHeight;
@@ -37,10 +38,11 @@ export default ({
       );
 
       vec4 sample = texture2D(raster, uv);
+      float maskSample = texture2D(mask, relativeUV).r;
       float value = atlasSample(mod(index, 4.0), sample);
 
-      total += step(${noDataThreshold}, value) * value;
-      pixels += step(${noDataThreshold}, value);
+      total += step(0.5, maskSample) * step(${noDataThreshold}, value) * value;
+      pixels += step(0.5, maskSample) * step(${noDataThreshold}, value);
     }
 
     gl_FragColor = vec4(

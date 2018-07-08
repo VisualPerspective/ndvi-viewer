@@ -21,16 +21,19 @@ export const debugImageFromArray = (
 ) => {
   const rgbaArray = data.map((x: number, i: number) => (
     [
-      x * 255,
-      x * 255,
-      x * 255,
+      x,
+      x,
+      x,
       255,
     ][i % 4]
   ))
 
-  const canvas = document.createElement('canvas')
-  canvas.className = 'debug-image'
-  document.body.appendChild(canvas)
+  let canvas = (document.querySelector('.debug-image') as HTMLCanvasElement)
+  if (canvas === null) {
+    canvas = document.createElement('canvas')
+    canvas.className = 'debug-image'
+    document.body.appendChild(canvas)
+  }
 
   const ctx = canvas.getContext('2d')
 

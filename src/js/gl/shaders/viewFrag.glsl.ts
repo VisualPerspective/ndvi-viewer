@@ -22,6 +22,7 @@ export default () => `
   uniform highp int timePeriod;
   uniform float scale;
   uniform sampler2D raster;
+  uniform sampler2D mask;
   uniform vec4 rasterBBoxMeters;
   uniform vec4 selectedBBoxLngLat;
   uniform vec2 imageSize;
@@ -36,6 +37,8 @@ export default () => `
     vec2 meters = lngLatToSinusoidal(lngLat);
     vec2 projectedUV = pointInBBox(meters, rasterBBoxMeters);
 
+    float maskSample = texture2D(mask, projectedUV).r;
+
     vec4 sample = texture2D(raster, atlasUV(
       projectedUV,
       timePeriod,
@@ -49,7 +52,6 @@ export default () => `
     vec4 color = mix(vec4(0.0), viridis(scaled), hasdata);
     vec4 grayscale = mix(vec4(0.0), vec4(vec3(luma(color)) * 0.7, 1.0), hasdata);
 
-    float inside = isPointInBBox(lngLat, selectedBBoxLngLat);
-    gl_FragColor = mix(grayscale, color, inside);
+    gl_FragColor = mix(grayscale, color, maskSample);
   }
 `
