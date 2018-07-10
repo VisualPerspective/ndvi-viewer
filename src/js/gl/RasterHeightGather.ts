@@ -114,7 +114,8 @@ class RasterHeightGather {
       const pixelCount = pixels[i * 4 + 1]
       totals.push(total)
       pixelCounts.push(pixelCount)
-      values.push(total / pixelCount)
+
+      values.push(pixelCount === 0 ? undefined : total / pixelCount)
     }
 
     return values

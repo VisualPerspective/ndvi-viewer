@@ -15,16 +15,18 @@ const Series = ({ width, height, margin, yScale, colorScale, rootStore }: {
   <g className='series'>
     {
       _.times(rootStore.timePeriods, i => (
-        <g key={i} className='average'
-          transform={translate(
-            i / (rootStore.timePeriods - 1) *
-            (width - (margin.left + margin.right)) +
-            margin.left,
-            yScale(rootStore.timePeriodAverages[i])
-          )}>
-          <circle r={5}cx={0} cy={0}
-            fill={colorScale(rootStore.timePeriodAverages[i])} />
-        </g>
+        rootStore.timePeriodAverages[i] !== undefined && (
+          <g key={i} className='average'
+            transform={translate(
+              i / (rootStore.timePeriods - 1) *
+              (width - (margin.left + margin.right)) +
+              margin.left,
+              yScale(rootStore.timePeriodAverages[i])
+            )}>
+            <circle r={5} cx={0} cy={0}
+              fill={colorScale(rootStore.timePeriodAverages[i])} />
+          </g>
+        )
       ))
     }
   </g>
