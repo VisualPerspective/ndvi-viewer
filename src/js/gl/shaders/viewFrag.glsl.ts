@@ -3,7 +3,6 @@ import viridis from '@app/gl/shaders/functions/viridis'
 import lngLatToSinusoidal from '@app/gl/shaders/functions/lngLatToSinusoidal'
 import mercatorToLngLat from '@app/gl/shaders/functions/mercatorToLngLat'
 import pointInBBox from '@app/gl/shaders/functions/pointInBBox'
-import isPointInBBox from '@app/gl/shaders/functions/isPointInBBox'
 import atlasUV from '@app/gl/shaders/functions/atlasUV'
 import atlasSample from '@app/gl/shaders/functions/atlasSample'
 
@@ -15,7 +14,6 @@ export default () => `
   ${lngLatToSinusoidal()}
   ${mercatorToLngLat()}
   ${pointInBBox()}
-  ${isPointInBBox()}
   ${atlasUV()}
   ${atlasSample()}
 
