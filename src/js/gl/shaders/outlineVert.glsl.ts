@@ -5,11 +5,12 @@ export default () => `
   attribute vec2 position;
   uniform mat4 model, view, projection;
   uniform float scale;
+  varying vec2 mercator;
 
   ${lngLatToMercator()}
 
   void main() {
-    vec4 mercator = vec4(lngLatToMercator(position, scale), 0.0, 1.0);
-    gl_Position = projection * view * mercator;
+    mercator = lngLatToMercator(position, scale);
+    gl_Position = projection * view * vec4(mercator, 0.0, 1.0);
   }
 `

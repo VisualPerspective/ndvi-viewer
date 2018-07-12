@@ -6,11 +6,13 @@ import vert from '@app/gl/shaders/outlineVert'
 import frag from '@app/gl/shaders/outlineFrag'
 
 interface IUniforms {
-  color: number[]
+  selectedColor: number[]
+  unselectedColor: number[]
   model: REGL.Mat4
   view: REGL.Mat4
   projection: REGL.Mat4
   scale: number
+  selectedBBoxLngLat: number[]
 }
 
 interface IAttributes {
@@ -23,6 +25,7 @@ interface IProps {
   scale: number
   vertices: number[][]
   linesLength: number
+  selectedBBoxLngLat: number[]
 }
 
 class BoxSelectView {
@@ -47,11 +50,13 @@ class BoxSelectView {
         position: ctx.prop<IProps, 'vertices'>('vertices'),
       },
       uniforms: {
-        color: [1, 0.5, 0, 1],
+        selectedColor: [1, 1, 1, 1],
+        unselectedColor: [1, 1, 1, 1],
         model: mat4.fromTranslation([], [0, 0, 0]),
         view: ctx.prop<IProps, 'view'>('view'),
         projection: ctx.prop<IProps, 'projection'>('projection'),
         scale: ctx.prop<IProps, 'scale'>('scale'),
+        selectedBBoxLngLat: ctx.prop<IProps, 'selectedBBoxLngLat'>('selectedBBoxLngLat'),
       },
       depth: {
         enable: false,
@@ -66,6 +71,7 @@ class BoxSelectView {
       ...(this.rootStore.camera.renderInfo),
       vertices: this.rootStore.selectedBox.outline,
       linesLength: this.rootStore.selectedBox.outline.length,
+      selectedBBoxLngLat: this.rootStore.selectedBox.array,
     })
   }
 }
