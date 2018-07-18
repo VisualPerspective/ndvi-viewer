@@ -1,11 +1,10 @@
 import { observable, computed } from 'mobx'
 import constants from '@app/constants'
-import * as _ from 'lodash'
-import DataTiff from '@app/models/DataTiff'
 import Point from '@app/models/Point'
 import BoundingBox from '@app/models/BoundingBox'
 import Camera from '@app/models/Camera'
 import VectorLayer from '@app/models/VectorLayer'
+import Atlas from '@app/models/Atlas'
 
 export enum PickTypes {
   PAN,
@@ -14,41 +13,40 @@ export enum PickTypes {
 
 class RootStore {
   @observable initialized: boolean = false
-  @observable dataTiffsLoaded: number = 0
   @observable timePeriod: number = constants.START_TIME_PERIOD
 
   @observable camera: Camera
   @observable vectorLayer: VectorLayer
+  @observable atlas: Atlas
   @observable boundingBox = observable<BoundingBox>(new BoundingBox())
 
   readonly timePeriodAverages = observable<number>([])
-  readonly dataTiffs = observable<DataTiff>([])
 
   @computed get percentLoaded () {
-    return this.dataTiffsLoaded / constants.TIFF_URLS.length * 100
+    return 50
   }
 
   @computed get rasterWidth () {
-    return this.dataTiffs[0].image.getWidth()
+    return this.atlas.config.rasterWidth
   }
 
   @computed get rasterHeight () {
-    return this.dataTiffs[0].image.getHeight()
+    return this.atlas.config.rasterHeight
   }
 
   @computed get rasterSizePercent () {
     return new Point(
-      this.rasterWidth / constants.DATA_TEXTURE_SIZE,
-      this.rasterHeight / constants.DATA_TEXTURE_SIZE
+      1 / this.atlas.config.rastersWide,
+      1 / this.atlas.config.rastersHigh
     )
   }
 
   @computed get textureRastersWide () {
-    return Math.floor(constants.DATA_TEXTURE_SIZE / this.rasterWidth)
+    return this.atlas.config.rastersWide
   }
 
   @computed get textureRastersHigh () {
-    return Math.floor(constants.DATA_TEXTURE_SIZE / this.rasterHeight)
+    return this.atlas.config.rastersHigh
   }
 
   @computed get samplesWide () {
@@ -63,16 +61,14 @@ class RootStore {
     this.vectorLayer = new VectorLayer()
     await this.vectorLayer.initialize(constants.VECTOR_URL)
 
-    this.dataTiffs.replace(await Promise.all(
-      constants.TIFF_URLS.map(async url => {
-        const tiff = await DataTiff.fromUrl(url)
-        this.dataTiffsLoaded += 1
-        return tiff
-      })
-    ))
+    this.atlas = new Atlas()
+    await this.atlas.initialize({
+      url: constants.ATLAS,
+      configUrl: constants.ATLAS_CONFIG,
+    })
 
     this.boundingBox = observable(BoundingBox.fromArray(
-      this.dataTiffs[0].image.getBoundingBox()
+      this.atlas.config.boundingBox
     ))
 
     const startingBox = this.boundingBox.square.lngLatFromSinusoidal.scaled(1.1)
@@ -85,32 +81,8 @@ class RootStore {
     this.initialized = true
   }
 
-  @computed get allRasters () {
-    return _.flatten(this.dataTiffs.map(tiff => tiff.rasters))
-  }
-
   @computed get timePeriods () {
-    return this.allRasters.length * 4
-  }
-
-  @computed get rasterSubimages (): {
-    width: number,
-    height: number,
-    x: number,
-    y: number,
-    data: ArrayBufferView
-  }[] {
-    return this.allRasters.map((raster, i) => {
-      const xIndex = i % this.textureRastersWide
-      const yIndex = Math.floor(i / this.textureRastersWide)
-      return {
-        width: this.rasterWidth,
-        height: this.rasterHeight,
-        data: this.allRasters[i],
-        x: this.rasterWidth * xIndex,
-        y: this.rasterHeight * yIndex,
-      }
-    })
+    return this.atlas.config.numRasters
   }
 
   @computed get selectedBox (): BoundingBox {

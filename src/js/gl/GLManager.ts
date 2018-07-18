@@ -47,19 +47,12 @@ class GLManager {
       attributes: { alpha: false },
     })
 
+    const atlasConfig = this.rootStore.atlas.config
     this.rasterTexture = this.ctx.texture({
       ...(constants.DATA_TEXTURE_OPTIONS),
-      radius: constants.DATA_TEXTURE_SIZE,
-      data: new Float32Array(
-        constants.DATA_TEXTURE_SIZE *
-        constants.DATA_TEXTURE_SIZE *
-        4
-      ).fill(constants.NO_DATA_VALUE),
-    })
-
-    this.rootStore.rasterSubimages.forEach(({ width, height, data, x, y }) => {
-      // TODO: figure out why cast to 'any' is needed here
-      (this.rasterTexture as any).subimage({ width, height, data }, x, y)
+      width: atlasConfig.rasterWidth * atlasConfig.rastersWide,
+      height: atlasConfig.rasterHeight * atlasConfig.rastersHigh,
+      data: this.rootStore.atlas.data,
     })
 
     this.vectorView = new VectorView({
