@@ -50,7 +50,7 @@
     "worker-loader": "^2.0.0"
   },
   "scripts": {
-    "start": "webpack-serve --config webpack.dev.js --host 0.0.0.0",
+    "start": "webpack-serve --config webpack.dev.js --host 0.0.0.0 --static ./src/assets/",
     "build": "webpack --config webpack.prod.js",
     "deploy": "yarn build && firebase deploy"
   }
