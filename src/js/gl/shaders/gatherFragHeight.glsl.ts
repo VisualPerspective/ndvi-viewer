@@ -5,8 +5,8 @@ export default ({
   rasterHeight,
   noDataThreshold,
 }: {
-  rasterHeight: number,
-  noDataThreshold: number,
+  rasterHeight: number
+  noDataThreshold: number
 }) => `
   precision highp float;
   uniform sampler2D widthGather;
@@ -29,7 +29,7 @@ export default ({
 
       vec4 sample = texture2D(widthGather, uv);
 
-      total += step(${noDataThreshold}, sample.r) * sample.r;
+      total += sample.r;
       pixels += sample.g;
     }
 

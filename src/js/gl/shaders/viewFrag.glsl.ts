@@ -6,7 +6,11 @@ import pointInBBox from '@app/gl/shaders/functions/pointInBBox'
 import atlasUV from '@app/gl/shaders/functions/atlasUV'
 import atlasSample from '@app/gl/shaders/functions/atlasSample'
 
-export default () => `
+export default ({
+  noDataThreshold,
+}: {
+  noDataThreshold: number,
+}) => `
   precision highp float;
 
   ${luma()}
@@ -46,7 +50,7 @@ export default () => `
 
     float unscaled = atlasSample(timeComponent, sample);
     float scaled = (unscaled + 0.2) / 1.2;
-    float hasdata = step(-0.2, unscaled);
+    float hasdata = step(${noDataThreshold}, unscaled);
     vec4 color = mix(vec4(0.0), viridis(scaled), hasdata);
     vec4 grayscale = mix(vec4(0.0), vec4(vec3(luma(color)) * 0.7, 1.0), hasdata);
 
