@@ -50,6 +50,7 @@ class GLManager {
     const atlasConfig = this.rootStore.atlas.config
     this.rasterTexture = this.ctx.texture({
       ...(constants.DATA_TEXTURE_OPTIONS),
+      type: 'uint8',
       width: atlasConfig.rasterWidth * atlasConfig.rastersWide,
       height: atlasConfig.rasterHeight * atlasConfig.rastersHigh,
       data: this.rootStore.atlas.data,

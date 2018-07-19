@@ -7,8 +7,8 @@ export const strings = {
 export default {
   VECTOR_URL: '/geojson/vectors.json',
   DATA_TEXTURE_SIZE: 4096,
-  NO_DATA_THRESHOLD: -2999.5,
-  NO_DATA_VALUE: -3000,
+  NO_DATA_THRESHOLD: 0.001,
+  NO_DATA_VALUE: 0,
   TILE_SIZE: 512,
   START_YEAR: 2001,
   START_TIME_PERIOD: 6,

@@ -5,6 +5,7 @@ import mercatorToLngLat from '@app/gl/shaders/functions/mercatorToLngLat'
 import pointInBBox from '@app/gl/shaders/functions/pointInBBox'
 import atlasUV from '@app/gl/shaders/functions/atlasUV'
 import atlasSample from '@app/gl/shaders/functions/atlasSample'
+import geoByteScale from '@app/gl/shaders/functions/geoByteScale'
 
 export default ({
   noDataThreshold,
@@ -20,6 +21,7 @@ export default ({
   ${pointInBBox()}
   ${atlasUV()}
   ${atlasSample()}
+  ${geoByteScale()}
 
   uniform highp int timePeriod;
   uniform float scale;
@@ -49,7 +51,8 @@ export default ({
     ));
 
     float unscaled = atlasSample(timeComponent, sample);
-    float scaled = (unscaled + 0.2) / 1.2;
+    float scaled = geoByteScale(unscaled);
+
     float hasdata = step(${noDataThreshold}, unscaled);
     vec4 color = mix(vec4(0.0), viridis(scaled), hasdata);
     vec4 grayscale = mix(vec4(0.0), vec4(vec3(luma(color)) * 0.7, 1.0), hasdata);

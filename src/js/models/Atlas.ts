@@ -1,5 +1,5 @@
 class Atlas {
-  data: Float32Array
+  data: Uint8Array
   config: any
 
   async initialize ({
@@ -13,7 +13,7 @@ class Atlas {
     this.config = await configResponse.json()
 
     const atlasResponse = await fetch(url)
-    this.data = new Float32Array(await atlasResponse.arrayBuffer())
+    this.data = new Uint8Array(await atlasResponse.arrayBuffer())
 
     // tslint:disable-next-line
     console.log(this.data.length)

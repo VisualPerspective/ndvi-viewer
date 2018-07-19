@@ -1,5 +1,7 @@
 import atlasUV from '@app/gl/shaders/functions/atlasUV'
 import atlasSample from '@app/gl/shaders/functions/atlasSample'
+import geoByteScale from '@app/gl/shaders/functions/geoByteScale'
+import ndviScale from '@app/gl/shaders/functions/ndviScale'
 
 export default ({
   rasterWidth,
@@ -18,6 +20,8 @@ export default ({
 
   ${atlasUV()}
   ${atlasSample()}
+  ${geoByteScale()}
+  ${ndviScale()}
 
   void main () {
     float total = 0.0, pixels = 0.0;
@@ -40,8 +44,9 @@ export default ({
       vec4 sample = texture2D(raster, uv);
       float maskSample = texture2D(mask, relativeUV).r;
       float value = atlasSample(mod(index, 4.0), sample);
+      float scaled = ndviScale(geoByteScale(value));
 
-      total += step(0.5, maskSample) * step(${noDataThreshold}, value) * value;
+      total += step(0.5, maskSample) * step(${noDataThreshold}, value) * scaled;
       pixels += step(0.5, maskSample) * step(${noDataThreshold}, value);
     }
 
