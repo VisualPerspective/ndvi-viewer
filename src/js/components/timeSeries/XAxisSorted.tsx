@@ -5,10 +5,10 @@ import RootStore from '@app/models/RootStore'
 import { translate } from '@app/utils'
 import constants from '@app/constants'
 
-const XAxisSorted = ({ width, height, margin, rootStore }: {
-  width: number,
+const XAxisSorted = ({ height, margin, xScale, rootStore }: {
   height: number,
   margin: any,
+  xScale: any,
   rootStore?: RootStore,
 }) => (
   <g className='axis x-axis'>
@@ -16,14 +16,16 @@ const XAxisSorted = ({ width, height, margin, rootStore }: {
       _.map(constants.MONTHS, (month, i) => (
         <g key={i} className='tick x-tick'
           transform={translate(
-            (i / constants.MONTHS.length) *
-            (width - (margin.left + margin.right)) +
-            margin.left,
+            xScale(month),
             margin.top
           )}>
-          <text dx='6' dy='-6' x='0' y='0'>{month}</text>
-          <line x1='0.5' y1={1 + height - (margin.bottom + margin.top)}
-            x2='0' y2='-5' />
+          <g transform={translate(xScale.bandwidth() / 2, 0)}>
+            <text dx='0' dy='-14' x='0' y='0'>{month}</text>
+          </g>
+          <rect x={xScale.bandwidth() - xScale.step()} y='0'
+            height={height - (margin.bottom + margin.top) + 1}
+            width={xScale.step() - xScale.bandwidth()}
+            className='divider' />
         </g>
       ))
     }

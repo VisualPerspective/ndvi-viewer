@@ -2,8 +2,9 @@ import * as React from 'react'
 import { autorun, IReactionDisposer } from 'mobx'
 import { inject, observer } from 'mobx-react'
 import * as _ from 'lodash'
-import { scaleLinear, scaleSequential } from 'd3'
+import { scaleLinear, scaleSequential, scaleBand } from 'd3'
 import { interpolateViridis } from 'd3-scale-chromatic'
+import constants from '@app/constants'
 import RootStore, { Modes } from '@app/models/RootStore'
 import Point from '@app/models/Point'
 import XAxis from '@app/components/timeSeries/XAxis'
@@ -11,6 +12,7 @@ import XAxisSorted from '@app/components/timeSeries/XAxisSorted'
 import YAxis from '@app/components/timeSeries/YAxis'
 import Brush from '@app/components/timeSeries/Brush'
 import Series from '@app/components/timeSeries/Series'
+import SeriesSorted from '@app/components/timeSeries/SeriesSorted'
 
 class Chart extends React.Component<{
   width: number,
@@ -65,6 +67,27 @@ class Chart extends React.Component<{
         this.margin.top,
       ])
 
+    const xScale = scaleLinear()
+      .domain([0, rootStore.sortedAverages.length])
+      .range([
+        this.margin.left,
+        width - this.margin.right,
+      ])
+
+    const xScaleSortedBands = scaleBand()
+      .domain(constants.MONTHS)
+      .range([this.margin.left, width - this.margin.right])
+      .paddingInner(0.15)
+
+    const xScaleSorted = (i: number) => {
+      const n = rootStore.sortedAverages.length
+      const years = n / 12
+      const month = Math.floor(i / n * 12)
+
+      return xScaleSortedBands(constants.MONTHS[month]) +
+        (xScaleSortedBands.bandwidth() * (i % years) / (years - 1))
+    }
+
     const colorScale = scaleSequential(interpolateViridis)
       .domain([-0.2, 1.0])
 
@@ -75,14 +98,23 @@ class Chart extends React.Component<{
           colorScale={colorScale} />
         {
           rootStore.mode === Modes.NDVI ?
-            <XAxis width={width} height={height} margin={this.margin}
+            <XAxis height={height} margin={this.margin}
+              xScale={xScale}
               rootStore={rootStore} /> :
-            <XAxisSorted width={width} height={height} margin={this.margin}
+            <XAxisSorted height={height} margin={this.margin}
+              xScale={xScaleSortedBands}
               rootStore={rootStore} />
         }
-        <Brush width={width} height={height} margin={this.margin} />
-        <Series width={width} height={height} margin={this.margin}
-          yScale={yScale} colorScale={colorScale} />
+        <Brush height={height} margin={this.margin}
+          xScale={rootStore.mode === Modes.NDVI ? xScale : xScaleSorted} />
+        {
+          rootStore.mode === Modes.NDVI ?
+            <Series height={height} margin={this.margin}
+              xScale={xScale} yScale={yScale} colorScale={colorScale} /> :
+            <SeriesSorted height={height} margin={this.margin}
+              yScale={yScale} colorScale={colorScale} xScale={xScaleSorted} />
+        }
+
       </svg>
     ) : null
   }

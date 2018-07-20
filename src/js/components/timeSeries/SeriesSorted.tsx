@@ -4,7 +4,7 @@ import RootStore from '@app/models/RootStore'
 import { translate } from '@app/utils'
 import * as _ from 'lodash'
 
-const Series = ({ height, margin, xScale, yScale, colorScale, rootStore }: {
+const SeriesSorted = ({ height, margin, xScale, yScale, colorScale, rootStore }: {
   height: number,
   margin: any,
   xScale: any,
@@ -30,4 +30,4 @@ const Series = ({ height, margin, xScale, yScale, colorScale, rootStore }: {
   </g>
 )
 
-export default inject('rootStore')(observer(Series))
+export default inject('rootStore')(observer(SeriesSorted))
