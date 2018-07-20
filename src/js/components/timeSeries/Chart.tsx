@@ -4,9 +4,10 @@ import { inject, observer } from 'mobx-react'
 import * as _ from 'lodash'
 import { scaleLinear, scaleSequential } from 'd3'
 import { interpolateViridis } from 'd3-scale-chromatic'
-import RootStore from '@app/models/RootStore'
+import RootStore, { Modes } from '@app/models/RootStore'
 import Point from '@app/models/Point'
 import XAxis from '@app/components/timeSeries/XAxis'
+import XAxisSorted from '@app/components/timeSeries/XAxisSorted'
 import YAxis from '@app/components/timeSeries/YAxis'
 import Brush from '@app/components/timeSeries/Brush'
 import Series from '@app/components/timeSeries/Series'
@@ -23,8 +24,8 @@ class Chart extends React.Component<{
   chart: SVGElement
 
   margin = {
-    top: 45,
-    bottom: 33,
+    top: 35,
+    bottom: 40,
     left: 50,
     right: 10,
   }
@@ -72,8 +73,13 @@ class Chart extends React.Component<{
         onMouseDown={() => this.props.startDragging()}>
         <YAxis width={width} height={height} margin={this.margin}
           colorScale={colorScale} />
-        <XAxis width={width} height={height} margin={this.margin}
-          rootStore={rootStore} />
+        {
+          rootStore.mode === Modes.NDVI ?
+            <XAxis width={width} height={height} margin={this.margin}
+              rootStore={rootStore} /> :
+            <XAxisSorted width={width} height={height} margin={this.margin}
+              rootStore={rootStore} />
+        }
         <Brush width={width} height={height} margin={this.margin} />
         <Series width={width} height={height} margin={this.margin}
           yScale={yScale} colorScale={colorScale} />

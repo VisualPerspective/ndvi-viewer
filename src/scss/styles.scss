@@ -28,7 +28,7 @@ select, input, button {
 }
 
 select {
-  padding: 0 1.75rem 0 0.75rem;
+  padding: 0 2.25rem 0 0.75rem;
   background: url('~/src/assets/img/select-arrow.svg') right no-repeat;
 }
 
@@ -39,9 +39,19 @@ p.form-line span:not(:first-child) {
 }
 
 header {
+  >* {
+    display: inline;
+    padding-right: 2rem;
+  }
+
   h1 {
     font-weight: 500;
     font-size: 1.5rem;
+  }
+
+  >select {
+    position: relative;
+    top: -0.2rem;
   }
 
   padding: 1rem;
@@ -119,6 +129,12 @@ footer {
   }
 
   &:hover .brush polygon { transform: scale(1); }
+
+  .brush {
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+  }
 }
 
 .loading {

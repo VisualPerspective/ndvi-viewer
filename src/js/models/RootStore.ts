@@ -1,4 +1,5 @@
 import { observable, computed } from 'mobx'
+import * as _ from 'lodash'
 import constants from '@app/constants'
 import Point from '@app/models/Point'
 import BoundingBox from '@app/models/BoundingBox'
@@ -6,9 +7,9 @@ import Camera from '@app/models/Camera'
 import VectorLayer from '@app/models/VectorLayer'
 import Atlas from '@app/models/Atlas'
 
-export enum PickTypes {
-  PAN,
-  MOVE,
+export enum Modes {
+  NDVI = 'NDVI',
+  NDVI_GROUPED = 'NDVI – Grouped by Month',
 }
 
 class RootStore {
@@ -19,8 +20,28 @@ class RootStore {
   @observable vectorLayer: VectorLayer
   @observable atlas: Atlas
   @observable boundingBox = observable<BoundingBox>(new BoundingBox())
+  @observable mode: Modes = Modes.NDVI
 
   readonly timePeriodAverages = observable<number>([])
+
+  @computed get sortedAverages () {
+    return _.times(this.timePeriodAverages.length, (i: number) => (
+      this.timePeriodAverages[this.sortedIndex(i)]
+    ))
+  }
+
+  sortedIndex (i: number) {
+    if (this.mode === Modes.NDVI) {
+      return i
+    } else {
+      const n = this.timePeriodAverages.length
+      return ((i * 12) % n) + Math.floor((i * 12) / n)
+    }
+  }
+
+  @computed get sortedTimePeriod () {
+    return this.sortedIndex(this.timePeriod)
+  }
 
   @computed get percentLoaded () {
     return 50
