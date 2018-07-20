@@ -52,7 +52,7 @@ module.exports = {
     new HtmlWebpackPlugin()
   ],
   output: {
-    filename: 'bundle.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist')
   },
   resolve: {
