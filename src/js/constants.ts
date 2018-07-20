@@ -13,8 +13,7 @@ export default {
   START_YEAR: 2001,
   START_TIME_PERIOD: 6,
   SELECTED_BOX_PADDING: 25,
-  // ATLAS: 'https://storage.googleapis.com/iceland-ndvi/static/ndvi.atlas.gz',
-  ATLAS: 'atlas/ndvi.atlas',
+  ATLAS: process.env.ATLAS,
   ATLAS_CONFIG: 'atlas/ndvi.atlas.json',
   DATA_Y_TICKS: [ -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1.0 ],
   DATA_TEXTURE_OPTIONS: ({
