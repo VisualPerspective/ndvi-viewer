@@ -6,7 +6,7 @@ import Point from '@app/models/Point'
 import BoundingBox from '@app/models/BoundingBox'
 import * as Viewport from 'viewport-mercator-project'
 
-const ZOOM_FACTOR = 0.5
+const ZOOM_FACTOR = 1
 
 class Camera {
   @observable size: Point
