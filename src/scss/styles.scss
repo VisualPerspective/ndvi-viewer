@@ -71,7 +71,7 @@ header {
 
     >label {
       width: 60px;
-      height: 155px;
+      height: 153px;
       display: block;
       background: #222c;
 
@@ -80,11 +80,17 @@ header {
         color: white;
         text-align: center;
         padding: 8px;
+        pointer-events: none;
+
+        &.bottom {
+          position: relative;
+          top: 57px;
+        }
       }
 
       input {
-        transform: rotate(-90deg) translate(-40px, -20px);
-        width: 100px;
+        transform: rotate(-90deg) translate(-31px, -11px);
+        width: 80px;
       }
     }
   }
