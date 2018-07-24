@@ -32,6 +32,7 @@
     "ndjson-cli": "^0.3.1",
     "node-sass": "^4.9.0",
     "postcss-loader": "^2.1.5",
+    "range-slider-sass": "^2.0.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-helmet": "^5.2.0",
