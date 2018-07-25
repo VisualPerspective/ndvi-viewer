@@ -1,7 +1,7 @@
 import * as REGL from 'regl'
 
 export const strings = {
-  HEADING: 'Iceland NDVI',
+  HEADING: 'Iceland Vegetation',
 }
 
 export default {

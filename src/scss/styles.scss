@@ -50,14 +50,34 @@ p.form-line span:not(:first-child) {
 }
 
 header {
+  display: flex;
+  align-items: center;
+
   >* {
-    display: inline;
-    padding-right: 2rem;
+    flex-basis: 33.3%;
+    text-align: center;
+  }
+
+  .logo {
+    text-align: right;
+    padding: 0;
+    >img {
+      height: 2rem;
+      vertical-align: middle;
+    }
   }
 
   h1 {
-    font-weight: 500;
+    text-align: left;
+    font-weight: 300;
     font-size: 1.5rem;
+    >img {
+      height: 2rem;
+      position: relative;
+      padding-right: 0.5rem;
+      top: 0.55rem;
+      margin-top: -0.5rem;
+    }
   }
 
   >select {
