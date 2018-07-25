@@ -8,8 +8,8 @@ import VectorLayer from '@app/models/VectorLayer'
 import Atlas from '@app/models/Atlas'
 
 export enum Modes {
-  NDVI = 'NDVI',
-  NDVI_GROUPED = 'NDVI – Grouped by Month',
+  NDVI = 'Vegetation Index',
+  NDVI_GROUPED = 'Vegetation Index By Month',
 }
 
 class RootStore {
