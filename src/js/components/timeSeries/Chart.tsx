@@ -28,7 +28,7 @@ class Chart extends React.Component<{
   margin = {
     top: 35,
     bottom: 40,
-    left: 50,
+    left: 40,
     right: 10,
   }
 
@@ -68,9 +68,9 @@ class Chart extends React.Component<{
       ])
 
     const xScale = scaleLinear()
-      .domain([0, rootStore.sortedAverages.length])
+      .domain([-2, rootStore.sortedAverages.length])
       .range([
-        this.margin.left + 12,
+        this.margin.left,
         width - this.margin.right,
       ])
 
@@ -94,20 +94,24 @@ class Chart extends React.Component<{
     return (width && height) ? (
       <svg className='time-series' ref={ref => this.chart = ref}
         onMouseDown={() => this.props.startDragging()}>
-        <YAxis width={width} height={height} margin={this.margin}
+        <YAxis
+          xScale={xScale}
+          yScale={yScale}
           colorScale={colorScale} />
         {
           rootStore.mode === Modes.NDVI ?
-            <XAxis height={height} margin={this.margin}
+            <XAxis
               xScale={xScale}
+              yScale={yScale}
               rootStore={rootStore} /> :
             <XAxisSorted
               xScale={xScaleSortedBands}
               yScale={yScale}
               rootStore={rootStore} />
         }
-        <Brush height={height} margin={this.margin}
-          xScale={rootStore.mode === Modes.NDVI ? xScale : xScaleSorted} />
+        <Brush
+          xScale={rootStore.mode === Modes.NDVI ? xScale : xScaleSorted}
+          yScale={yScale} />
         {
           rootStore.mode === Modes.NDVI ?
             <Series height={height} margin={this.margin}

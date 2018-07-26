@@ -4,14 +4,12 @@ import constants from '@app/constants'
 import * as _ from 'lodash'
 import { translate } from '@app/utils'
 
-const YAxis = ({ width, height, margin, colorScale }: {
-  width: number,
-  height: number,
-  margin: any,
+const YAxis = ({ xScale, yScale, colorScale }: {
+  xScale: any,
+  yScale: any,
   colorScale: any,
 }) => {
   const leftScaleWidth = 8
-
   const numStops = 10
   const stops = _.times(numStops, i => ({
     color: colorScale((i / (numStops - 1)) * 1.2 - 0.2),
@@ -34,23 +32,23 @@ const YAxis = ({ width, height, margin, colorScale }: {
           }
         </linearGradient>
       </defs>
-      <rect x={margin.left - leftScaleWidth}
-        y={margin.top}
+      <rect x={xScale.range()[0] - leftScaleWidth}
+        y={yScale.range()[1]}
         width={leftScaleWidth}
-        height={height - (margin.top + margin.bottom)}
+        height={yScale.range()[0] - yScale.range()[1]}
         fill='url(#grad1)' />
       {
         constants.DATA_Y_TICKS.map((tick, i) => (
           <g key={i} className='tick y-tick'
             transform={translate(
-              margin.left - 5,
-              (height - margin.bottom) -
+              xScale.range()[0] - 5,
+              yScale.range()[0] -
               (i / (constants.DATA_Y_TICKS.length - 1)) *
-              (height - (margin.top + margin.bottom)),
+              (yScale.range()[0] - yScale.range()[1]),
             )}>
             <text dy='6' x='-10' y='0'>{tick}</text>
             <line x1={-leftScaleWidth} y1='0.5'
-              x2={width - (margin.left + margin.right) + 5}
+              x2={(xScale.range()[1] - xScale.range()[0]) + 5}
               y2='0.5' />
           </g>
         ))

@@ -4,10 +4,9 @@ import constants from '@app/constants'
 import RootStore from '@app/models/RootStore'
 import { translate } from '@app/utils'
 
-const Brush = ({ height, margin, xScale, rootStore }: {
-  height: number,
-  margin: any,
+const Brush = ({ xScale, yScale, rootStore }: {
   xScale: any,
+  yScale: any,
   rootStore?: RootStore,
 }) => {
   const label = (
@@ -16,10 +15,10 @@ const Brush = ({ height, margin, xScale, rootStore }: {
   )
 
   return (
-    <g transform={translate(xScale(rootStore.timePeriod), margin.top)}
+    <g transform={translate(xScale(rootStore.timePeriod), yScale.range()[1])}
       className='brush'>
-      <line x1={0.5} y1={height - (12 + margin.top)} x2={0.5} y2={0} />
-      <g transform={translate(0, height - margin.top - 15)}>
+      <line x1={0.5} y1={yScale.range()[0] - yScale.range()[1] + 28} x2={0.5} y2={0} />
+      <g transform={translate(0, yScale.range()[0] - 10)}>
         <polygon points='-3,0 -13,-10 -3,-20' />
         <polygon points='4.5,0 14.5,-10 4.5,-20' />
         <text y='20'>{label}</text>
