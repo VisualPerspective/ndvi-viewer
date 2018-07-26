@@ -5,10 +5,9 @@ import RootStore from '@app/models/RootStore'
 import { translate } from '@app/utils'
 import constants from '@app/constants'
 
-const XAxisSorted = ({ height, margin, xScale, rootStore }: {
-  height: number,
-  margin: any,
+const XAxisSorted = ({ xScale, yScale, rootStore }: {
   xScale: any,
+  yScale: any,
   rootStore?: RootStore,
 }) => (
   <g className='axis x-axis'>
@@ -17,18 +16,28 @@ const XAxisSorted = ({ height, margin, xScale, rootStore }: {
         <g key={i} className='tick x-tick'
           transform={translate(
             xScale(month),
-            margin.top
+            yScale.range()[1]
           )}>
           <g transform={translate(xScale.bandwidth() / 2, 0)}>
             <text dx='0' dy='-14' x='0' y='0'>{month}</text>
           </g>
           <rect x={xScale.bandwidth() - xScale.step()} y='0'
-            height={height - (margin.bottom + margin.top) + 1}
+            height={yScale.range()[0] - yScale.range()[1] + 1}
             width={xScale.step() - xScale.bandwidth()}
             className='divider' />
         </g>
       ))
     }
+    <g key='final' className='tick x-tick'
+      transform={translate(
+        xScale.range()[1],
+        yScale.range()[1]
+      )}>
+      <rect x={xScale.bandwidth() - xScale.step()} y='0'
+        height={yScale.range()[0] - yScale.range()[1] + 1}
+        width={xScale.step() - xScale.bandwidth()}
+        className='divider' />
+    </g>
   </g>
 )
 

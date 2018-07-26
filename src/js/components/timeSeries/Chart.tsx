@@ -70,14 +70,14 @@ class Chart extends React.Component<{
     const xScale = scaleLinear()
       .domain([0, rootStore.sortedAverages.length])
       .range([
-        this.margin.left,
+        this.margin.left + 12,
         width - this.margin.right,
       ])
 
     const xScaleSortedBands = scaleBand()
       .domain(constants.MONTHS)
       .range([this.margin.left, width - this.margin.right])
-      .paddingInner(0.15)
+      .padding(0.15)
 
     const xScaleSorted = (i: number) => {
       const n = rootStore.sortedAverages.length
@@ -101,8 +101,9 @@ class Chart extends React.Component<{
             <XAxis height={height} margin={this.margin}
               xScale={xScale}
               rootStore={rootStore} /> :
-            <XAxisSorted height={height} margin={this.margin}
+            <XAxisSorted
               xScale={xScaleSortedBands}
+              yScale={yScale}
               rootStore={rootStore} />
         }
         <Brush height={height} margin={this.margin}
