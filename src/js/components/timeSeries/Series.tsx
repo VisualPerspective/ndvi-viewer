@@ -4,9 +4,7 @@ import RootStore from '@app/models/RootStore'
 import { translate } from '@app/utils'
 import * as _ from 'lodash'
 
-const Series = ({ height, margin, xScale, yScale, colorScale, rootStore }: {
-  height: number,
-  margin: any,
+const Series = ({ xScale, yScale, colorScale, rootStore }: {
   xScale: any,
   yScale: any,
   colorScale: any,

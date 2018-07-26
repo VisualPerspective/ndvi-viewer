@@ -7,12 +7,8 @@ import { interpolateViridis } from 'd3-scale-chromatic'
 import constants from '@app/constants'
 import RootStore, { Modes } from '@app/models/RootStore'
 import Point from '@app/models/Point'
-import XAxis from '@app/components/timeSeries/XAxis'
-import XAxisSorted from '@app/components/timeSeries/XAxisSorted'
-import YAxis from '@app/components/timeSeries/YAxis'
-import Brush from '@app/components/timeSeries/Brush'
-import Series from '@app/components/timeSeries/Series'
-import SeriesSorted from '@app/components/timeSeries/SeriesSorted'
+import Container from '@app/components/timeSeries/Container'
+import ContainerSorted from '@app/components/timeSeries/ContainerSorted'
 
 class Chart extends React.Component<{
   width: number,
@@ -94,32 +90,20 @@ class Chart extends React.Component<{
     return (width && height) ? (
       <svg className='time-series' ref={ref => this.chart = ref}
         onMouseDown={() => this.props.startDragging()}>
-        <YAxis
-          xScale={xScale}
-          yScale={yScale}
-          colorScale={colorScale} />
         {
-          rootStore.mode === Modes.NDVI ?
-            <XAxis
+          rootStore.mode === Modes.NDVI ? (
+            <Container
               xScale={xScale}
               yScale={yScale}
-              rootStore={rootStore} /> :
-            <XAxisSorted
-              xScale={xScaleSortedBands}
+              colorScale={colorScale} />
+          ) : (
+            <ContainerSorted
+              xScale={xScaleSorted}
+              xScaleSortedBands={xScaleSortedBands}
               yScale={yScale}
-              rootStore={rootStore} />
+              colorScale={colorScale} />
+          )
         }
-        <Brush
-          xScale={rootStore.mode === Modes.NDVI ? xScale : xScaleSorted}
-          yScale={yScale} />
-        {
-          rootStore.mode === Modes.NDVI ?
-            <Series height={height} margin={this.margin}
-              xScale={xScale} yScale={yScale} colorScale={colorScale} /> :
-            <SeriesSorted height={height} margin={this.margin}
-              yScale={yScale} colorScale={colorScale} xScale={xScaleSorted} />
-        }
-
       </svg>
     ) : null
   }
