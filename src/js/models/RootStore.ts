@@ -24,13 +24,19 @@ class RootStore {
 
   readonly timePeriodAverages = observable<number>([])
 
-  @computed get sortedAverages () {
+  @computed get sortedTimePeriodIndices () {
     return _.times(this.timePeriodAverages.length, (i: number) => (
-      this.timePeriodAverages[this.sortedIndex(i)]
+      this.sortedTimePeriodIndex(i)
     ))
   }
 
-  sortedIndex (i: number) {
+  @computed get sortedTimePeriodAverages () {
+    return _.times(this.timePeriodAverages.length, (i: number) => (
+      this.timePeriodAverages[this.sortedTimePeriodIndex(i)]
+    ))
+  }
+
+  sortedTimePeriodIndex (i: number) {
     if (this.mode === Modes.NDVI) {
       return i
     } else {
@@ -40,7 +46,7 @@ class RootStore {
   }
 
   @computed get sortedTimePeriod () {
-    return this.sortedIndex(this.timePeriod)
+    return this.sortedTimePeriodIndex(this.timePeriod)
   }
 
   @computed get percentLoaded () {

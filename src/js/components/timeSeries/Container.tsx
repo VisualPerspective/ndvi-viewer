@@ -5,10 +5,18 @@ import YAxis from '@app/components/timeSeries/YAxis'
 import Brush from '@app/components/timeSeries/Brush'
 import Series from '@app/components/timeSeries/Series'
 
-const Container = ({ xScale, yScale, colorScale }: {
+const Container = ({
+  xScale,
+  yScale,
+  colorScale,
+  onTimePeriodSelect,
+  marginBottom,
+}: {
   xScale: any
   yScale: any
   colorScale: any
+  onTimePeriodSelect: any
+  marginBottom: number
 }) => (
   <>
     <YAxis
@@ -24,7 +32,9 @@ const Container = ({ xScale, yScale, colorScale }: {
     <Series
       xScale={xScale}
       yScale={yScale}
-      colorScale={colorScale} />
+      colorScale={colorScale}
+      onTimePeriodSelect={onTimePeriodSelect}
+      marginBottom={marginBottom} />
   </>
 )
 

@@ -1,8 +1,6 @@
 import * as React from 'react'
-import { autorun, IReactionDisposer } from 'mobx'
 import { inject, observer } from 'mobx-react'
-import * as _ from 'lodash'
-import { scaleLinear, scaleSequential, scaleBand } from 'd3'
+import { scaleLinear, scalePoint, scaleSequential, scaleBand, range } from 'd3'
 import { interpolateViridis } from 'd3-scale-chromatic'
 import constants from '@app/constants'
 import RootStore, { Modes } from '@app/models/RootStore'
@@ -18,7 +16,6 @@ class Chart extends React.Component<{
   startDragging: () => void,
   rootStore?: RootStore,
 }> {
-  dragReactionDisposer: IReactionDisposer
   chart: SVGElement
 
   margin = {
@@ -26,27 +23,6 @@ class Chart extends React.Component<{
     bottom: 40,
     left: 40,
     right: 10,
-  }
-
-  componentDidMount () {
-    this.dragReactionDisposer = autorun(() => {
-      if (this.props.dragging === true) {
-        const rect = this.chart.getBoundingClientRect()
-        const x = this.props.mousePosition.x - (rect.left + this.margin.left)
-        const innerWidth = rect.width - (this.margin.left + this.margin.right)
-        const maxTimePeriod = this.props.rootStore.timePeriods - 1
-
-        this.props.rootStore.timePeriod = _.clamp(
-          Math.round(maxTimePeriod * x / innerWidth),
-          0,
-          maxTimePeriod,
-        )
-      }
-    })
-  }
-
-  componentWillUnmount () {
-    this.dragReactionDisposer()
   }
 
   render () {
@@ -63,8 +39,8 @@ class Chart extends React.Component<{
         this.margin.top,
       ])
 
-    const xScale = scaleLinear()
-      .domain([-2, rootStore.sortedAverages.length])
+    const xScale = scalePoint()
+      .domain(range(-2, rootStore.sortedTimePeriodAverages.length))
       .range([
         this.margin.left,
         width - this.margin.right,
@@ -76,7 +52,7 @@ class Chart extends React.Component<{
       .padding(0.15)
 
     const xScaleSorted = (i: number) => {
-      const n = rootStore.sortedAverages.length
+      const n = rootStore.sortedTimePeriodAverages.length
       const years = n / 12
       const month = Math.floor(i / n * 12)
 
@@ -87,6 +63,12 @@ class Chart extends React.Component<{
     const colorScale = scaleSequential(interpolateViridis)
       .domain([-0.2, 1.0])
 
+    const onTimePeriodSelect = (i: number, isClick: boolean) => {
+      if (this.props.dragging === true || isClick) {
+        this.props.rootStore.timePeriod = i
+      }
+    }
+
     return (width && height) ? (
       <svg className='time-series' ref={ref => this.chart = ref}
         onMouseDown={() => this.props.startDragging()}>
@@ -95,7 +77,9 @@ class Chart extends React.Component<{
             <Container
               xScale={xScale}
               yScale={yScale}
-              colorScale={colorScale} />
+              colorScale={colorScale}
+              onTimePeriodSelect={onTimePeriodSelect}
+              marginBottom={this.margin.bottom} />
           ) : (
             <ContainerSorted
               xScale={xScaleSorted}

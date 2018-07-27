@@ -13,14 +13,14 @@ const SeriesSorted = ({ xScale, yScale, colorScale, rootStore }: {
   <g className='series'>
     {
       _.times(rootStore.timePeriods, i => (
-        rootStore.sortedAverages[i] !== undefined && (
+        rootStore.sortedTimePeriodAverages[i] !== undefined && (
           <g key={i} className='average'
             transform={translate(
               xScale(i),
-              yScale(rootStore.sortedAverages[i])
+              yScale(rootStore.sortedTimePeriodAverages[i])
             )}>
             <circle r={5} cx={0} cy={0}
-              fill={colorScale(rootStore.sortedAverages[i])} />
+              fill={colorScale(rootStore.sortedTimePeriodAverages[i])} />
           </g>
         )
       ))
