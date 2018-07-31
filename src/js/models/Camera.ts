@@ -1,12 +1,11 @@
 import * as REGL from 'regl'
 import * as _ from 'lodash'
+import { interpolateNumber } from 'd3'
 import { observable, computed } from 'mobx'
 import constants from '@app/constants'
 import Point from '@app/models/Point'
 import BoundingBox from '@app/models/BoundingBox'
 import * as Viewport from 'viewport-mercator-project'
-
-const ZOOM_FACTOR = 1
 
 class Camera {
   @observable size: Point
@@ -58,13 +57,17 @@ class Camera {
       ],
     })
 
+    // Attempt to set a max zoom which contains a reasonable number
+    // of data pixels, regardless of window size
+    const maxZoom = Math.log2(Math.min(this.size.x, this.size.y) * 2)
+
     return new Viewport.WebMercatorViewport({
       pitch: this.pitch,
       bearing: this.bearing,
       altitude: this.altitude,
       longitude: this.position.x,
       latitude: this.position.y,
-      zoom: lngLatZoom.zoom * (1 + (this.zoom * ZOOM_FACTOR)),
+      zoom: interpolateNumber(lngLatZoom.zoom, maxZoom)(this.zoom),
       width: this.size.x,
       height: this.size.y,
     })
