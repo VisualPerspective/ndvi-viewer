@@ -22,7 +22,7 @@ const Legend = ({ xScale, yScale, colorScale, rootStore }: {
   return (
     <g transform={translate(
       xScale.range()[1] / 2 - 155,
-      6
+      5
     )} className='legend'>
         <circle cx='-10' cy='-5' r='5' fill={colorScale(mean)} />
         <text>
