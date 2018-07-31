@@ -10,8 +10,8 @@ const Brush = ({ xScale, yScale, rootStore }: {
   rootStore?: RootStore,
 }) => {
   const label = (
-    constants.MONTHS[rootStore.sortedTimePeriod % 12] + ' ' +
-    (Number(constants.START_YEAR) + Math.floor(rootStore.sortedTimePeriod / 12))
+    constants.MONTHS[rootStore.timePeriod % 12] + ' ' +
+    (Number(constants.START_YEAR) + Math.floor(rootStore.timePeriod / 12))
   )
 
   return (

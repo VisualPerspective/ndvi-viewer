@@ -40,7 +40,7 @@ class Chart extends React.Component<{
       ])
 
     const xScale = scalePoint()
-      .domain(range(-2, rootStore.sortedTimePeriodAverages.length))
+      .domain(range(-2, rootStore.numTimePeriods))
       .range([
         this.margin.left,
         width - this.margin.right,
@@ -51,14 +51,20 @@ class Chart extends React.Component<{
       .range([this.margin.left, width - this.margin.right])
       .padding(0.15)
 
-    const xScaleSorted = (i: number) => {
-      const n = rootStore.sortedTimePeriodAverages.length
-      const years = n / 12
-      const month = Math.floor(i / n * 12)
+    const xScaleSorted: any = (i: number) => {
+      const n = rootStore.numTimePeriods
+      const month = i % 12
+      const year = Math.floor(i / 12)
+      const years = Math.floor(n / 12)
 
       return xScaleSortedBands(constants.MONTHS[month]) +
-        (xScaleSortedBands.bandwidth() * (i % years) / (years - 1))
+        (xScaleSortedBands.bandwidth() * (year) / (years - 1))
     }
+
+    xScaleSorted.step = () => (
+      xScaleSortedBands.bandwidth() /
+      (rootStore.numTimePeriods / 12)
+    )
 
     const colorScale = scaleSequential(interpolateViridis)
       .domain([-0.2, 1.0])
@@ -85,7 +91,9 @@ class Chart extends React.Component<{
               xScale={xScaleSorted}
               xScaleSortedBands={xScaleSortedBands}
               yScale={yScale}
-              colorScale={colorScale} />
+              colorScale={colorScale}
+              onTimePeriodSelect={onTimePeriodSelect}
+              marginBottom={this.margin.bottom} />
           )
         }
       </svg>

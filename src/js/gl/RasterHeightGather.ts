@@ -109,7 +109,7 @@ class RasterHeightGather {
     const totals: number[] = []
     const pixelCounts: number[] = []
     const values: number[] = []
-    for (let i = 0; i < this.rootStore.timePeriods; i++) {
+    for (let i = 0; i < this.rootStore.numTimePeriods; i++) {
       const total = pixels[i * 4]
       const pixelCount = pixels[i * 4 + 1]
       totals.push(total)

@@ -21,28 +21,28 @@ const Series = ({
 }) => (
   <g className='series'>
     {
-      _.times(rootStore.timePeriods, i => (
-        rootStore.sortedTimePeriodAverages[i] !== undefined && (
+      _.times(rootStore.numTimePeriods, i => (
+        rootStore.timePeriodAverages[i] !== undefined && (
           <g key={i}>
             <g className='average'
               transform={translate(
                 xScale(i),
-                yScale(rootStore.sortedTimePeriodAverages[i])
+                yScale(rootStore.timePeriodAverages[i])
               )}>
               <circle r={_.clamp(xScale.step() * 0.75, 3, 5)} cx={0} cy={0}
-                fill={colorScale(rootStore.sortedTimePeriodAverages[i])} />
+                fill={colorScale(rootStore.timePeriodAverages[i])} />
             </g>
             <rect
-              className="mouse-target"
+              className='mouse-target'
               x={xScale(i) + xScale.step() * -0.5}
               y={yScale.range()[1]}
               width={xScale.step()}
               height={yScale.range()[0] - yScale.range()[1] + marginBottom}
               onClick={() => {
-                onTimePeriodSelect(rootStore.sortedTimePeriodIndices[i], true)
+                onTimePeriodSelect(i, true)
               }}
               onMouseEnter={() => {
-                onTimePeriodSelect(rootStore.sortedTimePeriodIndices[i])
+                onTimePeriodSelect(i)
               }} />
           </g>
         )

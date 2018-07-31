@@ -5,11 +5,20 @@ import YAxis from '@app/components/timeSeries/YAxis'
 import Brush from '@app/components/timeSeries/Brush'
 import SeriesSorted from '@app/components/timeSeries/SeriesSorted'
 
-const ContainerSorted = ({ xScale, xScaleSortedBands, yScale, colorScale }: {
+const ContainerSorted = ({
+  xScale,
+  xScaleSortedBands,
+  yScale,
+  colorScale,
+  onTimePeriodSelect,
+  marginBottom,
+}: {
   xScale: any
   xScaleSortedBands: any
   yScale: any
   colorScale: any
+  onTimePeriodSelect: any
+  marginBottom: number
 }) => (
   <>
     <YAxis
@@ -25,7 +34,9 @@ const ContainerSorted = ({ xScale, xScaleSortedBands, yScale, colorScale }: {
     <SeriesSorted
       xScale={xScale}
       yScale={yScale}
-      colorScale={colorScale} />
+      colorScale={colorScale}
+      onTimePeriodSelect={onTimePeriodSelect}
+      marginBottom={marginBottom} />
   </>
 )
 

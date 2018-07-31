@@ -4,26 +4,55 @@ import RootStore from '@app/models/RootStore'
 import { translate } from '@app/utils'
 import * as _ from 'lodash'
 
-const SeriesSorted = ({ xScale, yScale, colorScale, rootStore }: {
+const SeriesSorted = ({
+  xScale,
+  yScale,
+  colorScale,
+  onTimePeriodSelect,
+  marginBottom,
+  rootStore,
+}: {
   xScale: any,
   yScale: any,
   colorScale: any,
+  onTimePeriodSelect: any,
+  marginBottom: number,
   rootStore?: RootStore,
 }) => (
   <g className='series'>
     {
-      _.times(rootStore.timePeriods, i => (
-        rootStore.sortedTimePeriodAverages[i] !== undefined && (
-          <g key={i} className='average'
-            transform={translate(
-              xScale(i),
-              yScale(rootStore.sortedTimePeriodAverages[i])
-            )}>
-            <circle r={5} cx={0} cy={0}
-              fill={colorScale(rootStore.sortedTimePeriodAverages[i])} />
+      _.times(rootStore.numTimePeriods, i => {
+        const period = rootStore.timePeriodsByMonth[i]
+
+        return (
+          <g key={i}>
+            {
+              period.average !== undefined && (
+                <g className='average'
+                  transform={translate(
+                    xScale(period.id),
+                    yScale(period.average)
+                  )}>
+                  <circle r={5} cx={0} cy={0}
+                    fill={colorScale(period.average)} />
+                </g>
+              )
+            }
+            <rect
+              className='mouse-target'
+              x={xScale(period.id) + xScale.step() * -0.5}
+              y={yScale.range()[1]}
+              width={xScale.step()}
+              height={yScale.range()[0] - yScale.range()[1] + marginBottom}
+              onClick={() => {
+                onTimePeriodSelect(period.id, true)
+              }}
+              onMouseEnter={() => {
+                onTimePeriodSelect(period.id)
+              }} />
           </g>
         )
-      ))
+      })
     }
   </g>
 )

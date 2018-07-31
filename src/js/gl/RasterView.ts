@@ -95,7 +95,7 @@ class RasterView {
 
     this.renderer({
       ...(this.rootStore.camera.renderInfo),
-      timePeriod: this.rootStore.sortedTimePeriod,
+      timePeriod: this.rootStore.timePeriod,
       triangles,
       trianglesLength: triangles.length,
       rasterBBoxMeters: this.rootStore.boundingBox.array,

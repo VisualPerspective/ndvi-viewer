@@ -14,7 +14,6 @@ export enum Modes {
 
 class RootStore {
   @observable initialized: boolean = false
-  @observable timePeriod: number = constants.START_TIME_PERIOD
 
   @observable camera: Camera
   @observable vectorLayer: VectorLayer
@@ -22,31 +21,24 @@ class RootStore {
   @observable boundingBox = observable<BoundingBox>(new BoundingBox())
   @observable mode: Modes = Modes.NDVI
 
+  @observable timePeriod: number = constants.START_TIME_PERIOD
+
+  @computed get numTimePeriods () {
+    return this.atlas.config.numRasters
+  }
+
   readonly timePeriodAverages = observable<number>([])
 
-  @computed get sortedTimePeriodIndices () {
-    return _.times(this.timePeriodAverages.length, (i: number) => (
-      this.sortedTimePeriodIndex(i)
-    ))
-  }
+  @computed get timePeriodsByMonth () {
+    return _.times(this.numTimePeriods, (i) => {
+      const n = this.numTimePeriods
+      const id = ((i * 12) % n) + Math.floor((i * 12) / n)
 
-  @computed get sortedTimePeriodAverages () {
-    return _.times(this.timePeriodAverages.length, (i: number) => (
-      this.timePeriodAverages[this.sortedTimePeriodIndex(i)]
-    ))
-  }
-
-  sortedTimePeriodIndex (i: number) {
-    if (this.mode === Modes.NDVI) {
-      return i
-    } else {
-      const n = this.timePeriodAverages.length
-      return ((i * 12) % n) + Math.floor((i * 12) / n)
-    }
-  }
-
-  @computed get sortedTimePeriod () {
-    return this.sortedTimePeriodIndex(this.timePeriod)
+      return {
+        id,
+        average: this.timePeriodAverages[id],
+      }
+    })
   }
 
   @computed get percentLoaded () {
@@ -106,10 +98,6 @@ class RootStore {
     })
 
     this.initialized = true
-  }
-
-  @computed get timePeriods () {
-    return this.atlas.config.numRasters
   }
 
   @computed get selectedBox (): BoundingBox {
