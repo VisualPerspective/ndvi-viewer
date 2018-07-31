@@ -169,6 +169,7 @@ footer {
     * { pointer-events: none; user-select: none }
     text { fill: #777; }
     line { stroke: #aaa; }
+    line.white { stroke: #fff; }
 
     &.y-tick {
       text { text-anchor: end; }
