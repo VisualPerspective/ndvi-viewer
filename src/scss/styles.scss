@@ -5,6 +5,8 @@ $thumb-height: 15px;
 $thumb-width: 15px;
 $track-color: #888;
 
+$link-color: #335092;
+
 input[type=range] {
   @include input-type-range();
 }
@@ -43,6 +45,11 @@ select {
   background: url('/img/select-arrow.svg') right no-repeat;
 }
 
+a, a:visited {
+  text-decoration: none;
+  color: $link-color;
+}
+
 p:not(:first-child) { margin-top: 0.75rem; }
 
 p.form-line span:not(:first-child) {
@@ -58,10 +65,26 @@ header {
     text-align: center;
   }
 
+  .info {
+    font-size: 0.9rem;
+    margin-right: 1rem;
+    i {
+      font-size: 0.8rem;
+      font-family: times;
+      font-weight: bold;
+      padding: 0 0.4rem;
+      background: $link-color;
+      border-radius: 1rem;
+      color: white;
+      position: relative;
+      bottom: 0.05rem;
+    }
+  }
+
   .logo {
     text-align: right;
     padding: 0;
-    >img {
+    img {
       height: 2rem;
       vertical-align: middle;
     }
@@ -78,11 +101,6 @@ header {
       top: 0.45rem;
       margin-top: -0.5rem;
     }
-  }
-
-  >select {
-    position: relative;
-    top: -0.2rem;
   }
 
   padding: 1rem;

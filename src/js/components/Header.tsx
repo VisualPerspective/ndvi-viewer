@@ -4,16 +4,23 @@ import ModeSelect from '@app/components/ModeSelect'
 
 const Header = () => (
   <header>
-    <h1>
-      <img src='/img/vegetation.svg' />
-      {strings.HEADING}
-    </h1>
     <div>
+      <h1>
+        <img src='/img/vegetation.svg' />
+        {strings.HEADING}
+      </h1>
+    </div>
+    <div className='center'>
       <ModeSelect />
     </div>
-    <a className='logo' href='https://visualperspective.io'>
-      <img src='/img/vplogo.svg' />
-    </a>
+    <div className='logo'>
+      <a className='info' href='https://visualperspective.io/blog/iceland'>
+        <i>i</i> Read about this project
+      </a>
+      <a href='https://visualperspective.io'>
+        <img src='/img/vplogo.svg' />
+      </a>
+    </div>
   </header>
 )
 
