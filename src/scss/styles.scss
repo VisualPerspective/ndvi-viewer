@@ -158,7 +158,7 @@ footer {
 
     &.x-tick {
       line { stroke: #ddd; }
-      text { text-anchor: start; transform: rotate(-45deg); }
+      text { text-anchor: start; transform: rotate(45deg); }
       rect.divider { fill: #fff; }
     }
   }
@@ -176,6 +176,12 @@ footer {
   }
 
   .mouse-target { fill: none; pointer-events: all; }
+
+  .legend {
+    fill: #333;
+    pointer-events: none;
+    user-select: none;
+  }
 }
 
 .loading {

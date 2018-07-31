@@ -19,7 +19,7 @@ class Chart extends React.Component<{
   chart: SVGElement
 
   margin = {
-    top: 35,
+    top: 25,
     bottom: 40,
     left: 70,
     right: 10,

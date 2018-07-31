@@ -33,7 +33,7 @@ const SeriesSorted = ({
                     xScale(period.id),
                     yScale(period.average)
                   )}>
-                  <circle r={5} cx={0} cy={0}
+                  <circle r={_.clamp(xScale.step() * 0.75, 3.5, 5)} cx={0} cy={0}
                     fill={colorScale(period.average)} />
                 </g>
               )

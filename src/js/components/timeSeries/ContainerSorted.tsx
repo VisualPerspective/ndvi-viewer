@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
+import Legend from '@app/components/timeSeries/Legend'
 import XAxisSorted from '@app/components/timeSeries/XAxisSorted'
 import YAxis from '@app/components/timeSeries/YAxis'
 import Brush from '@app/components/timeSeries/Brush'
@@ -21,6 +22,10 @@ const ContainerSorted = ({
   marginBottom: number
 }) => (
   <>
+    <Legend
+      xScale={xScaleSortedBands}
+      yScale={yScale}
+      colorScale={colorScale} />
     <YAxis
       xScale={xScaleSortedBands}
       yScale={yScale}

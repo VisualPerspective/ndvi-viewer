@@ -29,7 +29,7 @@ const Series = ({
                 xScale(i),
                 yScale(rootStore.timePeriodAverages[i])
               )}>
-              <circle r={_.clamp(xScale.step() * 0.75, 3, 5)} cx={0} cy={0}
+              <circle r={_.clamp(xScale.step() * 0.75, 3.5, 5)} cx={0} cy={0}
                 fill={colorScale(rootStore.timePeriodAverages[i])} />
             </g>
             <rect
