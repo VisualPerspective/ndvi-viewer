@@ -20,7 +20,12 @@ class Atlas {
     const atlasResponse = await axios.get(url, {
       responseType: 'arraybuffer',
       onDownloadProgress: (e: any) => {
-        this.loadProgress = e.loaded / e.total * 100
+        this.loadProgress = Math.min(
+          e.loaded /
+          this.config.approximateDownloadSize *
+          100,
+          100
+        )
       },
     })
 
