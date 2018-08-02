@@ -9,7 +9,11 @@ const rootStore: RootStore = new RootStore()
 
 // Check for needed JS and GL features
 try {
-  const testContext = REGL({ extensions: constants.GL_EXTENSIONS })
+  const canvas = document.createElement('canvas')
+  const testContext = REGL({
+    canvas,
+    extensions: constants.GL_EXTENSIONS,
+  })
 
   if (
     Array.prototype.find === undefined ||
