@@ -36,7 +36,7 @@ const YAxis = ({ xScale, yScale, colorScale }: {
         </linearGradient>
       </defs>
       <g transform={translate(xScale.range()[0] - 40, 0)}>
-        <rect fill='url(#grad1)' fill-opacity='0.3'
+        <rect fill='url(#grad1)' fillOpacity='0.3'
           x='0' y={yScale(1)}
           width='32' height={yScale.range()[0] - yScale.range()[1]} />
         <g transform={translate(0, yScale(1))} className='tick y-tick'>
