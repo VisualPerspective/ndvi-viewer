@@ -39,9 +39,8 @@ class GLManager {
 
     this.ctx = REGL({
       canvas: this.canvas,
-      optionalExtensions: [
+      extensions: [
         'OES_texture_float',
-        'webgl_color_buffer_float',
         'OES_element_index_uint',
       ],
       attributes: { alpha: false },

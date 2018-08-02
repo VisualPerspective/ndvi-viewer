@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react'
 import RootStore from '@app/models/RootStore'
 
 const Loading: React.SFC<{ rootStore?: RootStore }> = ({ rootStore }) => (
-  <div className='loading'>
+  <div className='centered-content loading'>
     <svg className='progress-bar'>
       <text x='50%' y={-12}>Loading...</text>
       <rect className='progress-bar-background' rx={3} ry={3}

@@ -49,7 +49,9 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([{ from: 'src/assets', to: '.' }]),
     new MiniCssExtractPlugin('styles.css'),
-    new HtmlWebpackPlugin()
+    new HtmlWebpackPlugin({
+      title: 'Iceland Vegetation'
+    })
   ],
   output: {
     filename: '[name].js',

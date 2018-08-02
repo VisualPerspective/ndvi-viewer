@@ -48,12 +48,26 @@ select {
 a, a:visited {
   text-decoration: none;
   color: $link-color;
+  font-weight: 400;
 }
 
 p:not(:first-child) { margin-top: 0.75rem; }
 
 p.form-line span:not(:first-child) {
   padding: 0 0.25rem;
+}
+
+h1 {
+  text-align: left;
+  font-weight: 300;
+  font-size: 1.5rem;
+  >img {
+    height: 1.8rem;
+    position: relative;
+    padding-right: 0.5rem;
+    top: 0.45rem;
+    margin-top: -0.5rem;
+  }
 }
 
 header {
@@ -87,19 +101,6 @@ header {
     img {
       height: 2rem;
       vertical-align: middle;
-    }
-  }
-
-  h1 {
-    text-align: left;
-    font-weight: 300;
-    font-size: 1.5rem;
-    >img {
-      height: 1.8rem;
-      position: relative;
-      padding-right: 0.5rem;
-      top: 0.45rem;
-      margin-top: -0.5rem;
     }
   }
 
@@ -203,12 +204,16 @@ footer {
   }
 }
 
-.loading {
+.centered-content {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  .incompatible {
+    width: 25rem;
+  }
 
   .progress-bar {
     width: 300px;

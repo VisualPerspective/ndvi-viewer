@@ -1,20 +1,18 @@
 import * as React from 'react'
-import { strings } from '@app/constants'
+import constants from '@app/constants'
 import ModeSelect from '@app/components/ModeSelect'
+import Heading from '@app/components/Heading'
 
 const Header = () => (
   <header>
     <div>
-      <h1>
-        <img src='/img/vegetation.svg' />
-        {strings.HEADING}
-      </h1>
+      <Heading />
     </div>
     <div className='center'>
       <ModeSelect />
     </div>
     <div className='logo'>
-      <a className='info' href='https://visualperspective.io/blog/iceland'>
+      <a className='info' href={constants.BLOG_URL}>
         <i>i</i> Read about this project
       </a>
       <a href='https://visualperspective.io'>

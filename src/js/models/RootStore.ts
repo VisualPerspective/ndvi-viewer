@@ -14,6 +14,7 @@ export enum Modes {
 
 class RootStore {
   @observable initialized: boolean = false
+  @observable compatible: boolean = true
 
   @observable camera: Camera
   @observable vectorLayer: VectorLayer

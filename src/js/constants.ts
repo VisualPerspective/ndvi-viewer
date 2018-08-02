@@ -2,9 +2,11 @@ import * as REGL from 'regl'
 
 export const strings = {
   HEADING: 'Iceland Vegetation',
+  APP_NAME: 'Iceland Vegetation viewer',
 }
 
 export default {
+  BLOG_URL: 'https://visualperspective.io/blog/iceland',
   VECTOR_URL: '/geojson/vectors.json',
   DATA_TEXTURE_SIZE: 4096,
   NO_DATA_THRESHOLD: 0.001,
@@ -47,5 +49,9 @@ export default {
     [-1, -1],
     [1, 1],
     [-1, 1],
+  ],
+  GL_EXTENSIONS: [
+    'OES_texture_float',
+    'OES_element_index_uint',
   ],
 }
