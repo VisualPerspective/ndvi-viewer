@@ -39,10 +39,7 @@ class GLManager {
 
     this.ctx = REGL({
       canvas: this.canvas,
-      extensions: [
-        'OES_texture_float',
-        'OES_element_index_uint',
-      ],
+      extensions: constants.GL_EXTENSIONS,
       attributes: { alpha: false },
     })
 

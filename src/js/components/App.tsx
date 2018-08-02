@@ -7,16 +7,16 @@ import { Provider } from 'mobx-react'
 
 const rootStore: RootStore = new RootStore()
 
-// Check for needed JS features
-if (Array.prototype.find === undefined) {
-  rootStore.compatible = false
-}
-
-// Check for needed GL features
+// Check for needed JS and GL features
 try {
-  REGL({
-    extensions: constants.GL_EXTENSIONS,
-  })
+  const testContext = REGL({ extensions: constants.GL_EXTENSIONS })
+
+  if (
+    Array.prototype.find === undefined ||
+    (testContext.limits as any).readFloat === false
+  ) {
+    rootStore.compatible = false
+  }
 } catch (e) {
   rootStore.compatible = false
 }
