@@ -42,7 +42,7 @@ class RootStore {
   }
 
   @computed get percentLoaded () {
-    return 50
+    return this.atlas ? this.atlas.loadProgress : 0
   }
 
   @computed get rasterWidth () {

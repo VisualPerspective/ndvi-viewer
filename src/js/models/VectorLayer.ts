@@ -1,5 +1,6 @@
 import { observable } from 'mobx'
 import earcut from 'earcut'
+import axios from 'axios'
 
 class VectorLayer {
   readonly outline = observable<number>([])
@@ -9,8 +10,8 @@ class VectorLayer {
   @observable dimensions: number
 
   async initialize (url: string) {
-    const response: Response = await window.fetch(url)
-    const vectors = await response.json()
+    const response = await axios.get(url)
+    const vectors = response.data
 
     vectors.geometry.coordinates.forEach((polygon: any) => {
       const data = earcut.flatten(polygon)

@@ -1,6 +1,10 @@
+import axios from 'axios'
+import { observable } from 'mobx'
+
 class Atlas {
   data: Uint8Array
   config: any
+  @observable loadProgress: number = 0
 
   async initialize ({
     url,
@@ -9,14 +13,18 @@ class Atlas {
     url: string
     configUrl: string
   }) {
-    const configResponse: Response = await window.fetch(configUrl)
-    this.config = await configResponse.json()
+    const configResponse = await axios.get(configUrl)
 
-    const atlasResponse = await fetch(url)
-    this.data = new Uint8Array(await atlasResponse.arrayBuffer())
+    this.config = configResponse.data
 
-    // tslint:disable-next-line
-    console.log(this.data.length)
+    const atlasResponse = await axios.get(url, {
+      responseType: 'arraybuffer',
+      onDownloadProgress: (e: any) => {
+        this.loadProgress = e.loaded / e.total * 100
+      },
+    })
+
+    this.data = new Uint8Array(atlasResponse.data)
   }
 }
 

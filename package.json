@@ -12,6 +12,7 @@
     "@types/react-dom": "^16.0.6",
     "@types/react-helmet": "^5.0.6",
     "autoprefixer": "^8.6.4",
+    "axios": "^0.18.0",
     "babel-runtime": "^6.26.0",
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^0.28.11",
