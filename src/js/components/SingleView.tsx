@@ -53,7 +53,12 @@ class SingleView extends React.Component<{
   }
 
   handleWheel = (e: WheelEvent) => {
-    const amount = -e.deltaY * 0.001
+    let amount = -e.deltaY * 0.001
+
+    // Deal with Firefox mousewheel speed being slower
+    if ((e as any).mozInputSource === 1 && e.deltaMode === 1) {
+      amount *= 50
+    }
 
     if (e.target === this.canvas) {
       this.props.rootStore.camera.zoom += amount
