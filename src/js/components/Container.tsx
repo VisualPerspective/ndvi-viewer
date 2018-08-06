@@ -12,6 +12,7 @@ import RootStore from '@app/models/RootStore'
 const Container: React.SFC<{ rootStore?: RootStore }> = (props) => (
   <>
     <Helmet title={strings.HEADING}>
+      <meta name='viewport' content='width=device-width, initial-scale=1' />
       <link rel='icon' type='image/png' href='/img/favicon.png' />
       <link href='https://fonts.googleapis.com/css?family=Heebo:300,400,500' rel='stylesheet' />
     </Helmet>
