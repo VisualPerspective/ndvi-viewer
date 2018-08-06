@@ -13,7 +13,7 @@ class SingleView extends React.Component<{
   previousMousePosition: Point,
   mousePosition: Point,
   dragging: boolean,
-  startDragging: () => void,
+  startDragging: (e: MouseEvent | TouchEvent) => void,
   rootStore?: RootStore
 }, any> {
   dragReactionDisposer: IReactionDisposer
@@ -75,9 +75,13 @@ class SingleView extends React.Component<{
       <>
         <canvas
           ref={canvas => { this.canvas = canvas }}
-          onMouseDown={() => {
-            this.props.startDragging()
-          }} />
+          onMouseDown={(e) => {
+            this.props.startDragging(e.nativeEvent)
+          }}
+          onTouchStart={(e) => {
+            this.props.startDragging(e.nativeEvent)
+          }}
+          />
         <Zoom />
       </>
     )

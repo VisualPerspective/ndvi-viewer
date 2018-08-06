@@ -44,12 +44,7 @@ const SeriesSorted = ({
               y={yScale.range()[1]}
               width={xScale.step()}
               height={yScale.range()[0] - yScale.range()[1] + marginBottom}
-              onClick={() => {
-                onTimePeriodSelect(period.id, true)
-              }}
-              onMouseEnter={() => {
-                onTimePeriodSelect(period.id)
-              }} />
+              data-time-period={period.id} />
           </g>
         )
       })

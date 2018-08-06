@@ -38,12 +38,7 @@ const Series = ({
               y={yScale.range()[1]}
               width={xScale.step()}
               height={yScale.range()[0] - yScale.range()[1] + marginBottom}
-              onClick={() => {
-                onTimePeriodSelect(i, true)
-              }}
-              onMouseEnter={() => {
-                onTimePeriodSelect(i)
-              }} />
+              data-time-period={i} />
           </g>
         )
       ))
