@@ -14,35 +14,62 @@ class SingleView extends React.Component<{
   mousePosition: Point,
   dragging: boolean,
   startDragging: (e: MouseEvent | TouchEvent) => void,
+  pinching: boolean
+  pinchScale: number
+  panning: boolean
+  previousPanPosition: Point
+  panPosition: Point
   rootStore?: RootStore
 }, any> {
   dragReactionDisposer: IReactionDisposer
   glManager: GLManager
-  canvas: HTMLCanvasElement
+  canvasElement: React.RefObject<any> = React.createRef()
 
   componentDidMount () {
     this.glManager = new GLManager({
-      canvas: this.canvas,
+      canvas: (this.canvasElement.current as HTMLCanvasElement),
       rootStore: this.props.rootStore,
     })
 
     this.dragReactionDisposer = reaction(() => ({
       mousePositionX: _.get(this.props.mousePosition, 'x'),
       mousePositionY: _.get(this.props.mousePosition, 'y'),
-    }), this.handleMouseMove)
+    }), () => {
+      if (this.props.dragging) {
+        this.handleMove(
+          this.props.mousePosition,
+          this.props.previousMousePosition,
+        )
+      }
+    })
+
+    this.dragReactionDisposer = reaction(() => ({
+      panPositionX: _.get(this.props.panPosition, 'x'),
+      panPositionY: _.get(this.props.panPosition, 'y'),
+    }), () => {
+      if (this.props.panning) {
+        this.handleMove(
+          this.props.panPosition,
+          this.props.previousPanPosition,
+        )
+      }
+    })
 
     window.addEventListener('wheel', this.handleWheel)
   }
 
   relativePosition (point: Point) {
-    const canvasRect = this.canvas.getBoundingClientRect()
+    const canvasRect = this.canvasElement.current.getBoundingClientRect()
     return new Point(point.x - canvasRect.left, point.y - canvasRect.top)
   }
 
-  handleMouseMove = () => {
-    if (this.props.dragging) {
-      const fromPixel = this.relativePosition(this.props.previousMousePosition)
-      const toPixel = this.relativePosition(this.props.mousePosition)
+  handleMove = (position: Point, previousPosition: Point) => {
+    if (
+      position !== undefined &&
+      previousPosition !== undefined
+    ) {
+      const fromPixel = this.relativePosition(previousPosition)
+      const toPixel = this.relativePosition(position)
       const delta = this.props.rootStore.camera.lngLatDelta(fromPixel, toPixel)
 
       this.props.rootStore.camera.position.set(
@@ -60,7 +87,7 @@ class SingleView extends React.Component<{
       amount *= 50
     }
 
-    if (e.target === this.canvas) {
+    if (e.target === this.canvasElement.current) {
       this.props.rootStore.camera.zoom += amount
       e.preventDefault()
     }
@@ -79,11 +106,9 @@ class SingleView extends React.Component<{
     return (
       <>
         <canvas
-          ref={canvas => { this.canvas = canvas }}
+          className='full-size'
+          ref={this.canvasElement}
           onMouseDown={(e) => {
-            this.props.startDragging(e.nativeEvent)
-          }}
-          onTouchStart={(e) => {
             this.props.startDragging(e.nativeEvent)
           }}
           />

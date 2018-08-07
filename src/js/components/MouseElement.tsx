@@ -9,7 +9,7 @@ class MouseElement extends React.Component<{
     previousMousePosition?: Point,
     mousePosition?: Point,
     mouseTarget?: EventTarget,
-    startDragging: (e: MouseEvent | TouchEvent) => void,
+    startDragging: (e: MouseEvent) => void,
   }) => React.ReactElement<any>,
 }, any> {
   @observable previousMousePosition: Point
@@ -21,21 +21,8 @@ class MouseElement extends React.Component<{
     this.dragging = false
   }
 
-  touchEndListener = () => {
-    this.dragging = false
-  }
-
   @action mouseMoveListener = (e: MouseEvent) => {
     this.moveHandler(e.target, e.pageX, e.pageY)
-  }
-
-  @action touchMoveListener = (e: TouchEvent) => {
-    const target = document.elementFromPoint(
-      e.touches[0].clientX,
-      e.touches[0].clientY
-    )
-
-    this.moveHandler(target, e.touches[0].pageX, e.touches[0].pageY)
   }
 
   moveHandler = (target: EventTarget, x: number, y: number) => {
@@ -52,26 +39,18 @@ class MouseElement extends React.Component<{
     }
   }
 
-  @action startDragging (e: TouchEvent | MouseEvent) {
+  @action startDragging (e: MouseEvent) {
     this.dragging = true
-    if (e instanceof TouchEvent) {
-      this.mousePosition = undefined
-      this.moveHandler(e.currentTarget, e.touches[0].pageX, e.touches[0].pageY)
-    }
   }
 
   componentDidMount () {
     document.addEventListener('mouseup', this.mouseUpListener)
-    document.addEventListener('touchend', this.touchEndListener)
     document.addEventListener('mousemove', this.mouseMoveListener)
-    document.addEventListener('touchmove', this.touchMoveListener)
   }
 
   componentWillUnmount () {
     document.removeEventListener('mouseup', this.mouseUpListener)
-    document.addEventListener('touchend', this.touchEndListener)
     document.removeEventListener('mousemove', this.mouseMoveListener)
-    document.removeEventListener('touchmove', this.touchMoveListener)
   }
 
   render () {

@@ -5,20 +5,21 @@ import { scaleLinear, scalePoint, scaleSequential, scaleBand, range } from 'd3'
 import { interpolateViridis } from 'd3-scale-chromatic'
 import constants from '@app/constants'
 import RootStore, { Modes } from '@app/models/RootStore'
-import Point from '@app/models/Point'
 import Container from '@app/components/timeSeries/Container'
 import ContainerSorted from '@app/components/timeSeries/ContainerSorted'
 
 class Chart extends React.Component<{
   width: number,
   height: number,
-  mousePosition: Point,
   mouseTarget: EventTarget,
+  touchTarget: EventTarget,
   dragging: boolean,
-  startDragging: (e: MouseEvent | TouchEvent) => void,
+  panning: boolean,
+  startDragging: (e: MouseEvent) => void,
   rootStore?: RootStore,
 }> {
   dragReactionDisposer: IReactionDisposer
+  panReactionDisposer: IReactionDisposer
   chart: SVGElement
 
   margin = {
@@ -31,16 +32,26 @@ class Chart extends React.Component<{
   componentDidMount () {
     this.dragReactionDisposer = reaction(() => ({
       target: this.props.mouseTarget,
-    }), this.handleMouseMove.bind(this))
+    }), () => {
+      if (this.props.dragging) {
+        this.handleBrushMove(this.props.mouseTarget)
+      }
+    })
+
+    this.panReactionDisposer = reaction(() => ({
+      target: this.props.touchTarget,
+    }), () => {
+      if (this.props.panning) {
+        this.handleBrushMove(this.props.touchTarget)
+      }
+    })
   }
 
-  handleMouseMove () {
+  handleBrushMove (target: any) {
     if (
-      this.props.dragging &&
-      this.props.mouseTarget !== undefined &&
-      (this.props.mouseTarget as any).getAttribute !== undefined
+      target !== undefined &&
+      target.getAttribute !== undefined
     ) {
-      const target = (this.props.mouseTarget as any)
       const timePeriod = parseInt(target.getAttribute('data-time-period'), 10)
 
       if (!isNaN(timePeriod)) {
@@ -102,9 +113,6 @@ class Chart extends React.Component<{
     return (width && height) ? (
       <svg className='time-series' ref={ref => this.chart = ref}
         onMouseDown={(e) => {
-          this.props.startDragging(e.nativeEvent)
-        }}
-        onTouchStart={(e) => {
           this.props.startDragging(e.nativeEvent)
         }}>
         {
