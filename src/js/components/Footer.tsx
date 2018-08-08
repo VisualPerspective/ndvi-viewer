@@ -7,7 +7,7 @@ import Chart from '@app/components/timeSeries/Chart'
 
 const Footer = () => (
   <footer>
-    <SizedElement className='horizontal-chart' render={({ width, height }) => (
+    <SizedElement className='horizontal-chart pinch-area' render={({ width, height }) => (
       <MouseElement render={({
         mouseTarget,
         dragging,

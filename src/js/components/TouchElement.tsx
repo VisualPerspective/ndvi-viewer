@@ -52,6 +52,7 @@ class TouchElement extends React.Component<{
   }
 
   @action touchMoveListener = (e: TouchEvent) => {
+    e.preventDefault()
     if (this.pinching) {
       const newDistance = this.pinchDistance(e)
       if (this.props.pinchHandler !== undefined) {
@@ -98,7 +99,7 @@ class TouchElement extends React.Component<{
 
   render () {
     return (
-      <div className='pinch-area full-width' ref={this.pinchElement}>
+      <div className='full-width' ref={this.pinchElement}>
         {
           this.props.render({
             pinching: this.pinching,

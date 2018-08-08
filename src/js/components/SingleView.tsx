@@ -2,7 +2,6 @@ import * as React from 'react'
 import { reaction, IReactionDisposer } from 'mobx'
 import { inject, observer } from 'mobx-react'
 import * as _ from 'lodash'
-import Zoom from '@app/components/Zoom'
 import Point from '@app/models/Point'
 import RootStore from '@app/models/RootStore'
 import GLManager from '@app/gl/GLManager'
@@ -104,16 +103,13 @@ class SingleView extends React.Component<{
 
   render () {
     return (
-      <>
-        <canvas
-          className='full-size'
-          ref={this.canvasElement}
-          onMouseDown={(e) => {
-            this.props.startDragging(e.nativeEvent)
-          }}
-          />
-        <Zoom />
-      </>
+      <canvas
+        className='full-size pinch-area'
+        ref={this.canvasElement}
+        onMouseDown={(e) => {
+          this.props.startDragging(e.nativeEvent)
+        }}
+        />
     )
   }
 }

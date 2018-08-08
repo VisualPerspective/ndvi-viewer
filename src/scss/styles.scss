@@ -147,7 +147,11 @@ header {
   }
 }
 
-.pinch-area { touch-action: none; }
+.pinch-area {
+  touch-action: none;
+  user-select: none;
+}
+
 .full-width { width: 100%; }
 .full-size { width: 100%; height: 100%; }
 
