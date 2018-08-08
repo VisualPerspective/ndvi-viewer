@@ -33,6 +33,7 @@ class Camera {
   reset () {
     this.zoom = 0
     this.position = this.boundingBox.center
+    this.position.boundingBoxConstraint = this.boundingBox
   }
 
   pixelToLngLat (pixel: Point) {
