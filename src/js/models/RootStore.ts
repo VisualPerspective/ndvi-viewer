@@ -73,10 +73,6 @@ class RootStore {
     return this.textureRastersWide * 4
   }
 
-  constructor () {
-    this.initialize()
-  }
-
   async initialize () {
     this.vectorLayer = new VectorLayer()
     await this.vectorLayer.initialize(constants.VECTOR_URL)

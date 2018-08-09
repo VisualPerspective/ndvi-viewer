@@ -1,28 +1,26 @@
+import 'reflect-metadata'
 import * as React from 'react'
-import * as REGL from 'regl'
 import Container from '@app/components/Container'
 import RootStore from '@app/models/RootStore'
-import constants from '@app/constants'
+import GLTest from '@app/gl/GLTest'
 import { Provider } from 'mobx-react'
 
 const rootStore: RootStore = new RootStore()
 
 // Check for needed JS and GL features
 try {
-  const canvas = document.createElement('canvas')
-  const testContext = REGL({
-    canvas,
-    extensions: constants.GL_EXTENSIONS,
-  })
+  // tslint:disable-next-line
+  new GLTest()
 
-  if (
-    Array.prototype.find === undefined ||
-    (testContext.limits as any).readFloat === false
-  ) {
+  if (Array.prototype.find === undefined) {
     rootStore.compatible = false
   }
 } catch (e) {
   rootStore.compatible = false
+}
+
+if (rootStore.compatible) {
+  rootStore.initialize()
 }
 
 const App = () => (

@@ -17,18 +17,18 @@ const Container: React.SFC<{ rootStore?: RootStore }> = (props) => (
       <link href='https://fonts.googleapis.com/css?family=Heebo:300,400,500' rel='stylesheet' />
     </Helmet>
     {
-      props.rootStore.initialized ? (
-        props.rootStore.compatible ? (
+      props.rootStore.compatible ? (
+        props.rootStore.initialized ? (
           <>
             <Header />
             <SingleViewContainer />
             <Footer />
           </>
         ) : (
-          <Incompatible />
+          <Loading />
         )
       ) : (
-        <Loading />
+        <Incompatible />
       )
     }
   </>
