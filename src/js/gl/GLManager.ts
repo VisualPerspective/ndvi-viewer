@@ -138,8 +138,8 @@ class GLManager {
       this.canvas.width = newWidth
       this.canvas.height = newHeight
       this.rootStore.camera.size.set(
-        this.canvas.offsetWidth,
-        this.canvas.offsetHeight
+        Math.max(this.canvas.offsetWidth, constants.SELECTED_BOX_PADDING * 3),
+        Math.max(this.canvas.offsetHeight, constants.SELECTED_BOX_PADDING * 3)
       )
     }
 
