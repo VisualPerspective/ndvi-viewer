@@ -38,6 +38,7 @@ class GLManager {
     this.rootStore = rootStore
 
     this.ctx = REGL({
+      profile: constants.PROFILE,
       canvas: this.canvas,
       extensions: constants.GL_EXTENSIONS,
       attributes: { alpha: false },

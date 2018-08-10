@@ -29,6 +29,7 @@ export default {
   START_YEAR: 2001,
   START_TIME_PERIOD: 6,
   SELECTED_BOX_PADDING: 25,
+  PROFILE: JSON.parse(process.env.PROFILE),
   ATLAS: process.env.ATLAS,
   ATLAS_CONFIG: 'atlas/ndvi.atlas.json',
   DATA_Y_TICKS: [ -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1.0 ],

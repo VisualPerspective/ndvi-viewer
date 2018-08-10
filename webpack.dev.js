@@ -7,7 +7,8 @@ module.exports = merge(common, {
   devtool: 'inline-source-map',
   plugins: common.plugins.concat([
     new webpack.DefinePlugin({
-      'process.env.ATLAS': JSON.stringify('atlas/ndvi.atlas')
+      'process.env.ATLAS': JSON.stringify('atlas/ndvi.atlas'),
+      'process.env.PROFILE': true
     })
   ])
 });
