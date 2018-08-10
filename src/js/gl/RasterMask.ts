@@ -83,7 +83,6 @@ class RasterMask {
 
   render () {
     this.ctx({ framebuffer: this.maskFBO })(() => {
-      this.ctx.poll()
       this.renderer({
         framebufferWidth: this.rootStore.rasterWidth,
         framebufferHeight: this.rootStore.rasterHeight,

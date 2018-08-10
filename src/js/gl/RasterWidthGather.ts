@@ -93,7 +93,6 @@ class RasterWidthGather {
 
   compute () {
     this.ctx({ framebuffer: this.widthGatherFBO })(() => {
-      this.ctx.poll()
       this.renderer({
         framebufferWidth: this.rootStore.samplesWide,
         framebufferHeight: constants.DATA_TEXTURE_SIZE,

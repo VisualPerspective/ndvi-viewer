@@ -88,7 +88,6 @@ class RasterHeightGather {
   compute (): number[] {
     let pixels: Float32Array
     this.ctx({ framebuffer: this.heightGatherFBO })(() => {
-      this.ctx.poll()
       this.renderer({
         framebufferWidth: this.rootStore.samplesWide,
         framebufferHeight: this.rootStore.textureRastersHigh,

@@ -1,4 +1,5 @@
 import * as REGL from 'regl'
+import * as _ from 'lodash'
 import { reaction } from 'mobx'
 import RasterView from '@app/gl/RasterView'
 import RasterMask from '@app/gl/RasterMask'
@@ -26,6 +27,7 @@ class GLManager {
   widthGatherTexture: REGL.Texture2D
   heightGatherTexture: REGL.Texture2D
   pendingRender: boolean = false
+  debouncedCompute: () => void
 
   constructor ({
     canvas,
@@ -36,6 +38,8 @@ class GLManager {
   }) {
     this.canvas = canvas
     this.rootStore = rootStore
+
+    this.debouncedCompute = _.debounce(() => { this.compute() })
 
     this.ctx = REGL({
       profile: constants.PROFILE,
@@ -145,22 +149,25 @@ class GLManager {
 
     if (!this.pendingRender) {
       this.pendingRender = true
-      window.requestAnimationFrame(() => {
+      const tick = this.ctx.frame(() => {
+        tick.cancel()
         this.pendingRender = false
-        this.ctx.poll()
         this.ctx.clear({ color: [0.2, 0.2, 0.2, 1] })
         this.rasterMask.render()
         this.vectorView.render()
         this.rasterView.render()
         this.outlineView.render()
         this.boxSelectView.render()
-
-        this.rasterWidthGather.compute()
-        this.rootStore.timePeriodAverages.replace(
-          this.rasterHeightGather.compute()
-        )
+        this.debouncedCompute()
       })
     }
+  }
+
+  compute () {
+    this.rasterWidthGather.compute()
+    this.rootStore.timePeriodAverages.replace(
+      this.rasterHeightGather.compute()
+    )
   }
 }
 
