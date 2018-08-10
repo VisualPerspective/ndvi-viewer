@@ -115,33 +115,36 @@ header {
   position: relative;
   min-height: 0;
 
+  canvas { min-height: 50px; min-width: 50px; }
+
   .zoom {
     position: absolute;
     bottom: 0;
     right: 0;
 
     >label {
-      width: 60px;
+      width: 48px;
       height: 153px;
       display: block;
       background: #222c;
 
-      span, input { display: block; }
-      span {
+      img, input { display: block; }
+      img {
         color: white;
-        text-align: center;
-        padding: 8px;
-        pointer-events: none;
-        user-select: none;
+        width: 18px;
+        padding: 10px 16px;
+        cursor: pointer;
+        opacity: 0.8;
+        &:hover { opacity: 1; }
 
         &.bottom {
           position: relative;
-          top: 57px;
+          top: 68px;
         }
       }
 
       input {
-        transform: rotate(-90deg) translate(-31px, -11px);
+        transform: rotate(-90deg) translate(-35px, -17px);
         width: 80px;
       }
     }

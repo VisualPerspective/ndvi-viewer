@@ -5,13 +5,17 @@ import RootStore from '@app/models/RootStore'
 const Zoom: React.SFC<{ rootStore?: RootStore }> = ({ rootStore }) => (
   <div className='zoom'>
     <label>
-      <span>▢</span>
+      <img src='/img/fa-search-plus.svg' onClick={() => {
+        rootStore.camera.zoom += 0.1
+      }} />
       <input type='range' step='any' min={0} max={1}
         value={rootStore.camera.zoom}
         onChange={(e: any) => {
           rootStore.camera.zoom = Number(e.target.value)
         }} />
-      <span className='bottom'>□</span>
+      <img className='bottom' src='/img/fa-search-minus.svg' onClick={() => {
+        rootStore.camera.zoom -= 0.1
+      }} />
     </label>
   </div>
 )
