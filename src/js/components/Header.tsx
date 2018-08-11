@@ -11,10 +11,10 @@ const Header = () => (
     <div className='center'>
       <ModeSelect />
     </div>
-    <div className='logo'>
-      <a className='info' href={constants.BLOG_URL}>
-        <i>i</i> Read about this project
-      </a>
+    <a className='info half-width' href={constants.BLOG_URL}>
+      <i>i</i> Read about this project
+    </a>
+    <div className='logo half-width'>
       <a href='https://visualperspective.io'>
         <img src='/img/vplogo.svg' />
       </a>

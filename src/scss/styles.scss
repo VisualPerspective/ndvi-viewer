@@ -1,9 +1,11 @@
 @import 'range-slider-sass';
 $thumb-color: #fff;
 $thumb-radius: 100%;
-$thumb-height: 15px;
-$thumb-width: 15px;
+$thumb-height: 1rem;
+$thumb-width: 1rem;
 $track-color: #888;
+$track-height: 0.5rem;
+$track-border-width: 0;
 
 $link-color: #335092;
 
@@ -77,12 +79,14 @@ header {
 
   >* {
     flex-basis: 33.3%;
+    &.half-width { flex-basis: 16.7%; }
     text-align: center;
   }
 
   .info {
     font-size: 0.9rem;
     margin-right: 1rem;
+    white-space: nowrap;
     i {
       font-size: 0.8rem;
       font-family: times;
@@ -123,29 +127,29 @@ header {
     right: 0;
 
     >label {
-      width: 48px;
-      height: 153px;
+      width: 3rem;
+      height: 9.56rem;
       display: block;
       background: #222c;
 
       img, input { display: block; }
       img {
         color: white;
-        width: 18px;
-        padding: 10px 16px;
+        width: 1.125rem;
+        padding: 0.6rem 1rem;
         cursor: pointer;
         opacity: 0.8;
         &:hover { opacity: 1; }
 
         &.bottom {
           position: relative;
-          top: 68px;
+          top: 4.1rem;
         }
       }
 
       input {
-        transform: rotate(-90deg) translate(-35px, -17px);
-        width: 80px;
+        transform: rotate(-90deg) translate(-2.1rem, -0.83rem);
+        width: 4.5rem;
       }
     }
   }
@@ -247,4 +251,8 @@ footer {
   height: 512px;
   margin-right: 10px;
   image-rendering: pixelated;
+}
+
+@media (max-width: 1024px) {
+  html { font-size: 14px; }
 }
