@@ -19,7 +19,7 @@ const XAxisSorted = ({ xScale, yScale, rootStore }: {
             yScale.range()[1]
           )}>
           <g transform={translate(
-            xScale.bandwidth() / 2,
+            xScale.bandwidth() / 2 + 3,
             yScale.range()[0] - yScale.range()[1]
           )}>
             <text dx='0' dy='20' x='0' y='0'>{month}</text>

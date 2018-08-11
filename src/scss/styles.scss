@@ -303,4 +303,8 @@ footer {
       rect { opacity: 0.75; }
     }
   }
+
+  .time-series .by-year .x-tick:nth-child(even) text {
+    display: none;
+  }
 }

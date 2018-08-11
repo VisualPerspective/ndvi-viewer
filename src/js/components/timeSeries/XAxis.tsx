@@ -10,16 +10,16 @@ const XAxis = ({ xScale, yScale, rootStore }: {
   yScale: any,
   rootStore?: RootStore,
 }) => (
-  <g className='axis x-axis'>
+  <g className='axis x-axis by-year'>
     {
       _.times(rootStore.numTimePeriods / 12, i => (
         <g key={i} className='tick x-tick'
           transform={translate(xScale(i * 12), yScale.range()[1])}>
           <g transform={translate(
-            xScale.step() * 12 / 2,
-            yScale.range()[0] - yScale.range()[1]
+            xScale.step() * 12 / 2 - 5,
+            yScale.range()[0] - yScale.range()[1] + 8
           )}>
-            <text dx='0' dy='20' x='0' y='0'>{
+            <text dx='0' dy='6' x='0' y='0'>{
               constants.START_YEAR + i
             }</text>
           </g>
