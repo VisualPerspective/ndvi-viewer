@@ -3,6 +3,7 @@ import * as REGL from 'regl'
 export const strings = {
   HEADING: 'Iceland Vegetation',
   APP_NAME: 'Iceland Vegetation viewer',
+  MODE_SELECT_LABEL: 'View:',
 }
 
 export default {
