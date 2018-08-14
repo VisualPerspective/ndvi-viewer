@@ -7,7 +7,7 @@ export const strings = {
 }
 
 export default {
-  BLOG_URL: 'https://visualperspective.io/blog/iceland',
+  BLOG_URL: 'https://visualperspective.io/blog/iceland-ndvi-viewer',
   VECTOR_URL: '/geojson/vectors.json',
   DATA_TEXTURE_SIZE: 4096,
   NO_DATA_THRESHOLD: 0.001,
