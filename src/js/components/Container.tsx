@@ -15,7 +15,7 @@ const Container: React.SFC<{ rootStore?: RootStore }> = (props) => (
       <meta name='viewport' content='width=device-width, initial-scale=1' />
       <link rel='icon' type='image/png' href='/img/favicon.png' />
       <link href='https://fonts.googleapis.com/css?family=Heebo:300,400,500' rel='stylesheet' />
-      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123748252-1"></script>
+      <script async src='https://www.googletagmanager.com/gtag/js?id=UA-123748252-1'></script>
       <script>{`
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
