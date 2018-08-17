@@ -27,5 +27,5 @@ The main data file, `src/assets/atlas/ndvi.atlas`, was produced using [geotiff-a
 ### Focus on Iceland data set
 For now, this viewer is focused on Iceland, to make it work with another region some changes and enhancements would need to be made:
 * Change various constants in `constants.ts`
-* Download a set of geotiffs for an area, and process them using https://github.com/VisualPerspective/geotiff-altas
+* Download a set of geotiffs for an area, and process them using https://github.com/VisualPerspective/geotiff-atlas
 * Make other tweaks/changes to make the code more general
