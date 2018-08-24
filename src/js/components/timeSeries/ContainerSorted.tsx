@@ -1,48 +1,73 @@
 import * as React from 'react'
+import RootStore from '@app/models/RootStore'
 import { inject, observer } from 'mobx-react'
 import Legend from '@app/components/timeSeries/Legend'
 import XAxisSorted from '@app/components/timeSeries/XAxisSorted'
 import YAxis from '@app/components/timeSeries/YAxis'
 import Brush from '@app/components/timeSeries/Brush'
 import SeriesSorted from '@app/components/timeSeries/SeriesSorted'
+import {
+  makeXScaleSorted,
+  makeXScaleSortedBands,
+  makeYScaleNDVI,
+  makeColorScaleNDVI,
+} from '@app/components/timeSeries/Scales'
 
 const ContainerSorted = ({
-  xScale,
-  xScaleSortedBands,
-  yScale,
-  colorScale,
   onTimePeriodSelect,
-  marginBottom,
+  width,
+  height,
+  margin,
+  rootStore,
 }: {
-  xScale: any
-  xScaleSortedBands: any
-  yScale: any
-  colorScale: any
   onTimePeriodSelect: any
-  marginBottom: number
-}) => (
-  <>
-    <Legend
-      xScale={xScaleSortedBands}
-      yScale={yScale}
-      colorScale={colorScale} />
-    <YAxis
-      xScale={xScaleSortedBands}
-      yScale={yScale}
-      colorScale={colorScale} />
-    <XAxisSorted
-      xScale={xScaleSortedBands}
-      yScale={yScale} />
-    <Brush
-      xScale={xScale}
-      yScale={yScale} />
-    <SeriesSorted
-      xScale={xScale}
-      yScale={yScale}
-      colorScale={colorScale}
-      onTimePeriodSelect={onTimePeriodSelect}
-      marginBottom={marginBottom} />
-  </>
-)
+  width: number
+  height: number
+  margin: any
+  rootStore?: RootStore
+}) => {
+  const xScaleSortedBands = makeXScaleSortedBands({
+    width,
+    margin,
+  })
+
+  const xScale = makeXScaleSorted({
+    numTimePeriods: rootStore.numTimePeriods,
+    width,
+    margin,
+  })
+
+  const yScale = makeYScaleNDVI({
+    height,
+    margin,
+  })
+
+  const colorScale = makeColorScaleNDVI()
+
+  return (
+    <>
+      <Legend
+        xScale={xScaleSortedBands}
+        yScale={yScale}
+        colorScale={colorScale} />
+      <YAxis
+        xScale={xScaleSortedBands}
+        yScale={yScale}
+        colorScale={colorScale} />
+      <XAxisSorted
+        xScale={xScaleSortedBands}
+        yScale={yScale} />
+      <Brush
+        xScale={xScale}
+        yScale={yScale} />
+      <SeriesSorted
+        xScale={xScale}
+        yScale={yScale}
+        colorScale={colorScale}
+        onTimePeriodSelect={onTimePeriodSelect}
+        marginBottom={margin.bottom} />
+    </>
+  )
+}
 
 export default inject('rootStore')(observer(ContainerSorted))
