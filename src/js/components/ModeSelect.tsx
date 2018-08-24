@@ -7,8 +7,11 @@ const ModeSelect: React.SFC<{ rootStore?: RootStore }> = ({ rootStore }) => (
     onChange={(e: any) => {
       rootStore.mode = e.target.value
     }}>
-    <option value={Modes.NDVI}>{Modes.NDVI}</option>
-    <option value={Modes.NDVI_GROUPED}>{Modes.NDVI_GROUPED}</option>
+    {
+      Object.values(Modes).map(mode => (
+        <option key={mode} value={mode}>{mode}</option>
+      ))
+    }
   </select>
 )
 

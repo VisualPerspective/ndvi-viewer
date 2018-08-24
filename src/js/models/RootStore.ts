@@ -10,6 +10,8 @@ import Atlas from '@app/models/Atlas'
 export enum Modes {
   NDVI = 'NDVI',
   NDVI_GROUPED = 'NDVI By Month',
+  NDVI_ANOMALY = 'NDVI Anomaly',
+  NDVI_ANOMALY_GROUPED = 'NDVI Anomaly By Month',
 }
 
 class RootStore {

@@ -110,29 +110,35 @@ class Chart extends React.Component<{
       }
     }
 
+    let container
+    switch (rootStore.mode) {
+      case Modes.NDVI:
+        container = <Container
+          xScale={xScale}
+          yScale={yScale}
+          colorScale={colorScale}
+          onTimePeriodSelect={onTimePeriodSelect}
+          marginBottom={this.margin.bottom} />
+        break
+      case Modes.NDVI_GROUPED:
+        container = <ContainerSorted
+          xScale={xScaleSorted}
+          xScaleSortedBands={xScaleSortedBands}
+          yScale={yScale}
+          colorScale={colorScale}
+          onTimePeriodSelect={onTimePeriodSelect}
+          marginBottom={this.margin.bottom} />
+        break
+      default:
+        container = null
+    }
+
     return (width && height) ? (
       <svg className='time-series' ref={ref => this.chart = ref}
         onMouseDown={(e) => {
           this.props.startDragging(e.nativeEvent)
         }}>
-        {
-          rootStore.mode === Modes.NDVI ? (
-            <Container
-              xScale={xScale}
-              yScale={yScale}
-              colorScale={colorScale}
-              onTimePeriodSelect={onTimePeriodSelect}
-              marginBottom={this.margin.bottom} />
-          ) : (
-            <ContainerSorted
-              xScale={xScaleSorted}
-              xScaleSortedBands={xScaleSortedBands}
-              yScale={yScale}
-              colorScale={colorScale}
-              onTimePeriodSelect={onTimePeriodSelect}
-              marginBottom={this.margin.bottom} />
-          )
-        }
+        {container}
       </svg>
     ) : null
   }
