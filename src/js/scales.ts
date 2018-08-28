@@ -5,7 +5,7 @@ import {
   scaleBand,
   range,
   color,
-  interpolateRgb,
+  interpolateCubehelix,
 } from 'd3'
 
 import * as _ from 'lodash'
@@ -100,8 +100,8 @@ export const glColors = (interpolate: any) => (
 
 const interpolateNDVIAnomaly = (i: number) => (
   i < 0.5
-    ? interpolateRgb('#ff9100', '#222')(i * 2)
-    : interpolateRgb('#222', '#00ffa5')((i - 0.5) * 2)
+    ? interpolateCubehelix('#ff9100', '#222')(i * 2)
+    : interpolateCubehelix('#222', '#00ffa5')((i - 0.5) * 2)
 )
 
 export const makeColorScaleNDVI = () =>
