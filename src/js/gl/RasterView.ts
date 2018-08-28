@@ -60,7 +60,10 @@ class RasterView {
     this.rootStore = rootStore
 
     this.renderer = ctx<IUniforms, IAttributes, IProps>({
-      frag: frag({ noDataThreshold: constants.NO_DATA_THRESHOLD }),
+      frag: frag({
+        noDataThreshold: constants.NO_DATA_THRESHOLD,
+        colorScale: 'interpolateBrBG',
+      }),
       vert: vert(),
       attributes: {
         position: ctx.prop<IProps, 'triangles'>('triangles'),

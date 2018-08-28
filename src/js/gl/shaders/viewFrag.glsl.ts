@@ -1,5 +1,6 @@
 import luma from '@app/gl/shaders/functions/luma'
 import viridis from '@app/gl/shaders/functions/viridis'
+import interpolateBrBG from '@app/gl/shaders/functions/interpolateBrBG'
 import lngLatToSinusoidal from '@app/gl/shaders/functions/lngLatToSinusoidal'
 import mercatorToLngLat from '@app/gl/shaders/functions/mercatorToLngLat'
 import pointInBBox from '@app/gl/shaders/functions/pointInBBox'
@@ -9,13 +10,16 @@ import geoByteScale from '@app/gl/shaders/functions/geoByteScale'
 
 export default ({
   noDataThreshold,
+  colorScale,
 }: {
   noDataThreshold: number,
+  colorScale: string,
 }) => `
   precision highp float;
 
   ${luma()}
   ${viridis()}
+  ${interpolateBrBG()}
   ${lngLatToSinusoidal()}
   ${mercatorToLngLat()}
   ${pointInBBox()}
@@ -54,7 +58,7 @@ export default ({
     float scaled = geoByteScale(unscaled);
 
     float hasdata = step(${noDataThreshold}, unscaled);
-    vec4 color = mix(vec4(0.0), viridis(scaled), hasdata);
+    vec4 color = mix(vec4(0.0), ${colorScale}(scaled), hasdata);
     vec4 grayscale = mix(vec4(0.0), vec4(vec3(luma(color)) * 0.7, 1.0), hasdata);
 
     gl_FragColor = mix(grayscale, color, maskSample);
