@@ -130,6 +130,21 @@ class GLManager {
       cameraPosition: this.rootStore.camera.position.array,
       selectedBox: this.rootStore.selectedBox.array,
     }), this.render.bind(this))
+
+    reaction(() => ({
+      mode: this.rootStore.mode,
+    }), this.updateDataTexture.bind(this))
+  }
+
+  updateDataTexture () {
+    const atlasConfig = this.rootStore.atlas.config
+    this.rasterTexture({
+      width: atlasConfig.rasterWidth * atlasConfig.rastersWide,
+      height: atlasConfig.rasterHeight * atlasConfig.rastersHigh,
+      data: this.rootStore.atlas.data,
+    })
+
+    this.render()
   }
 
   render () {
