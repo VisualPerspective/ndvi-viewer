@@ -1,5 +1,16 @@
-import { scaleLinear, scalePoint, scaleSequential, scaleBand, range } from 'd3'
-import { interpolateViridis } from 'd3-scale-chromatic'
+import {
+  scaleLinear,
+  scalePoint,
+  scaleSequential,
+  scaleBand,
+  range,
+} from 'd3'
+
+import {
+  interpolateViridis,
+  interpolateBrBG,
+} from 'd3-scale-chromatic'
+
 import constants from '@app/constants'
 
 export const makeYScaleNDVI = ({ height, margin }: {
@@ -8,6 +19,15 @@ export const makeYScaleNDVI = ({ height, margin }: {
 }) => (
   scaleLinear()
     .domain([-0.2, 1.0])
+    .range([height - margin.bottom, margin.top])
+)
+
+export const makeYScaleNDVIAnomaly = ({ height, margin }: {
+  height: number,
+  margin: any,
+}) => (
+  scaleLinear()
+    .domain([-1.2, 1.2])
     .range([height - margin.bottom, margin.top])
 )
 
@@ -61,3 +81,6 @@ export const makeXScaleSorted = ({ numTimePeriods, width, margin }: {
 
 export const makeColorScaleNDVI = () =>
   scaleSequential(interpolateViridis).domain([-0.2, 1.0])
+
+export const makeColorScaleNDVIAnomaly = () =>
+  scaleSequential(interpolateBrBG).domain([-1.2, 1.2])

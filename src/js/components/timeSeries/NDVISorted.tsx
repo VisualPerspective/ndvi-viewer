@@ -2,30 +2,36 @@ import * as React from 'react'
 import RootStore from '@app/models/RootStore'
 import { inject, observer } from 'mobx-react'
 import Legend from '@app/components/timeSeries/Legend'
-import XAxis from '@app/components/timeSeries/XAxis'
-import YAxis from '@app/components/timeSeries/YAxis'
+import XAxisSorted from '@app/components/timeSeries/XAxisSorted'
+import YAxisNDVI from '@app/components/timeSeries/YAxisNDVI'
 import Brush from '@app/components/timeSeries/Brush'
-import Series from '@app/components/timeSeries/Series'
+import SeriesSorted from '@app/components/timeSeries/SeriesSorted'
 import {
-  makeXScale,
+  makeXScaleSorted,
+  makeXScaleSortedBands,
   makeYScaleNDVI,
   makeColorScaleNDVI,
 } from '@app/components/timeSeries/Scales'
 
-const Container = ({
+const NDVISorted = ({
   onTimePeriodSelect,
   width,
   height,
   margin,
   rootStore,
 }: {
-  onTimePeriodSelect: any,
-  width: number,
-  height: number,
+  onTimePeriodSelect: any
+  width: number
+  height: number
   margin: any
   rootStore?: RootStore
 }) => {
-  const xScale = makeXScale({
+  const xScaleSortedBands = makeXScaleSortedBands({
+    width,
+    margin,
+  })
+
+  const xScale = makeXScaleSorted({
     numTimePeriods: rootStore.numTimePeriods,
     width,
     margin,
@@ -41,20 +47,20 @@ const Container = ({
   return (
     <>
       <Legend
-        xScale={xScale}
+        xScale={xScaleSortedBands}
         yScale={yScale}
         colorScale={colorScale} />
-      <YAxis
-        xScale={xScale}
+      <YAxisNDVI
+        xScale={xScaleSortedBands}
         yScale={yScale}
         colorScale={colorScale} />
-      <XAxis
-        xScale={xScale}
+      <XAxisSorted
+        xScale={xScaleSortedBands}
         yScale={yScale} />
       <Brush
         xScale={xScale}
         yScale={yScale} />
-      <Series
+      <SeriesSorted
         xScale={xScale}
         yScale={yScale}
         colorScale={colorScale}
@@ -64,4 +70,4 @@ const Container = ({
   )
 }
 
-export default inject('rootStore')(observer(Container))
+export default inject('rootStore')(observer(NDVISorted))

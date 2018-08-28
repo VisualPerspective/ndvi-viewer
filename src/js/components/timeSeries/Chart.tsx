@@ -2,8 +2,10 @@ import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 import { reaction, IReactionDisposer } from 'mobx'
 import RootStore, { Modes } from '@app/models/RootStore'
-import Container from '@app/components/timeSeries/Container'
-import ContainerSorted from '@app/components/timeSeries/ContainerSorted'
+import NDVI from '@app/components/timeSeries/NDVI'
+import NDVISorted from '@app/components/timeSeries/NDVISorted'
+import NDVIAnomaly from '@app/components/timeSeries/NDVIAnomaly'
+import NDVIAnomalySorted from '@app/components/timeSeries/NDVIAnomalySorted'
 
 class Chart extends React.Component<{
   width: number,
@@ -73,10 +75,16 @@ class Chart extends React.Component<{
     let ContainerComponent
     switch (rootStore.mode) {
       case Modes.NDVI:
-        ContainerComponent = Container
+        ContainerComponent = NDVI
         break
       case Modes.NDVI_GROUPED:
-        ContainerComponent = ContainerSorted
+        ContainerComponent = NDVISorted
+        break
+      case Modes.NDVI_ANOMALY:
+        ContainerComponent = NDVIAnomaly
+        break
+      case Modes.NDVI_ANOMALY_GROUPED:
+        ContainerComponent = NDVIAnomalySorted
         break
     }
 

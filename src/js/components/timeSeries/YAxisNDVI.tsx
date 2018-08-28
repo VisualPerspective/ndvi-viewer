@@ -5,7 +5,7 @@ import { format } from 'd3'
 import * as _ from 'lodash'
 import { translate } from '@app/utils'
 
-const YAxis = ({ xScale, yScale, colorScale }: {
+const YAxisNDVI = ({ xScale, yScale, colorScale }: {
   xScale: any,
   yScale: any,
   colorScale: any,
@@ -67,19 +67,19 @@ const YAxis = ({ xScale, yScale, colorScale }: {
         height={yScale.range()[0] - yScale.range()[1]}
         fill='url(#grad1)' />
       {
-        constants.DATA_Y_TICKS.map((tick, i) => (
+        constants.NDVI_Y_TICKS.map((tick, i) => (
           <g key={i} className='tick y-tick'
             transform={translate(
               xScale.range()[0] - leftScaleWidth,
               yScale.range()[0] -
-              (i / (constants.DATA_Y_TICKS.length - 1)) *
+              (i / (constants.NDVI_Y_TICKS.length - 1)) *
               (yScale.range()[0] - yScale.range()[1]),
             )}>
             <line x1={leftScaleWidth} y1='0.5'
               x2={(xScale.range()[1] - xScale.range()[0]) + leftScaleWidth}
               y2='0.5' />
             <line x1='0' y1='0.5' className={
-              i > 0 && i < constants.DATA_Y_TICKS.length - 1 ? 'white' : ''
+              i > 0 && i < constants.NDVI_Y_TICKS.length - 1 ? 'white' : ''
             }
               x2={leftScaleWidth}
               y2='0.5' />
@@ -91,4 +91,4 @@ const YAxis = ({ xScale, yScale, colorScale }: {
   )
 }
 
-export default inject('rootStore')(observer(YAxis))
+export default inject('rootStore')(observer(YAxisNDVI))
