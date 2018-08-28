@@ -7,7 +7,8 @@ module.exports = merge(common, {
   devtool: 'source-map',
   plugins: common.plugins.concat([
     new webpack.DefinePlugin({
-      'process.env.ATLAS': JSON.stringify('https://storage.googleapis.com/iceland-ndvi/static/ndvi.atlas'),
+      'process.env.NDVI_ATLAS': JSON.stringify('https://storage.googleapis.com/iceland-ndvi/static/ndvi.atlas'),
+      'process.env.NDVI_ANOMALY_ATLAS': JSON.stringify('https://storage.googleapis.com/iceland-ndvi/static/ndvi-anomaly.atlas'),
       'process.env.PROFILE': false
     })
   ])

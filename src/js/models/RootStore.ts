@@ -21,11 +21,25 @@ class RootStore {
 
   @observable camera: Camera
   @observable vectorLayer: VectorLayer
-  @observable atlas: Atlas
+  @observable ndviAtlas: Atlas
+  @observable ndviAnomalyAtlas: Atlas
   @observable boundingBox = observable<BoundingBox>(new BoundingBox())
-  @observable mode: Modes = Modes.NDVI
+  @observable mode: Modes = Modes.NDVI_ANOMALY
 
   @observable timePeriod: number = constants.START_TIME_PERIOD
+
+  @computed get atlas () {
+    switch (this.mode) {
+      case Modes.NDVI:
+      case Modes.NDVI_GROUPED:
+        return this.ndviAtlas
+        break
+      case Modes.NDVI_ANOMALY:
+      case Modes.NDVI_ANOMALY_GROUPED:
+        return this.ndviAnomalyAtlas
+        break
+    }
+  }
 
   @computed get numTimePeriods () {
     return this.atlas.config.numRasters
@@ -80,10 +94,16 @@ class RootStore {
     this.vectorLayer = new VectorLayer()
     await this.vectorLayer.initialize(constants.VECTOR_URL)
 
-    this.atlas = new Atlas()
-    await this.atlas.initialize({
-      url: constants.ATLAS,
-      configUrl: constants.ATLAS_CONFIG,
+    this.ndviAtlas = new Atlas()
+    await this.ndviAtlas.initialize({
+      url: constants.NDVI_ATLAS,
+      configUrl: constants.NDVI_ATLAS_CONFIG,
+    })
+
+    this.ndviAnomalyAtlas = new Atlas()
+    await this.ndviAnomalyAtlas.initialize({
+      url: constants.NDVI_ANOMALY_ATLAS,
+      configUrl: constants.NDVI_ANOMALY_ATLAS_CONFIG,
     })
 
     this.boundingBox = observable(BoundingBox.fromArray(
