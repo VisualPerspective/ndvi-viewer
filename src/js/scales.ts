@@ -5,13 +5,13 @@ import {
   scaleBand,
   range,
   color,
+  interpolateRgb,
 } from 'd3'
 
 import * as _ from 'lodash'
 
 import {
   interpolateViridis,
-  interpolateBrBG,
 } from 'd3-scale-chromatic'
 
 import constants from '@app/constants'
@@ -98,12 +98,24 @@ export const glColors = (interpolate: any) => (
   })
 )
 
+const interpolateNDVIAnomaly = (i: number) => (
+  i < 0.5
+    ? interpolateRgb('#ff9100', '#222')(i * 2)
+    : interpolateRgb('#222', '#00ffa5')((i - 0.5) * 2)
+)
+
 export const makeColorScaleNDVI = () =>
-  scaleSequential(interpolateViridis).domain([-0.2, 1.0])
+  scaleSequential(interpolateViridis).domain([
+    constants.MIN_VALUE_NDVI,
+    constants.MAX_VALUE_NDVI,
+  ])
 
 export const GL_COLORS_NDVI = glColors(interpolateViridis)
 
 export const makeColorScaleNDVIAnomaly = () =>
-  scaleSequential(interpolateBrBG).domain([-1.2, 1.2])
+  scaleSequential(interpolateNDVIAnomaly).domain([
+    constants.MIN_VALUE_NDVI_ANOMALY,
+    constants.MAX_VALUE_NDVI_ANOMALY,
+  ])
 
-export const GL_COLORS_NDVI_ANOMALY = glColors(interpolateBrBG)
+export const GL_COLORS_NDVI_ANOMALY = glColors(interpolateNDVIAnomaly)

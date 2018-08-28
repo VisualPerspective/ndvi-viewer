@@ -1,5 +1,5 @@
 import * as REGL from 'regl'
-import RootStore from '@app/models/RootStore'
+import RootStore, { Modes } from '@app/models/RootStore'
 import constants from '@app/constants'
 import {
   compensatedSquareUVs
@@ -14,6 +14,8 @@ interface IUniforms {
   imageSize: number[]
   imagesWide: number
   targetHeight: number
+  minValue: number
+  maxValue: number
 }
 
 interface IAttributes {
@@ -24,6 +26,8 @@ interface IAttributes {
 interface IProps {
   framebufferWidth: number
   framebufferHeight: number
+  minValue: number
+  maxValue: number
 }
 
 class RasterWidthGather {
@@ -86,16 +90,36 @@ class RasterWidthGather {
         imageSize: this.rootStore.rasterSizePercent.array,
         imagesWide: this.rootStore.textureRastersWide,
         targetHeight: constants.DATA_TEXTURE_SIZE,
+        minValue: ctx.prop<IProps, 'minValue'>('minValue'),
+        maxValue: ctx.prop<IProps, 'maxValue'>('maxValue'),
       },
       count: constants.DATA_SQUARE_POSITIONS.length,
     })
   }
 
   compute () {
+    let modeUniforms = {}
+    switch (this.rootStore.mode) {
+      case Modes.NDVI:
+      case Modes.NDVI_GROUPED:
+        modeUniforms = {
+          minValue: constants.MIN_VALUE_NDVI,
+          maxValue: constants.MAX_VALUE_NDVI,
+        }
+        break
+      case Modes.NDVI_ANOMALY:
+      case Modes.NDVI_ANOMALY_GROUPED:
+        modeUniforms = {
+          minValue: constants.MIN_VALUE_NDVI_ANOMALY,
+          maxValue: constants.MAX_VALUE_NDVI_ANOMALY,
+        }
+    }
+
     this.ctx({ framebuffer: this.widthGatherFBO })(() => {
       this.renderer({
         framebufferWidth: this.rootStore.samplesWide,
         framebufferHeight: constants.DATA_TEXTURE_SIZE,
+        ...modeUniforms,
       })
     })
   }

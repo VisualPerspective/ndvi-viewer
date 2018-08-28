@@ -37,6 +37,10 @@ export default {
   NDVI_ANOMALY_ATLAS_CONFIG: 'atlas/ndvi-anomaly.atlas.json',
   NDVI_Y_TICKS: [ -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1.0 ],
   NDVI_ANOMALY_Y_TICKS: [ -1.2, -0.8, -0.4, 0, 0.4, 0.8, 1.2 ],
+  MIN_VALUE_NDVI: -0.2,
+  MAX_VALUE_NDVI: 1.0,
+  MIN_VALUE_NDVI_ANOMALY: -1.2,
+  MAX_VALUE_NDVI_ANOMALY: 1.2,
   DATA_TEXTURE_OPTIONS: ({
     type: 'float',
     format: 'rgba',

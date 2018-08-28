@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 import constants from '@app/constants'
-import { format } from 'd3'
+import { format, interpolateNumber } from 'd3'
 import * as _ from 'lodash'
 import { translate } from '@app/utils'
 
@@ -13,7 +13,10 @@ const YAxisNDVIAnomaly = ({ xScale, yScale, colorScale }: {
   const leftScaleWidth = 7
   const numStops = 10
   const stops = _.times(numStops, i => ({
-    color: colorScale((i / (numStops - 1)) * 2.4 - 1.2),
+    color: colorScale(interpolateNumber(
+      constants.MIN_VALUE_NDVI_ANOMALY,
+      constants.MAX_VALUE_NDVI_ANOMALY
+    )(i / (numStops - 1))),
     percent: i / (numStops - 1) * 100,
   }))
 
