@@ -48,14 +48,12 @@ class GLManager {
       attributes: { alpha: false },
     })
 
-    const atlasConfig = this.rootStore.atlas.config
     this.rasterTexture = this.ctx.texture({
       ...(constants.DATA_TEXTURE_OPTIONS),
       type: 'uint8',
-      width: atlasConfig.rasterWidth * atlasConfig.rastersWide,
-      height: atlasConfig.rasterHeight * atlasConfig.rastersHigh,
-      data: this.rootStore.atlas.data,
     })
+
+    this.updateDataTexture()
 
     this.vectorView = new VectorView({
       rootStore,
@@ -133,7 +131,10 @@ class GLManager {
 
     reaction(() => ({
       mode: this.rootStore.mode,
-    }), this.updateDataTexture.bind(this))
+    }), () => {
+      this.updateDataTexture()
+      this.render()
+    })
   }
 
   updateDataTexture () {
@@ -143,8 +144,6 @@ class GLManager {
       height: atlasConfig.rasterHeight * atlasConfig.rastersHigh,
       data: this.rootStore.atlas.data,
     })
-
-    this.render()
   }
 
   render () {
