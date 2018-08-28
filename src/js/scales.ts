@@ -4,7 +4,10 @@ import {
   scaleSequential,
   scaleBand,
   range,
+  color,
 } from 'd3'
+
+import * as _ from 'lodash'
 
 import {
   interpolateViridis,
@@ -79,8 +82,28 @@ export const makeXScaleSorted = ({ numTimePeriods, width, margin }: {
   return scale
 }
 
+// Creates an array of 9 interpolated vec4 colors for a d3
+// color scale interpolator. These can be passed into the
+// colorScale shader.
+export const glColors = (interpolate: any) => (
+  _.times(9, (i: number) => {
+    const interpolated = color(interpolate(i / 8))
+
+    return [
+      interpolated.r / 255,
+      interpolated.g / 255,
+      interpolated.b / 255,
+      1.0,
+    ]
+  })
+)
+
 export const makeColorScaleNDVI = () =>
   scaleSequential(interpolateViridis).domain([-0.2, 1.0])
 
+export const GL_COLORS_NDVI = glColors(interpolateViridis)
+
 export const makeColorScaleNDVIAnomaly = () =>
   scaleSequential(interpolateBrBG).domain([-1.2, 1.2])
+
+export const GL_COLORS_NDVI_ANOMALY = glColors(interpolateBrBG)

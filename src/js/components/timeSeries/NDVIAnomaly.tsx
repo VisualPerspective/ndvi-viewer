@@ -10,7 +10,7 @@ import {
   makeXScale,
   makeYScaleNDVIAnomaly,
   makeColorScaleNDVIAnomaly,
-} from '@app/components/timeSeries/Scales'
+} from '@app/scales'
 
 const NDVIAnomaly = ({
   onTimePeriodSelect,

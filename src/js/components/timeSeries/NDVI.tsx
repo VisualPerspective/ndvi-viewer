@@ -10,7 +10,7 @@ import {
   makeXScale,
   makeYScaleNDVI,
   makeColorScaleNDVI,
-} from '@app/components/timeSeries/Scales'
+} from '@app/scales'
 
 const NDVI = ({
   onTimePeriodSelect,
