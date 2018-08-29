@@ -76,6 +76,7 @@ header {
   display: flex;
   align-items: center;
   flex: 0 0 auto;
+  border-bottom: 1px solid #bbb;
 
   >* {
     flex-basis: 33.3%;
@@ -166,7 +167,7 @@ header {
 
 footer {
   padding: 1.5rem;
-
+  border-top: 1px solid #bbb;
   input[type=range] { width: 100% }
 }
 

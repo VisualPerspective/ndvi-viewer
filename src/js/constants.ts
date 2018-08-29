@@ -20,7 +20,7 @@ const NDVI_CONFIG = {
   RANGE: [-0.2, 1.0],
   NO_DATA_COLOR: [0.2, 0.2, 0.2, 1.0],
   SELECTED_COLOR: [1, 1, 1, 1],
-  UNSELECTED_COLOR: [0.8, 0.8, 0.8, 1],
+  UNSELECTED_COLOR: [0.6, 0.6, 0.6, 1],
 }
 
 const NDVI_ANOMALY_CONFIG = {
@@ -30,7 +30,7 @@ const NDVI_ANOMALY_CONFIG = {
   RANGE: [-1.2, 1.2],
   NO_DATA_COLOR: [1, 1, 1, 1],
   SELECTED_COLOR: [0, 0, 0, 1],
-  UNSELECTED_COLOR: [0.2, 0.2, 0.2, 1],
+  UNSELECTED_COLOR: [0.4, 0.4, 0.4, 1],
 }
 
 export default {
