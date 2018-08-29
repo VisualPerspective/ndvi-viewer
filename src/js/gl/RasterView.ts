@@ -1,7 +1,7 @@
 import * as REGL from 'regl'
 import { mat4 } from 'gl-matrix'
-import RootStore, { Modes } from '@app/models/RootStore'
-import constants from '@app/constants'
+import RootStore from '@app/models/RootStore'
+import constants, { Modes } from '@app/constants'
 import { uniformArrayAsObject } from '@app/utils'
 import { GL_COLORS_NDVI, GL_COLORS_NDVI_ANOMALY } from '@app/scales'
 import vert from '@app/gl/shaders/viewVert'
@@ -30,6 +30,7 @@ interface IUniforms {
   'colors[6]': number[]
   'colors[7]': number[]
   'colors[8]': number[]
+  'noDataColor': number[]
 }
 
 interface IAttributes {
@@ -55,6 +56,7 @@ interface IProps {
   'colors[6]': number[],
   'colors[7]': number[],
   'colors[8]': number[],
+  'noDataColor': number[]
 }
 
 class RasterView {
@@ -111,6 +113,7 @@ class RasterView {
         'colors[6]': ctx.prop<IProps, 'colors[6]'>('colors[6]'),
         'colors[7]': ctx.prop<IProps, 'colors[7]'>('colors[7]'),
         'colors[8]': ctx.prop<IProps, 'colors[8]'>('colors[8]'),
+        'noDataColor': ctx.prop<IProps, 'noDataColor'>('noDataColor'),
       },
       count: ctx.prop<IProps, 'trianglesLength'>('trianglesLength'),
       blend: {
@@ -150,6 +153,7 @@ class RasterView {
       trianglesLength: triangles.length,
       rasterBBoxMeters: this.rootStore.boundingBox.array,
       selectedBBoxLngLat: this.rootStore.selectedBox.array,
+      noDataColor: this.rootStore.modeConfig.NO_DATA_COLOR,
       ...modeUniforms,
     })
   }

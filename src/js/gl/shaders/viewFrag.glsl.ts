@@ -32,6 +32,7 @@ export default ({
   uniform vec2 imageSize;
   uniform int imagesWide;
   uniform vec4 colors[9];
+  uniform vec4 noDataColor;
 
   varying vec2 mercator;
 
@@ -55,8 +56,18 @@ export default ({
     float scaled = geoByteScale(unscaled);
 
     float hasdata = step(${noDataThreshold}, unscaled);
-    vec4 color = mix(vec4(0.0), colorScale(scaled, colors), hasdata);
-    vec4 grayscale = mix(vec4(0.0), vec4(vec3(luma(color)) * 0.7, 1.0), hasdata);
+
+    vec4 color = mix(
+      noDataColor,
+      colorScale(scaled, colors),
+      hasdata
+    );
+
+    vec4 grayscale = mix(
+      noDataColor,
+      vec4(vec3(luma(color)) * 0.7, 1.0),
+      hasdata
+    );
 
     gl_FragColor = mix(grayscale, color, maskSample);
   }

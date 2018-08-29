@@ -6,6 +6,33 @@ export const strings = {
   MODE_SELECT_LABEL: 'View:',
 }
 
+export enum Modes {
+  NDVI = 'NDVI',
+  NDVI_GROUPED = 'NDVI By Month',
+  NDVI_ANOMALY = 'NDVI Anomaly',
+  NDVI_ANOMALY_GROUPED = 'NDVI Anomaly By Month',
+}
+
+const NDVI_CONFIG = {
+  ATLAS: process.env.NDVI_ATLAS,
+  ATLAS_CONFIG: 'atlas/ndvi.atlas.json',
+  Y_TICKS: [ -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1.0 ],
+  RANGE: [-0.2, 1.0],
+  NO_DATA_COLOR: [0.2, 0.2, 0.2, 1.0],
+  SELECTED_COLOR: [1, 1, 1, 1],
+  UNSELECTED_COLOR: [0.8, 0.8, 0.8, 1],
+}
+
+const NDVI_ANOMALY_CONFIG = {
+  ATLAS: process.env.NDVI_ANOMALY_ATLAS,
+  ATLAS_CONFIG: 'atlas/ndvi-anomaly.atlas.json',
+  Y_TICKS: [ -1.2, -0.8, -0.4, 0, 0.4, 0.8, 1.2 ],
+  RANGE: [-1.2, 1.2],
+  NO_DATA_COLOR: [1, 1, 1, 1],
+  SELECTED_COLOR: [0, 0, 0, 1],
+  UNSELECTED_COLOR: [0.2, 0.2, 0.2, 1],
+}
+
 export default {
   BLOG_URL: 'https://visualperspective.io/blog/iceland-ndvi-viewer',
   VECTOR_URL: '/geojson/vectors.json',
@@ -31,16 +58,20 @@ export default {
   START_TIME_PERIOD: 6,
   SELECTED_BOX_PADDING: 20,
   PROFILE: JSON.parse(process.env.PROFILE),
-  NDVI_ATLAS: process.env.NDVI_ATLAS,
-  NDVI_ATLAS_CONFIG: 'atlas/ndvi.atlas.json',
-  NDVI_ANOMALY_ATLAS: process.env.NDVI_ANOMALY_ATLAS,
-  NDVI_ANOMALY_ATLAS_CONFIG: 'atlas/ndvi-anomaly.atlas.json',
-  NDVI_Y_TICKS: [ -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1.0 ],
-  NDVI_ANOMALY_Y_TICKS: [ -1.2, -0.8, -0.4, 0, 0.4, 0.8, 1.2 ],
-  MIN_VALUE_NDVI: -0.2,
-  MAX_VALUE_NDVI: 1.0,
-  MIN_VALUE_NDVI_ANOMALY: -1.2,
-  MAX_VALUE_NDVI_ANOMALY: 1.2,
+  MODE_CONFIGS: {
+    [Modes.NDVI]: {
+      ...NDVI_CONFIG,
+    },
+    [Modes.NDVI_GROUPED]: {
+      ...NDVI_CONFIG,
+    },
+    [Modes.NDVI_ANOMALY]: {
+      ...NDVI_ANOMALY_CONFIG,
+    },
+    [Modes.NDVI_ANOMALY_GROUPED]: {
+      ...NDVI_ANOMALY_CONFIG,
+    },
+  },
   DATA_TEXTURE_OPTIONS: ({
     type: 'float',
     format: 'rgba',

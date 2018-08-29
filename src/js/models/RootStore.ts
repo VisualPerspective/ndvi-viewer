@@ -1,18 +1,11 @@
 import { observable, computed } from 'mobx'
 import * as _ from 'lodash'
-import constants from '@app/constants'
+import constants, { Modes } from '@app/constants'
 import Point from '@app/models/Point'
 import BoundingBox from '@app/models/BoundingBox'
 import Camera from '@app/models/Camera'
 import VectorLayer from '@app/models/VectorLayer'
 import Atlas from '@app/models/Atlas'
-
-export enum Modes {
-  NDVI = 'NDVI',
-  NDVI_GROUPED = 'NDVI By Month',
-  NDVI_ANOMALY = 'NDVI Anomaly',
-  NDVI_ANOMALY_GROUPED = 'NDVI Anomaly By Month',
-}
 
 class RootStore {
   @observable initialized: boolean = false
@@ -39,6 +32,10 @@ class RootStore {
         return this.ndviAnomalyAtlas
         break
     }
+  }
+
+  @computed get modeConfig () {
+    return constants.MODE_CONFIGS[this.mode]
   }
 
   @computed get numTimePeriods () {
@@ -96,14 +93,14 @@ class RootStore {
 
     this.ndviAtlas = new Atlas()
     await this.ndviAtlas.initialize({
-      url: constants.NDVI_ATLAS,
-      configUrl: constants.NDVI_ATLAS_CONFIG,
+      url: constants.MODE_CONFIGS[Modes.NDVI].ATLAS,
+      configUrl: constants.MODE_CONFIGS[Modes.NDVI].ATLAS_CONFIG,
     })
 
     this.ndviAnomalyAtlas = new Atlas()
     await this.ndviAnomalyAtlas.initialize({
-      url: constants.NDVI_ANOMALY_ATLAS,
-      configUrl: constants.NDVI_ANOMALY_ATLAS_CONFIG,
+      url: constants.MODE_CONFIGS[Modes.NDVI_ANOMALY].ATLAS,
+      configUrl: constants.MODE_CONFIGS[Modes.NDVI_ANOMALY].ATLAS_CONFIG,
     })
 
     this.boundingBox = observable(BoundingBox.fromArray(

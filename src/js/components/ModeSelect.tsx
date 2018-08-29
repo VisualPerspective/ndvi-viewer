@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
-import RootStore, { Modes } from '@app/models/RootStore'
+import RootStore from '@app/models/RootStore'
+import { Modes } from '@app/constants'
 
 const ModeSelect: React.SFC<{ rootStore?: RootStore }> = ({ rootStore }) => (
   <select value={rootStore.mode}

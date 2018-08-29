@@ -166,7 +166,7 @@ class GLManager {
       const tick = this.ctx.frame(() => {
         tick.cancel()
         this.pendingRender = false
-        this.ctx.clear({ color: [0.2, 0.2, 0.2, 1] })
+        this.ctx.clear({ color: this.rootStore.modeConfig.NO_DATA_COLOR })
         this.rasterMask.render()
         this.vectorView.render()
         this.rasterView.render()
