@@ -24,6 +24,21 @@ const Series = ({
       _.times(rootStore.numTimePeriods, i => (
         rootStore.timePeriodAverages[i] !== undefined && (
           <g key={i}>
+            <g className='average-background'
+              transform={translate(
+                xScale(i),
+                yScale(rootStore.timePeriodAverages[i])
+              )}>
+              <circle r={_.clamp(xScale.step() * 0.75, 3.5, 5)} cx={0} cy={0} />
+            </g>
+          </g>
+        )
+      ))
+    }
+    {
+      _.times(rootStore.numTimePeriods, i => (
+        rootStore.timePeriodAverages[i] !== undefined && (
+          <g key={i}>
             <g className='average'
               transform={translate(
                 xScale(i),
