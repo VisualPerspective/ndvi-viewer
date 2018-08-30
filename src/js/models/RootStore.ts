@@ -57,7 +57,10 @@ class RootStore {
   }
 
   @computed get percentLoaded () {
-    return this.atlas ? this.atlas.loadProgress : 0
+    return (
+      (this.ndviAtlas ? this.ndviAtlas.loadProgress : 0) +
+      (this.ndviAnomalyAtlas ? this.ndviAnomalyAtlas.loadProgress : 0)
+    ) / 2
   }
 
   @computed get rasterWidth () {
@@ -92,16 +95,18 @@ class RootStore {
     await this.vectorLayer.initialize(constants.VECTOR_URL)
 
     this.ndviAtlas = new Atlas()
-    await this.ndviAtlas.initialize({
-      url: constants.MODE_CONFIGS[Modes.NDVI].ATLAS,
-      configUrl: constants.MODE_CONFIGS[Modes.NDVI].ATLAS_CONFIG,
-    })
-
     this.ndviAnomalyAtlas = new Atlas()
-    await this.ndviAnomalyAtlas.initialize({
-      url: constants.MODE_CONFIGS[Modes.NDVI_ANOMALY].ATLAS,
-      configUrl: constants.MODE_CONFIGS[Modes.NDVI_ANOMALY].ATLAS_CONFIG,
-    })
+
+    await Promise.all([
+      this.ndviAtlas.initialize({
+        url: constants.MODE_CONFIGS[Modes.NDVI].ATLAS,
+        configUrl: constants.MODE_CONFIGS[Modes.NDVI].ATLAS_CONFIG,
+      }),
+      this.ndviAnomalyAtlas.initialize({
+        url: constants.MODE_CONFIGS[Modes.NDVI_ANOMALY].ATLAS,
+        configUrl: constants.MODE_CONFIGS[Modes.NDVI_ANOMALY].ATLAS_CONFIG,
+      }),
+    ])
 
     this.boundingBox = observable(BoundingBox.fromArray(
       this.atlas.config.boundingBox
