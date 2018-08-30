@@ -17,7 +17,7 @@ class RootStore {
   @observable ndviAtlas: Atlas
   @observable ndviAnomalyAtlas: Atlas
   @observable boundingBox = observable<BoundingBox>(new BoundingBox())
-  @observable mode: Modes = Modes.NDVI_ANOMALY
+  @observable mode: Modes = Modes.NDVI
 
   @observable timePeriod: number = constants.START_TIME_PERIOD
 
