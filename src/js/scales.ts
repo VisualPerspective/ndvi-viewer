@@ -21,7 +21,7 @@ export const makeYScaleNDVI = ({ height, margin }: {
   margin: any,
 }) => (
   scaleLinear()
-    .domain([-0.2, 1.0])
+    .domain(constants.MODE_CONFIGS[Modes.NDVI].CHART_RANGE)
     .range([height - margin.bottom, margin.top])
 )
 
@@ -30,7 +30,7 @@ export const makeYScaleNDVIAnomaly = ({ height, margin }: {
   margin: any,
 }) => (
   scaleLinear()
-    .domain([-1.2, 1.2])
+    .domain(constants.MODE_CONFIGS[Modes.NDVI_ANOMALY].CHART_RANGE)
     .range([height - margin.bottom, margin.top])
 )
 

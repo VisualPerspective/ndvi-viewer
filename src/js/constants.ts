@@ -18,6 +18,7 @@ const NDVI_CONFIG = {
   ATLAS_CONFIG: 'atlas/ndvi.atlas.json',
   Y_TICKS: [ -0.2, 0, 0.2, 0.4, 0.6, 0.8, 1.0 ],
   RANGE: [-0.2, 1.0],
+  CHART_RANGE: [-0.2, 1.0],
   NO_DATA_COLOR: [0.2, 0.2, 0.2, 1.0],
   SELECTED_COLOR: [1, 1, 1, 1],
   UNSELECTED_COLOR: [0.6, 0.6, 0.6, 1],
@@ -26,8 +27,9 @@ const NDVI_CONFIG = {
 const NDVI_ANOMALY_CONFIG = {
   ATLAS: process.env.NDVI_ANOMALY_ATLAS,
   ATLAS_CONFIG: 'atlas/ndvi-anomaly.atlas.json',
-  Y_TICKS: [ -1.2, -0.8, -0.4, 0, 0.4, 0.8, 1.2 ],
+  Y_TICKS: [ -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6 ],
   RANGE: [-1.2, 1.2],
+  CHART_RANGE: [-0.6, 0.6],
   NO_DATA_COLOR: [1, 1, 1, 1],
   SELECTED_COLOR: [0, 0, 0, 1],
   UNSELECTED_COLOR: [0.4, 0.4, 0.4, 1],
