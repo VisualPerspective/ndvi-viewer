@@ -15,7 +15,7 @@ const YAxisNDVI = ({ xScale, yScale, colorScale, rootStore }: {
   const numStops = 10
   const stops = _.times(numStops, i => ({
     color: colorScale(interpolateNumber(
-      ...colorScale.domain()
+      ...rootStore.modeConfig.CHART_RANGE,
     )(i / (numStops - 1))),
     percent: i / (numStops - 1) * 100,
   }))

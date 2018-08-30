@@ -15,7 +15,7 @@ const YAxisNDVIAnomaly = ({ xScale, yScale, colorScale, rootStore }: {
   const numStops = 10
   const stops = _.times(numStops, i => ({
     color: colorScale(interpolateNumber(
-      ...colorScale.domain()
+      ...rootStore.modeConfig.CHART_RANGE,
     )(i / (numStops - 1))),
     percent: i / (numStops - 1) * 100,
   }))
@@ -60,7 +60,7 @@ const YAxisNDVIAnomaly = ({ xScale, yScale, colorScale, rootStore }: {
             }
               x2={leftScaleWidth}
               y2='0.5' />
-            <text dy='6' x='-38' y='0'>{formatter(tick)}</text>
+            <text dy='6' x='-8' y='0'>{formatter(tick)}</text>
           </g>
         ))
       }
