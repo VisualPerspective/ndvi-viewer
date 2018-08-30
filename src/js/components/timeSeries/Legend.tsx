@@ -21,7 +21,7 @@ const Legend = ({ xScale, yScale, colorScale, rootStore }: {
 
   return (
     <g transform={translate(
-      xScale.range()[1] / 2 - 155,
+      xScale.range()[1] / 2 - rootStore.modeConfig.LEGEND_OFFSET,
       5
     )} className='legend'>
         <g className='average-background'>

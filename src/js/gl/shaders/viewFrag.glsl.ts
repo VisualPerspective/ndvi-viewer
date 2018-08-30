@@ -65,7 +65,7 @@ export default ({
 
     vec4 grayscale = mix(
       noDataColor,
-      vec4(vec3(luma(color)) * 0.7, 1.0),
+      mix(vec4(vec3(luma(color)), 1.0), noDataColor, 0.3),
       hasdata
     );
 

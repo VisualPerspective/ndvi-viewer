@@ -23,6 +23,7 @@ const NDVI_CONFIG = {
   SELECTED_COLOR: [1, 1, 1, 1],
   UNSELECTED_COLOR: [0.6, 0.6, 0.6, 1],
   DATA_LABEL: 'NDVI',
+  LEGEND_OFFSET: 155,
 }
 
 const NDVI_ANOMALY_CONFIG = {
@@ -32,9 +33,10 @@ const NDVI_ANOMALY_CONFIG = {
   RANGE: [-1.2, 1.2],
   CHART_RANGE: [-0.6, 0.6],
   NO_DATA_COLOR: [1, 1, 1, 1],
-  SELECTED_COLOR: [0, 0, 0, 1],
-  UNSELECTED_COLOR: [0.4, 0.4, 0.4, 1],
-  DATA_LABEL: 'NDVI Anomaly',
+  SELECTED_COLOR: [0.4, 0.4, 0.4, 1],
+  UNSELECTED_COLOR: [0.6, 0.6, 0.6, 1],
+  DATA_LABEL: 'NDVI anomaly',
+  LEGEND_OFFSET: 195,
 }
 
 export default {
