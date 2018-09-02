@@ -11,6 +11,7 @@ class RootStore {
   @observable initialized: boolean = false
   @observable compatible: boolean = true
   @observable menuOpen: boolean = false
+  @observable moreInfoOpen: boolean = false
 
   @observable camera: Camera
   @observable vectorLayer: VectorLayer

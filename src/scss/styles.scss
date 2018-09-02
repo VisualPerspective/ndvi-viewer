@@ -75,14 +75,15 @@ h1 {
 header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   flex: 0 0 auto;
   border-bottom: 1px solid #bbb;
 
   >* {
-    flex-basis: 33.3%;
-    &.half-width { flex-basis: 16.7%; }
+    flex-basis: 22rem;
     text-align: center;
     &.nav>img { display: none; }
+    &.center { flex-grow: 1; }
   }
 
   .info {
@@ -99,15 +100,6 @@ header {
       color: white;
       position: relative;
       bottom: 0.05rem;
-    }
-  }
-
-  .logo {
-    text-align: right;
-    padding: 0;
-    img {
-      height: 2rem;
-      vertical-align: middle;
     }
   }
 
@@ -169,6 +161,63 @@ footer {
   padding: 1.5rem;
   border-top: 1px solid #bbb;
   input[type=range] { width: 100% }
+}
+
+.info-overlay {
+  display: flex;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #0006;
+
+  .overlay { flex-grow: 1; }
+
+  .info {
+    width: 24rem;
+    padding:  0.75rem 1rem;
+    box-sizing: border-box;
+    background: white;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.right-nav {
+  cursor: pointer;
+  color: #444;
+  transition: color 0.1s;
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-start;
+  width: 100%;
+
+  &:hover {
+    color: $link-color;
+  }
+
+  svg {
+    display: inline;
+    height: 1.25rem;
+    position: relative;
+    padding-right: 0.25rem;
+    top: 0.25rem;
+  }
+
+  .logo {
+    text-align: right;
+    padding: 0;
+    img {
+      height: 2rem;
+      vertical-align: middle;
+    }
+  }
+}
+
+.right-nav-items {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 0;
+  >* { margin: 0.5rem 0; }
 }
 
 .horizontal-chart {
@@ -270,6 +319,7 @@ footer {
       padding: 1rem;
       align-self: start;
       flex-basis: 4rem;
+
       &.nav {
         display: flex;
         width: 100%;
