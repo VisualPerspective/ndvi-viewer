@@ -7,7 +7,8 @@ $track-color: #888;
 $track-height: 0.5rem;
 $track-border-width: 0;
 
-$link-color: #335092;
+$text-color: #333;
+$link-color: #3384dd;
 
 input[type=range] {
   @include input-type-range();
@@ -16,7 +17,7 @@ input[type=range] {
 * { margin: 0; padding: 0; list-style: none; }
 
 html {
-  color: #333;
+  color: $text-color;
   font-size: 100%;
 }
 
@@ -184,23 +185,18 @@ footer {
 
 .right-nav {
   cursor: pointer;
-  color: #444;
+  color: $text-color;
   transition: color 0.1s;
   display: flex;
   justify-content: space-between;
   align-self: flex-start;
+  flex-shrink: 0;
   width: 100%;
+  position: relative;
+  top: 0.15rem;
 
   &:hover {
     color: $link-color;
-  }
-
-  svg {
-    display: inline;
-    height: 1.25rem;
-    position: relative;
-    padding-right: 0.25rem;
-    top: 0.25rem;
   }
 
   .logo {
@@ -211,13 +207,28 @@ footer {
       vertical-align: middle;
     }
   }
+
+  h1 { display: none; }
 }
 
 .right-nav-items {
   display: flex;
   flex-direction: column;
   margin: 2rem 0;
-  >* { margin: 0.5rem 0; }
+  >* { padding: 0.75rem 0; }
+  a:not(:hover) { color: $text-color; }
+  .mobile { display: none; }
+}
+
+
+.right-nav, .right-nav-items {
+  svg {
+    display: inline;
+    height: 1.25rem;
+    position: relative;
+    padding-right: 0.25rem;
+    top: 0.25rem;
+  }
 }
 
 .horizontal-chart {
@@ -306,44 +317,29 @@ footer {
   image-rendering: pixelated;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1000px) {
   html { font-size: 14px; }
-}
 
-@media (max-width: 750px) {
   header {
-    flex-direction: column;
-    padding: 0;
-    >*, >.half-width {
-      box-sizing: border-box;
-      padding: 1rem;
-      align-self: start;
-      flex-basis: 4rem;
-
-      &.nav {
-        display: flex;
-        width: 100%;
-        align-items: center;
-        justify-content: space-between;
-        >img { display: block; height: 1.5rem; }
-      }
+    .center { display: none; }
+    .right-nav {
+      justify-content: flex-end;
+      flex-shrink: 1;
     }
+  }
 
-    &:not(.open)>* {
-      &:not(.nav) { display: none; }
-    }
+  .right-nav, .right-nav-items {
+    &.open h1 { display: block; }
+    .button-label { display: none; }
+  }
 
-    &.open {
-      position: absolute;
-      background: white;
-      z-index: 2;
-      width: 100%;
-      height: 100%;
-
-      >* {
-        &.nav { margin-bottom: 1rem; }
-        &:not(.nav) { margin-left: 2.25rem; }
-      }
+  .logo { display: none; }
+  .right-nav-items {
+    padding-left: 0.2rem;
+    .mobile { display: block; }
+    .logo {
+      display: block;
+      img { height: 2rem; }
     }
   }
 
@@ -355,6 +351,11 @@ footer {
       text { display: none; }
       rect { opacity: 0.75; }
     }
+  }
+
+  .info-overlay {
+    .overlay { display: none; }
+    .info { flex-basis: 100%; }
   }
 
   .time-series .by-year .x-tick:nth-child(even) text {

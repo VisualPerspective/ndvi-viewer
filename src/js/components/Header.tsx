@@ -8,12 +8,8 @@ import RightNav from '@app/components/RightNav'
 
 const Header = ({ rootStore }: { rootStore?: RootStore }) => (
   <header className={rootStore.menuOpen ? 'open' : ''}>
-    <div className='nav'
-      onClick={() => { rootStore.menuOpen = !rootStore.menuOpen }}>
+    <div className='nav'>
       <Heading />
-      <img src={
-        rootStore.menuOpen ? '/img/fa-times.svg' : '/img/fa-bars.svg'
-      } />
     </div>
     <div className='center'>
       {strings.MODE_SELECT_LABEL} <ModeSelect />

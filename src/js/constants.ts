@@ -41,6 +41,9 @@ const NDVI_ANOMALY_CONFIG = {
 
 export default {
   BLOG_URL: 'https://visualperspective.io/blog/iceland-ndvi-viewer',
+  BLOG_ANOMALY_URL: 'https://visualperspective.io/blog/ndvi-anomaly',
+  GITHUB_URL: 'https://github.com/VisualPerspective/ndvi-viewer',
+  CONTACT_US_URL: 'https://visualperspective.io/contact',
   VECTOR_URL: '/geojson/vectors.json',
   DATA_TEXTURE_SIZE: 4096,
   NO_DATA_THRESHOLD: 0.001,
