@@ -55,6 +55,8 @@
   "scripts": {
     "start": "webpack-serve --config webpack.dev.js --host 0.0.0.0 --static ./src/assets/",
     "build": "webpack --config webpack.prod.js",
-    "deploy": "yarn build && firebase deploy"
+    "build-stage": "webpack --config webpack.stage.js",
+    "deploy": "yarn build && firebase deploy",
+    "deploy-stage": "yarn build-stage && firebase deploy"
   }
 }

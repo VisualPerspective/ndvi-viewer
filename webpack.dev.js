@@ -9,7 +9,8 @@ module.exports = merge(common, {
     new webpack.DefinePlugin({
       'process.env.NDVI_ATLAS': JSON.stringify('atlas/ndvi.atlas'),
       'process.env.NDVI_ANOMALY_ATLAS': JSON.stringify('atlas/ndvi-anomaly.atlas'),
-      'process.env.PROFILE': true
+      'process.env.PROFILE': true,
+      'process.env.SITE_URL': JSON.stringify('https://vp-stage.firebaseapp.com'),
     })
   ])
 });
