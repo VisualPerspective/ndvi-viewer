@@ -2,6 +2,7 @@ import * as React from 'react'
 import Helmet from 'react-helmet'
 import { inject, observer } from 'mobx-react'
 import { strings } from '@app/constants'
+import InfoOverlay from '@app/components/InfoOverlay'
 import Header from '@app/components/Header'
 import Footer from '@app/components/Footer'
 import SingleViewContainer from '@app/components/SingleViewContainer'
@@ -31,6 +32,7 @@ const Container: React.SFC<{ rootStore?: RootStore }> = (props) => (
             <Header />
             <SingleViewContainer />
             <Footer />
+            { props.rootStore.moreInfoOpen && <InfoOverlay /> }
           </>
         ) : (
           <Loading />

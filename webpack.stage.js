@@ -10,7 +10,7 @@ module.exports = merge(common, {
       'process.env.NDVI_ATLAS': JSON.stringify('https://storage.googleapis.com/iceland-ndvi/static/ndvi.atlas'),
       'process.env.NDVI_ANOMALY_ATLAS': JSON.stringify('https://storage.googleapis.com/iceland-ndvi/static/ndvi-anomaly.atlas'),
       'process.env.PROFILE': false,
-      'process.env.SITE_URL': JSON.stringify('https://visualperspective.io'),
+      'process.env.SITE_URL': JSON.stringify('https://vp-stage.firebaseapp.com'),
     })
   ])
 });

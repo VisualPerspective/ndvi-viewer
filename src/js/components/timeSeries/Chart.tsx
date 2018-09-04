@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 import { reaction, IReactionDisposer } from 'mobx'
-import { scaleLinear, scalePoint, scaleSequential, scaleBand, range } from 'd3'
-import { interpolateViridis } from 'd3-scale-chromatic'
-import constants from '@app/constants'
-import RootStore, { Modes } from '@app/models/RootStore'
-import Container from '@app/components/timeSeries/Container'
-import ContainerSorted from '@app/components/timeSeries/ContainerSorted'
+import { Modes } from '@app/constants'
+import RootStore from '@app/models/RootStore'
+import NDVI from '@app/components/timeSeries/NDVI'
+import NDVISorted from '@app/components/timeSeries/NDVISorted'
+import NDVIAnomaly from '@app/components/timeSeries/NDVIAnomaly'
+import NDVIAnomalySorted from '@app/components/timeSeries/NDVIAnomalySorted'
 
 class Chart extends React.Component<{
   width: number,
@@ -67,47 +67,26 @@ class Chart extends React.Component<{
       rootStore,
     } = this.props
 
-    const yScale = scaleLinear()
-      .domain([-0.2, 1.0])
-      .range([
-        height - this.margin.bottom,
-        this.margin.top,
-      ])
-
-    const xScale = scalePoint()
-      .domain(range(-2, rootStore.numTimePeriods))
-      .range([
-        this.margin.left,
-        width - this.margin.right,
-      ])
-
-    const xScaleSortedBands = scaleBand()
-      .domain(constants.MONTHS)
-      .range([this.margin.left, width - this.margin.right])
-      .padding(0.15)
-
-    const xScaleSorted: any = (i: number) => {
-      const n = rootStore.numTimePeriods
-      const month = i % 12
-      const year = Math.floor(i / 12)
-      const years = Math.floor(n / 12)
-
-      return xScaleSortedBands(constants.MONTHS[month]) +
-        (xScaleSortedBands.bandwidth() * (year) / (years - 1))
-    }
-
-    xScaleSorted.step = () => (
-      xScaleSortedBands.bandwidth() /
-      (rootStore.numTimePeriods / 12)
-    )
-
-    const colorScale = scaleSequential(interpolateViridis)
-      .domain([-0.2, 1.0])
-
     const onTimePeriodSelect = (i: number, isClick: boolean) => {
       if (this.props.dragging === true || isClick) {
         this.props.rootStore.timePeriod = i
       }
+    }
+
+    let ContainerComponent
+    switch (rootStore.mode) {
+      case Modes.NDVI:
+        ContainerComponent = NDVI
+        break
+      case Modes.NDVI_GROUPED:
+        ContainerComponent = NDVISorted
+        break
+      case Modes.NDVI_ANOMALY:
+        ContainerComponent = NDVIAnomaly
+        break
+      case Modes.NDVI_ANOMALY_GROUPED:
+        ContainerComponent = NDVIAnomalySorted
+        break
     }
 
     return (width && height) ? (
@@ -115,24 +94,11 @@ class Chart extends React.Component<{
         onMouseDown={(e) => {
           this.props.startDragging(e.nativeEvent)
         }}>
-        {
-          rootStore.mode === Modes.NDVI ? (
-            <Container
-              xScale={xScale}
-              yScale={yScale}
-              colorScale={colorScale}
-              onTimePeriodSelect={onTimePeriodSelect}
-              marginBottom={this.margin.bottom} />
-          ) : (
-            <ContainerSorted
-              xScale={xScaleSorted}
-              xScaleSortedBands={xScaleSortedBands}
-              yScale={yScale}
-              colorScale={colorScale}
-              onTimePeriodSelect={onTimePeriodSelect}
-              marginBottom={this.margin.bottom} />
-          )
-        }
+        <ContainerComponent
+          width={width}
+          height={height}
+          onTimePeriodSelect={onTimePeriodSelect}
+          margin={this.margin} />
       </svg>
     ) : null
   }

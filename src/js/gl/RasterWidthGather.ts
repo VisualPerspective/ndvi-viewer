@@ -14,6 +14,8 @@ interface IUniforms {
   imageSize: number[]
   imagesWide: number
   targetHeight: number
+  minValue: number
+  maxValue: number
 }
 
 interface IAttributes {
@@ -24,6 +26,8 @@ interface IAttributes {
 interface IProps {
   framebufferWidth: number
   framebufferHeight: number
+  minValue: number
+  maxValue: number
 }
 
 class RasterWidthGather {
@@ -86,6 +90,8 @@ class RasterWidthGather {
         imageSize: this.rootStore.rasterSizePercent.array,
         imagesWide: this.rootStore.textureRastersWide,
         targetHeight: constants.DATA_TEXTURE_SIZE,
+        minValue: ctx.prop<IProps, 'minValue'>('minValue'),
+        maxValue: ctx.prop<IProps, 'maxValue'>('maxValue'),
       },
       count: constants.DATA_SQUARE_POSITIONS.length,
     })
@@ -96,6 +102,8 @@ class RasterWidthGather {
       this.renderer({
         framebufferWidth: this.rootStore.samplesWide,
         framebufferHeight: constants.DATA_TEXTURE_SIZE,
+        minValue: this.rootStore.modeConfig.RANGE[0],
+        maxValue: this.rootStore.modeConfig.RANGE[1],
       })
     })
   }

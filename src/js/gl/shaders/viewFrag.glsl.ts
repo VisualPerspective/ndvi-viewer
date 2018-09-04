@@ -1,5 +1,5 @@
 import luma from '@app/gl/shaders/functions/luma'
-import viridis from '@app/gl/shaders/functions/viridis'
+import colorScale from '@app/gl/shaders/functions/colorScale'
 import lngLatToSinusoidal from '@app/gl/shaders/functions/lngLatToSinusoidal'
 import mercatorToLngLat from '@app/gl/shaders/functions/mercatorToLngLat'
 import pointInBBox from '@app/gl/shaders/functions/pointInBBox'
@@ -15,7 +15,7 @@ export default ({
   precision highp float;
 
   ${luma()}
-  ${viridis()}
+  ${colorScale()}
   ${lngLatToSinusoidal()}
   ${mercatorToLngLat()}
   ${pointInBBox()}
@@ -31,6 +31,8 @@ export default ({
   uniform vec4 selectedBBoxLngLat;
   uniform vec2 imageSize;
   uniform int imagesWide;
+  uniform vec4 colors[9];
+  uniform vec4 noDataColor;
 
   varying vec2 mercator;
 
@@ -54,8 +56,18 @@ export default ({
     float scaled = geoByteScale(unscaled);
 
     float hasdata = step(${noDataThreshold}, unscaled);
-    vec4 color = mix(vec4(0.0), viridis(scaled), hasdata);
-    vec4 grayscale = mix(vec4(0.0), vec4(vec3(luma(color)) * 0.7, 1.0), hasdata);
+
+    vec4 color = mix(
+      noDataColor,
+      colorScale(scaled, colors),
+      hasdata
+    );
+
+    vec4 grayscale = mix(
+      noDataColor,
+      mix(vec4(vec3(luma(color)), 1.0), noDataColor, 0.3),
+      hasdata
+    );
 
     gl_FragColor = mix(grayscale, color, maskSample);
   }

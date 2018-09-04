@@ -1,14 +1,18 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
-import RootStore, { Modes } from '@app/models/RootStore'
+import RootStore from '@app/models/RootStore'
+import { Modes } from '@app/constants'
 
 const ModeSelect: React.SFC<{ rootStore?: RootStore }> = ({ rootStore }) => (
   <select value={rootStore.mode}
     onChange={(e: any) => {
       rootStore.mode = e.target.value
     }}>
-    <option value={Modes.NDVI}>{Modes.NDVI}</option>
-    <option value={Modes.NDVI_GROUPED}>{Modes.NDVI_GROUPED}</option>
+    {
+      Object.values(Modes).map(mode => (
+        <option key={mode} value={mode}>{mode}</option>
+      ))
+    }
   </select>
 )
 

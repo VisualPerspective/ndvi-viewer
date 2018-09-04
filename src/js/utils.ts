@@ -58,3 +58,12 @@ export const compensatedSquareUVs = ({ width, height }: {
     [-0.5, height - 0.5],
   ]
 }
+
+export const uniformArrayAsObject = (name: string, array: any[]): any => {
+  const object: any = {}
+  array.forEach((entry, i) => {
+    object[`${name}[${i}]`] = entry
+  })
+
+  return object
+}

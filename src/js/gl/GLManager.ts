@@ -48,14 +48,12 @@ class GLManager {
       attributes: { alpha: false },
     })
 
-    const atlasConfig = this.rootStore.atlas.config
     this.rasterTexture = this.ctx.texture({
       ...(constants.DATA_TEXTURE_OPTIONS),
       type: 'uint8',
-      width: atlasConfig.rasterWidth * atlasConfig.rastersWide,
-      height: atlasConfig.rasterHeight * atlasConfig.rastersHigh,
-      data: this.rootStore.atlas.data,
     })
+
+    this.updateDataTexture()
 
     this.vectorView = new VectorView({
       rootStore,
@@ -130,6 +128,22 @@ class GLManager {
       cameraPosition: this.rootStore.camera.position.array,
       selectedBox: this.rootStore.selectedBox.array,
     }), this.render.bind(this))
+
+    reaction(() => ({
+      mode: this.rootStore.mode,
+    }), () => {
+      this.updateDataTexture()
+      this.render()
+    })
+  }
+
+  updateDataTexture () {
+    const atlasConfig = this.rootStore.atlas.config
+    this.rasterTexture({
+      width: atlasConfig.rasterWidth * atlasConfig.rastersWide,
+      height: atlasConfig.rasterHeight * atlasConfig.rastersHigh,
+      data: this.rootStore.atlas.data,
+    })
   }
 
   render () {
@@ -152,7 +166,7 @@ class GLManager {
       const tick = this.ctx.frame(() => {
         tick.cancel()
         this.pendingRender = false
-        this.ctx.clear({ color: [0.2, 0.2, 0.2, 1] })
+        this.ctx.clear({ color: this.rootStore.modeConfig.NO_DATA_COLOR })
         this.rasterMask.render()
         this.vectorView.render()
         this.rasterView.render()

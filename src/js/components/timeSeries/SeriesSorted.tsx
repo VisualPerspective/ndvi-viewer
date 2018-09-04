@@ -28,6 +28,27 @@ const SeriesSorted = ({
           <g key={i}>
             {
               period.average !== undefined && (
+                <g className='average-background'
+                  transform={translate(
+                    xScale(period.id),
+                    yScale(period.average)
+                  )}>
+                  <circle r={_.clamp(xScale.step() * 0.75, 3.5, 5)} cx={0} cy={0} />
+                </g>
+              )
+            }
+          </g>
+        )
+      })
+    }
+    {
+      _.times(rootStore.numTimePeriods, i => {
+        const period = rootStore.timePeriodsByMonth[i]
+
+        return (
+          <g key={i}>
+            {
+              period.average !== undefined && (
                 <g className='average'
                   transform={translate(
                     xScale(period.id),

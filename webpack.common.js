@@ -50,7 +50,14 @@ module.exports = {
     new CopyWebpackPlugin([{ from: 'src/assets', to: '.' }]),
     new MiniCssExtractPlugin('styles.css'),
     new HtmlWebpackPlugin({
-      title: 'Iceland Vegetation'
+      title: 'Iceland Vegetation',
+      meta: {
+        'og:url': 'https://iceland.visualperspective.io/',
+        'og:title': 'Iceland Vegetation',
+        'og:description': 'Visualize Iceland\'s vegetation over time.',
+        'og:site_name': 'Iceland Vegetation',
+        'og:image': 'https://iceland.visualperspective.io/img/iceland_ndvi.png'
+      }
     })
   ],
   output: {

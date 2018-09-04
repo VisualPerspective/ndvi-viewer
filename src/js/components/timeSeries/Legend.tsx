@@ -21,12 +21,16 @@ const Legend = ({ xScale, yScale, colorScale, rootStore }: {
 
   return (
     <g transform={translate(
-      xScale.range()[1] / 2 - 155,
+      xScale.range()[1] / 2 - rootStore.modeConfig.LEGEND_OFFSET,
       5
     )} className='legend'>
+        <g className='average-background'>
+          <circle cx='-10' cy='-5' r='5' />
+        </g>
         <circle cx='-10' cy='-5' r='5' fill={colorScale(mean)} />
         <text>
-          Average NDVI in selected region for {label}:
+          Average {rootStore.modeConfig.DATA_LABEL} in
+          selected region for {label}:
           <tspan fontWeight='bold'> {formatter(mean)}</tspan>
         </text>
     </g>

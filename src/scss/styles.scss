@@ -7,7 +7,8 @@ $track-color: #888;
 $track-height: 0.5rem;
 $track-border-width: 0;
 
-$link-color: #335092;
+$text-color: #333;
+$link-color: #3384dd;
 
 input[type=range] {
   @include input-type-range();
@@ -16,7 +17,7 @@ input[type=range] {
 * { margin: 0; padding: 0; list-style: none; }
 
 html {
-  color: #333;
+  color: $text-color;
   font-size: 100%;
 }
 
@@ -75,13 +76,15 @@ h1 {
 header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   flex: 0 0 auto;
+  border-bottom: 1px solid #bbb;
 
   >* {
-    flex-basis: 33.3%;
-    &.half-width { flex-basis: 16.7%; }
+    flex-basis: 22rem;
     text-align: center;
     &.nav>img { display: none; }
+    &.center { flex-grow: 1; }
   }
 
   .info {
@@ -98,15 +101,6 @@ header {
       color: white;
       position: relative;
       bottom: 0.05rem;
-    }
-  }
-
-  .logo {
-    text-align: right;
-    padding: 0;
-    img {
-      height: 2rem;
-      vertical-align: middle;
     }
   }
 
@@ -166,8 +160,75 @@ header {
 
 footer {
   padding: 1.5rem;
-
+  border-top: 1px solid #bbb;
   input[type=range] { width: 100% }
+}
+
+.info-overlay {
+  display: flex;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #0006;
+
+  .overlay { flex-grow: 1; }
+
+  .info {
+    width: 24rem;
+    padding:  0.75rem 1rem;
+    box-sizing: border-box;
+    background: white;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.right-nav {
+  cursor: pointer;
+  color: $text-color;
+  transition: color 0.1s;
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-start;
+  flex-shrink: 0;
+  width: 100%;
+  position: relative;
+  top: 0.15rem;
+
+  &:hover {
+    color: $link-color;
+  }
+
+  .logo {
+    text-align: right;
+    padding: 0;
+    img {
+      height: 2rem;
+      vertical-align: middle;
+    }
+  }
+
+  h1 { display: none; }
+}
+
+.right-nav-items {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 0;
+  >* { padding: 0.75rem 0; }
+  a:not(:hover) { color: $text-color; }
+  .mobile { display: none; }
+}
+
+
+.right-nav, .right-nav-items {
+  svg {
+    display: inline;
+    height: 1.25rem;
+    position: relative;
+    padding-right: 0.25rem;
+    top: 0.25rem;
+  }
 }
 
 .horizontal-chart {
@@ -215,6 +276,8 @@ footer {
     pointer-events: none;
     user-select: none;
   }
+
+  .average-background circle { stroke: #888; }
 }
 
 .centered-content {
@@ -254,43 +317,29 @@ footer {
   image-rendering: pixelated;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1000px) {
   html { font-size: 14px; }
-}
 
-@media (max-width: 750px) {
   header {
-    flex-direction: column;
-    padding: 0;
-    >*, >.half-width {
-      box-sizing: border-box;
-      padding: 1rem;
-      align-self: start;
-      flex-basis: 4rem;
-      &.nav {
-        display: flex;
-        width: 100%;
-        align-items: center;
-        justify-content: space-between;
-        >img { display: block; height: 1.5rem; }
-      }
+    .center { display: none; }
+    .right-nav {
+      justify-content: flex-end;
+      flex-shrink: 1;
     }
+  }
 
-    &:not(.open)>* {
-      &:not(.nav) { display: none; }
-    }
+  .right-nav, .right-nav-items {
+    &.open h1 { display: block; }
+    .button-label { display: none; }
+  }
 
-    &.open {
-      position: absolute;
-      background: white;
-      z-index: 2;
-      width: 100%;
-      height: 100%;
-
-      >* {
-        &.nav { margin-bottom: 1rem; }
-        &:not(.nav) { margin-left: 2.25rem; }
-      }
+  .logo { display: none; }
+  .right-nav-items {
+    padding-left: 0.2rem;
+    .mobile { display: block; }
+    .logo {
+      display: block;
+      img { height: 2rem; }
     }
   }
 
@@ -302,6 +351,11 @@ footer {
       text { display: none; }
       rect { opacity: 0.75; }
     }
+  }
+
+  .info-overlay {
+    .overlay { display: none; }
+    .info { flex-basis: 100%; }
   }
 
   .time-series .by-year .x-tick:nth-child(even) text {

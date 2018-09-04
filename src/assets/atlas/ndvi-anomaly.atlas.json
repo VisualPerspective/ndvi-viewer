@@ -1,0 +1,15 @@
+{
+  "format": "float32",
+  "rasterWidth": 590,
+  "rasterHeight": 416,
+  "numRasters": 204,
+  "rastersWide": 6,
+  "rastersHigh": 9,
+  "channels": 4,
+  "boundingBox": [
+    -1153751,
+    7029082,
+    -607255,
+    7414791
+  ]
+}

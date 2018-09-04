@@ -20,6 +20,8 @@ interface IAttributes {
 }
 
 interface IProps {
+  selectedColor: number[]
+  unselectedColor: number[]
   view: REGL.Mat4
   projection: REGL.Mat4
   scale: number
@@ -50,8 +52,8 @@ class OutlineView {
         position: ctx.prop<IProps, 'vertices'>('vertices'),
       },
       uniforms: {
-        selectedColor: [0.9, 0.9, 0.9, 1],
-        unselectedColor: [0.6, 0.6, 0.6, 1],
+        selectedColor: ctx.prop<IProps, 'selectedColor'>('selectedColor'),
+        unselectedColor: ctx.prop<IProps, 'unselectedColor'>('unselectedColor'),
         model: mat4.fromTranslation([], [0, 0, 0]),
         view: ctx.prop<IProps, 'view'>('view'),
         projection: ctx.prop<IProps, 'projection'>('projection'),
@@ -72,6 +74,8 @@ class OutlineView {
       vertices: this.rootStore.vectorLayer.outline.peek(),
       linesLength: this.rootStore.vectorLayer.outline.length / 2,
       selectedBBoxLngLat: this.rootStore.selectedBox.array,
+      selectedColor: this.rootStore.modeConfig.SELECTED_COLOR,
+      unselectedColor: this.rootStore.modeConfig.UNSELECTED_COLOR,
     })
   }
 }
