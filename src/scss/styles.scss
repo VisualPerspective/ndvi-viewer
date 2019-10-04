@@ -83,6 +83,7 @@ header {
   >* {
     flex-basis: 22rem;
     text-align: center;
+    &.nav { flex-shrink: 0 }
     &.nav>img { display: none; }
     &.center { flex-grow: 1; }
   }
@@ -124,21 +125,24 @@ header {
     >label {
       width: 3rem;
       height: 9.56rem;
-      display: block;
+      display: flex;
+      flex-direction: column;
       background: #222c;
 
       img, input { display: block; }
       img {
         color: white;
-        width: 1.125rem;
+        height: 1rem;
         padding: 0.6rem 1rem;
         cursor: pointer;
         opacity: 0.8;
+        position: relative;
+        bottom: -0.1rem;
         &:hover { opacity: 1; }
 
         &.bottom {
-          position: relative;
-          top: 4.1rem;
+          position: absolute;
+          bottom: 0.25rem;
         }
       }
 

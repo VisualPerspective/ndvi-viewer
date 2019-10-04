@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Helmet from 'react-helmet'
+import { Helmet } from 'react-helmet'
 import { inject, observer } from 'mobx-react'
 import { strings } from '@app/constants'
 import InfoOverlay from '@app/components/InfoOverlay'

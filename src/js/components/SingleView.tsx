@@ -54,7 +54,7 @@ class SingleView extends React.Component<{
       }
     })
 
-    window.addEventListener('wheel', this.handleWheel)
+    window.addEventListener('wheel', this.handleWheel, { passive: false })
   }
 
   relativePosition (point: Point) {
