@@ -25,7 +25,7 @@
     "gl-matrix": "^2.6.1",
     "glsl-colormap": "^1.0.1",
     "html-webpack-plugin": "^3.2.0",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.19",
     "mini-css-extract-plugin": "^0.4.0",
     "mobx": "^4.3.1",
     "mobx-react": "^5.2.3",
