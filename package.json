@@ -31,7 +31,7 @@
     "mobx-react": "^5.2.3",
     "mobx-react-devtools": "^5.0.1",
     "ndjson-cli": "^0.3.1",
-    "node-sass": "^4.9.0",
+    "node-sass": "^7.0.0",
     "postcss-loader": "^2.1.5",
     "range-slider-sass": "^2.0.0",
     "react": "^16.4.1",
